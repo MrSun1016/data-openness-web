@@ -19,7 +19,7 @@ export default {
   props: {
     title: {
       type: String,
-      default: '数据交换平台',
+      default: '数据开放平台',
       required: false,
     },
     collapsed: {

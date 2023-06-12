@@ -2,7 +2,7 @@
   <div id="openplatformHeader">
     <div class="log-title">
       <img src="../../../public/logo2.png" alt="" />
-      <div class="title">孝感市数据中台</div>
+      <div class="title">孝感市数据开放平台</div>
       <div class="menus">
         <el-menu
           :default-active="$route.path"

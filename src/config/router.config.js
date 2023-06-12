@@ -41,7 +41,7 @@ export const constantRouterMap = [
     name: 'Dashboard',
     component: TabLayout,
     meta: { title: '首页' },
-    redirect: '/openPlatform/Home',
+    redirect: '/Home',
     children: [
     ]
   },
