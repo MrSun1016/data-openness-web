@@ -7,6 +7,7 @@ function resolve(dir) {
 
 // vue.config.js
 module.exports = {
+    lintOnSave: false, //vue2关闭eslint
     /*
       Vue-cli3:
       Crashed when using Webpack `import()` #2463
@@ -108,3 +109,4 @@ module.exports = {
         }
     },
 }
+  

@@ -116,3 +116,11 @@ export function logList(condition) {
     }
   })
 }
+// 删除资讯中心管理
+export function deleteInformation(parameter) {
+  return axios({
+    url: '/api/information/deleteInformation',
+    method: 'delete',
+    data: parameter,
+  })
+}

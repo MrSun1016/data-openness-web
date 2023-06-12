@@ -391,6 +391,18 @@ const getStudyWorldInfo = (studyWorldId) => getAction(`/api/studyWorld/getStudyW
 const studyWorldSave = (params) => postAction('/api/studyWorld/save', params)
 // 更新
 const putUpdate = (params) => putAction('/api/studyWorld/update', params)
+
+// 资讯中心管理
+// 分页
+const informationPage = (params) => postAction('/api/information/page', params)
+// 角色查询
+const getInformationAllRole = (params) => getAction('/api/information/getAllRole', null)
+const getInformationInfo = (informationId) => getAction(`/api/information/getInformationInfo?informationId=${informationId}`, null)
+// 新增
+const informationSave = (params) => postAction('/api/information/save', params)
+// 更新
+const informationUpdate = (params) => putAction('/api/information/update', params)
+
 const queryUserUnit = (params) => postAction('/api/cataLog/queryUserUnit', null)
 const queryUserMassge = (params) => postAction('/api/cataLog/queryUserMassge', null)
 
@@ -901,6 +913,12 @@ export {
     saveNewVer,
     getQuoteModelList,
     getUserInfoToken,
+    // 资讯中心管理
+    informationPage,
+    getInformationAllRole,
+    getInformationInfo,
+    informationSave,
+    informationUpdate,
 }
 
 
