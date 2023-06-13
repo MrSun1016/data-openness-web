@@ -2,6 +2,20 @@ import { getAction, deleteAction, putAction, postAction, httpAction, postDataAct
 import Vue from 'vue'
 import { UI_CACHE_DB_DICT_DATA } from "@/store/mutation-types"
 
+
+// 常见问题
+const questionList = (params) => postAction('/api/commonQuestion/questionList', params)
+const getQuestionById = (id) => getAction(`/api/commonQuestion/getQuestionById?id=${id}`)
+//咨询管理
+const consultList = (params) => postAction('/api/consult/consultList', params)
+//数据需求管理
+const demandList = (params) => postAction('/api/dataDemand/demandList', params) 
+
+//数据纠错管理
+const correctionList = (params) => postAction('/api/dataCorrection/dataCorrectionList', params) 
+/**************************************下面是旧的****************************************/
+
+
 //主题管理配置
 const addTheme = (params) => postAction("/table/theme/saveThemeInfo", params);
 const editTheme = (params) => postAction("/table/theme/updateThemeInfo", params);
@@ -557,6 +571,17 @@ export const transitRESTful = {
     http: (url, parameter) => httpAction(getTransitURL(url), parameter),
 }
 export {
+    //常见问题管理
+    questionList,
+    getQuestionById,
+    //咨询管理
+    consultList,
+    //数据需求
+    demandList,
+    // 数据纠错new
+    correctionList,
+
+
     // 数据纠错
     setDataErrorCorrection,
     // 前台热门申请

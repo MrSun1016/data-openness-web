@@ -42,20 +42,22 @@
         style="width: 100%"
       >
         <el-table-column prop="sn" label="序号"> </el-table-column>
-        <el-table-column prop="title" label="标题"> </el-table-column>
-        <el-table-column prop="createdTime" label="提交时间" :formatter="formatDate"> </el-table-column>
+        <el-table-column prop="correctionTitle" label="纠错标题"> </el-table-column>
+        <el-table-column prop="resourceName" label="资源名称"> </el-table-column>
+        <el-table-column prop="correctionContent" label="纠错内容"> </el-table-column>
+        <el-table-column prop="createdTime" label="反馈时间"> </el-table-column>
+        <el-table-column prop="createdTime" label="回复时间" :formatter="formatDate"> </el-table-column>
         <el-table-column label="操作"> 
           <template slot-scope="{ row, $index }">
               <div>
                 <el-button
                   class="tabbutsize"
                   type="text"
-                  @click="showCommonQuestion(row)"
-                  >详情</el-button
+                  @click="showCorrection(row)"
+                  >查看详情</el-button
                 >
               </div>
             </template>
-        
         </el-table-column>
       </el-table>
       <el-pagination
@@ -72,16 +74,12 @@
       >
       </el-pagination>
     </el-card>
-     <!-- 预览 -->
-    <CommonQuestionDetail ref="CommonQuestion" v-show="isshowQuestion"   :visible.sync="isshowQuestion"></CommonQuestionDetail>
   </div>
 </template>
 <script>
-import { questionList } from '@/api/api'
-import CommonQuestionDetail from './modules/CommonQuestionDetail'
+import { correctionList } from '@/api/api'
 export default {
-  name: 'CommonQuestion',
-  components: {CommonQuestionDetail,},
+  name: 'UpdateTimeStatistics',
   data() {
     return {
       tabData: [],
@@ -92,23 +90,18 @@ export default {
         tableName: '',
         overTime: ''
       },
-      isshowContent: false,
       total: 0,
       loading: false
     }
   },
   mounted() {
-    this.getRolesDraft()
+    this.getDemandList()
   },
   methods: {
-    showCommonQuestion(row){
-        this.isshowQuestion = true
-        this.$refs.CommonQuestion.getContent(row)
-    },
-    getRolesDraft(page = 1) {
+    getCorrectionList(page = 1) {
       this.loading = true
       this.statistics.pageNum = page
-      questionList(this.statistics).then(res => {
+      correctionList(this.statistics).then(res => {
         if (res.success) {
           this.tabData = res.body.content
           this.total = res.body.total
