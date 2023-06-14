@@ -6,6 +6,9 @@ import { UI_CACHE_DB_DICT_DATA } from "@/store/mutation-types"
 // 常见问题
 const questionList = (params) => postAction('/api/commonQuestion/questionList', params)
 const getQuestionById = (id) => getAction(`/api/commonQuestion/getQuestionById?id=${id}`)
+const postQuestionAdd = (params) => postAction('/api/commonQuestion/save', params)
+const postQuestionEdit = (params) => postAction('/api/commonQuestion/update', params)
+const deleteQuestion = (delId) => getAction(`/api/commonQuestion/delQuestion?id=${delId}`)
 //咨询管理
 const consultList = (params) => postAction('/api/consult/consultList', params)
 //数据需求管理
@@ -574,6 +577,9 @@ export {
     //常见问题管理
     questionList,
     getQuestionById,
+    postQuestionAdd,
+    postQuestionEdit,
+    deleteQuestion,
     //咨询管理
     consultList,
     //数据需求

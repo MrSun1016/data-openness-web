@@ -1,27 +1,46 @@
 <template>
   <div>
-    <el-card>
-      <div class="closeicon">
-        <i class="el-icon-close icon-font" @click="closeMessage"></i>
-      </div>
-      <div class="body-div">
-        <h2 class="title-h2">问题详情</h2>
-        <div class="Information-bar">
-          <div class="information">问题标题:{{ questionItem.title }}</div>
-          <div class="information">提交时间:{{ questionItem.createdTime }}</div>
-          <div class="information">附件下载:{{ questionItem.attachmentDownload }}</div>
-          <div class="information">问题内容：{{ questionItem.content }}</div>
-        </div>
-        <div class="content-div">
-          <div class="content-p2" v-html="questionItem.content">
-          </div>
+    <el-card class="cardhei">
+      <div>问题详情</div>
+      <el-divider></el-divider>
+      <div class="divbody">
+        <el-form
+          ref="form"
+          :model="form"
+          :rules="rules"
+          label-position="left"
+          size="small"
+          v-loading="drawerLoading"
+          label-width="120px"
+        >
+          <p>
+            <span class="itme-title">问题标题： </span><span>{{ questionItem.title || '-' }}</span>
+          </p>
+          <p>
+            <span class="itme-title">提交时间：</span><span>{{ questionItem.createdTime || '-' }}</span>
+          </p>
+          <el-form-item label="附件下载：" prop="attachmentDownload">
+                  <el-button type="text" @click="downLoad(questionItem.attachmentDownload)">{{
+                    questionItem.attachmentDownload || '无'
+                  }}</el-button>
+          </el-form-item>
+          <p>
+            <span class="itme-title">问题内容： </span>
+            <span class="itme-cont">{{ questionItem.content || '-' }}</span>
+          </p>
+        </el-form>
+        <div class="butPosition">
+          <el-button size="small" @click="cancelNewData">取消</el-button>
         </div>
       </div>
     </el-card>
   </div>
 </template>
+
 <script>
 import { getQuestionById } from '@/api/api'
+import { download } from '@/api/manage'
+import { mapState } from 'vuex'
 import { MessageBox, Message } from 'element-ui'
 export default {
   name: 'CommonQuestionDetail',
@@ -37,58 +56,74 @@ export default {
   },
   mounted() {},
   methods: {
+        // 文件下载
+    downLoad(fileName) {
+      download({ fileName })
+        .then((res) => {
+          const blob = new Blob([res], {
+            type: 'application/json;charset=UTF-8',
+          }) // res就是接口返回的文件流
+          const link = document.createElement('a') // 创建a标签
+          const objectUrl = window.URL.createObjectURL(blob)
+          link.href = objectUrl
+          link.download = fileName
+          link.click()
+          window.URL.revokeObjectURL(objectUrl) // 释放内存
+        })
+        .catch((error) => {
+          this.$message.warning('模板导出失败')
+        })
+    },
     getContent(row) {
-      let record = row.id
-      getQuestionById(record).then(res => {
+      getQuestionById(row.id).then(res => {
         if (res.success) {
-          this.questionItem = res.result
+          this.questionItem = res.body
           this.questionItem.createdTime = this.formatTime(this.questionItem.createdTime)
         } else {
           Message.error(res.message)
         }
       })
     },
-    announcementpreview(form, val) {
-      this.questionItem = form
-      this.valName = val
-    },
     closeMessage() {
       this.questionItem = {}
       this.$emit('update:visible', false)
+    },
+    cancelNewData(){
+       this.$emit('update:visible', false)
     }
   }
 }
 </script>
 
 <style lang="less" scoped>
-.closeicon {
+.itme-cont{
+  width: 100%;
+  height: 50%;
+}
+/deep/.el-divider--horizontal {
+  background-color: #1890ff;
+}
+/deep/.el-card__body {
+  width: 100%;
+  height: 100%;
+}
+.cardhei {
+  height: 100%;
+  .divbody {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    .butPosition {
+      display: flex;
+      justify-content: flex-end;
+    }
+  }
+}
+.checkboxFlex {
   display: flex;
-  flex-direction: row-reverse;
-  color: rgb(112, 112, 112);
-  .icon-font {
-    font-size: 25px;
-    cursor: pointer;
-  }
+  flex-direction: column;
 }
-.body-div {
-  .title-h2 {
-    text-align: center;
-  }
-  .Information-bar {
-    padding: 10px 0;
-    margin: 10px 0 20px 0;
-    background-color: #f2f2f2;
-    display: flex;
-    justify-content: space-evenly;
-  }
-}
-.content-div {
-  .content-p {
-    white-space: pre-line;
-  }
-  .content-p2 {
-    white-space: pre-line;
-    margin-top: 10px;
-  }
+.frombigweiht {
+  width: 65vw;
 }
 </style>
