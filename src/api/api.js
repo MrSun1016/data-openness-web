@@ -16,6 +16,10 @@ const demandList = (params) => postAction('/api/dataDemand/demandList', params)
 
 //数据纠错管理
 const correctionList = (params) => postAction('/api/dataCorrection/dataCorrectionList', params) 
+//调查问卷
+const questionnaireList = (params) => postAction('/api/questionnaire/questionnaireList', params)
+//权益保护
+const rightsProtectionList = (params) => postAction('/api/rightsProtection/rightsProtectionList', params)
 /**************************************下面是旧的****************************************/
 
 
@@ -586,6 +590,10 @@ export {
     demandList,
     // 数据纠错new
     correctionList,
+    //调查问卷
+    questionnaireList,
+    //数据申请公开
+    rightsProtectionList,
 
 
     // 数据纠错
