@@ -19,15 +19,17 @@
           <p>
             <span class="itme-title">提交时间：</span><span>{{ questionItem.createdTime || '-' }}</span>
           </p>
-          <el-form-item label="附件下载：" prop="attachmentDownload">
-           <template v-for="(item) in uploadFile">
+          <p>
+            <span class="itme-title">附件下载：</span><span>
+               <template v-for="(item) in uploadFile">
                   <el-button type="text" @click="downLoad(item)">{{
                     item || '无'
                   }}</el-button>
-           </template>
-          </el-form-item>
+                </template>
+            </span>
+          </p>
           <p>
-            <span class="itme-title">问题内容： </span>
+            <span class="itme-title">答复： </span>
             <span class="itme-cont">{{ questionItem.content || '-' }}</span>
           </p>
         </el-form>
@@ -129,5 +131,11 @@ export default {
 }
 .frombigweiht {
   width: 65vw;
+}
+.itme-title {
+  padding: 32px;
+  width: 160px;
+  height: 45px;
+  display: inline-block;
 }
 </style>

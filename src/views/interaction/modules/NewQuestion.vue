@@ -7,10 +7,10 @@
       <el-divider></el-divider>
       <div class="bodydiv">
         <el-form ref="form" :model="form" :rules="rules" label-position="left" label-width="80px">
-          <el-form-item label="标题" prop="title">
+          <el-form-item label="问题" prop="title">
             <el-input size="small" v-model="form.title"></el-input>
           </el-form-item>
-          <el-form-item label="内容" prop="content">
+          <el-form-item label="答复" prop="content">
             <el-input
               type="textarea"
               :rows="3"
