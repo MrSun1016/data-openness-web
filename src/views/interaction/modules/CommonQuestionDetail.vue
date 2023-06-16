@@ -20,9 +20,11 @@
             <span class="itme-title">提交时间：</span><span>{{ questionItem.createdTime || '-' }}</span>
           </p>
           <el-form-item label="附件下载：" prop="attachmentDownload">
-                  <el-button type="text" @click="downLoad(questionItem.attachmentDownload)">{{
-                    questionItem.attachmentDownload || '无'
+           <template v-for="(item) in uploadFile">
+                  <el-button type="text" @click="downLoad(item)">{{
+                    item || '无'
                   }}</el-button>
+           </template>
           </el-form-item>
           <p>
             <span class="itme-title">问题内容： </span>
@@ -49,9 +51,10 @@ export default {
       questionItem: {
         title: '',
         content: '',
-        attachmentDownload: '',
+        attachmentDownload: [],
         createdTime: ''
       },
+      uploadFile: [],
     }
   },
   mounted() {},
@@ -78,6 +81,7 @@ export default {
       getQuestionById(row.id).then(res => {
         if (res.success) {
           this.questionItem = res.body
+          this.uploadFile = res.body.attachmentDownload.split(",")
           this.questionItem.createdTime = this.formatTime(this.questionItem.createdTime)
         } else {
           Message.error(res.message)

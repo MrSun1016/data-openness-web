@@ -81,7 +81,7 @@ export default {
         id: '',
         title: '',
         content: '',
-        attachmentDownload: ''
+        attachmentDownload: [],
       },
       checkedCities: [],
       checkAll: false,
@@ -130,19 +130,19 @@ export default {
         if (res.success) {
           this.form = res.body
           if (res.body.attachmentDownload != null && res.body.attachmentDownload != '') {
-            let attachmentDownload = res.body.attachmentDownload
-            // if (attachmentDownload != -1) {
-            //   let resUploadFileName = JSON.parse(res.body.attachmentDownload)
-            //   resUploadFileName.forEach((v) => {
-            //     this.fileList.push({
-            //       name: v,
-            //     })
-            //   })
-            // } else {
+            let attachmentDownload = res.body.attachmentDownload.split(",")
+            if (attachmentDownload != '') {
+              let resUploadFileName = attachmentDownload
+              resUploadFileName.forEach((v) => {
+                this.fileList.push({
+                  name: v,
+                })
+              })
+            } else {
               this.fileList.push({
                 name: res.body.attachmentDownload,
               })
-            // }
+            }
             this.drawerLoading = false
           } else {
             Message.error(res.message)
@@ -215,7 +215,7 @@ export default {
       this.form = {
         title: '',
         content: '',
-        attachmentDownload: ''
+        attachmentDownload: [],
       }
       this.duplicateId = ''
       this.fileList = []
@@ -231,7 +231,18 @@ export default {
     },
     // 文件上传成功
     fileSuccess(res, file, fileList) {
-      this.form.attachmentDownload = file.name 
+      if(this.form.attachmentDownload == ''){
+          this.form.attachmentDownload = file.name
+          this.form.attachmentDownload = file.name.split(" ")
+      }else{
+          if(this.form.attachmentDownload instanceof Array){
+              this.form.attachmentDownload.push(file.name)
+          }else{
+              this.form.attachmentDownload = this.form.attachmentDownload.split(" ")
+              this.form.attachmentDownload.push(file.name)
+          }
+
+      }
       this.fileList = fileList
       if (res.success) {
         Message.success('上传成功')
