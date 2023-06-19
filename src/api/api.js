@@ -11,6 +11,10 @@ const postQuestionEdit = (params) => postAction('/api/commonQuestion/update', pa
 const deleteQuestion = (delId) => getAction(`/api/commonQuestion/delQuestion?id=${delId}`)
 //咨询管理
 const consultList = (params) => postAction('/api/consult/consultList', params)
+const postConsultAdd = (params) => postAction('/api/consult/save', params)
+const postConsultEdit = (params) => postAction('/api/consult/update', params)
+const getConsultById = (id) => getAction(`/api/consult/getConsultById?id=${id}`)
+const delConsult = (delId) => getAction(`/api/consult/delConsult?id=${delId}`)
 //数据需求管理
 const demandList = (params) => postAction('/api/dataDemand/demandList', params) 
 
@@ -586,6 +590,10 @@ export {
     deleteQuestion,
     //咨询管理
     consultList,
+    postConsultAdd,
+    postConsultEdit,
+    getConsultById,
+    delConsult,
     //数据需求
     demandList,
     // 数据纠错new
