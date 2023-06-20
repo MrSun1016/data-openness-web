@@ -16,7 +16,7 @@ const postConsultEdit = (params) => postAction('/api/consult/update', params)
 const getConsultById = (id) => getAction(`/api/consult/getConsultById?id=${id}`)
 const delConsult = (delId) => getAction(`/api/consult/delConsult?id=${delId}`)
 //数据需求管理
-const demandList = (params) => postAction('/api/dataDemand/demandList', params) 
+// const demandList = (params) => postAction('/api/dataDemand/demandList', params) 
 
 //数据纠错管理
 const correctionList = (params) => postAction('/api/dataCorrection/dataCorrectionList', params) 
@@ -24,6 +24,12 @@ const correctionList = (params) => postAction('/api/dataCorrection/dataCorrectio
 const questionnaireList = (params) => postAction('/api/questionnaire/questionnaireList', params)
 //权益保护
 const rightsProtectionList = (params) => postAction('/api/rightsProtection/rightsProtectionList', params)
+//数据申请公开
+const applicationList = (params) => postAction('/api/dataApplication/dataApplicationList', params)
+const delApplication = (delId) => getAction(`/api/dataApplication/delDataApplication?id=${delId}`)
+const getApplicationById = (id) => getAction(`/api/dataApplication/getDataApplicationById?id=${id}`)
+const postApplicationAdd = (params) => postAction('/api/dataApplication/save', params)
+const postApplicationEdit = (params) => postAction('/api/dataApplication/update', params)
 /**************************************下面是旧的****************************************/
 
 
@@ -594,14 +600,19 @@ export {
     postConsultEdit,
     getConsultById,
     delConsult,
-    //数据需求
-    demandList,
+    //数据申请公开
+    applicationList,
+    delApplication,
+    getApplicationById,
+    postApplicationAdd,
+    postApplicationEdit,
     // 数据纠错new
     correctionList,
     //调查问卷
     questionnaireList,
-    //数据申请公开
+    //权益保护
     rightsProtectionList,
+  
 
 
     // 数据纠错

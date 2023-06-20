@@ -2,34 +2,22 @@
   <div>
     <el-card class="cardpaddin" v-show="!isshowMessage" v-loading="drawerLoading">
       <div class="titleflex">
-        <p class="titlep">新增问题反馈</p>
+        <p class="titlep">新增数据申请</p>
       </div>
       <el-divider></el-divider>
       <div class="bodydiv">
         <el-form ref="form" :model="form" :rules="rules" label-position="left" label-width="80px">
-          <el-form-item label="反馈标题" prop="consultTitle">
-            <el-input size="small" v-model="form.consultTitle"></el-input>
+          <el-form-item label="需求标题" prop="applicationTitle">
+            <el-input size="small" v-model="form.applicationTitle"></el-input>
           </el-form-item>
-          <el-form-item label="反馈类型" key="4" class="fromtopmag" prop="consultType">
-            <el-select v-model="form.consultType" @change="changeAlign" placeholder="请选择" class="fromweiht">
-              <el-option
-                :label="openitem.text"
-                :value="openitem.value"
-                v-for="(openitem, index) in datefromList.consultType"
-                :key="openitem.value"
-              ></el-option>
-            </el-select>
+          <el-form-item label="数据用途" prop="applicationReason">
+            <el-input size="small" v-model="form.applicationReason"></el-input>
           </el-form-item>
-          <el-form-item label="反馈内容" prop="consultContent">
-            <el-input
-              type="textarea"
-              :rows="3"
-              maxlength="300"
-              height="240"
-              v-model="form.consultContent"
-              placeholder="请输入（20字以上）"
-              class="frombigweiht"
-            ></el-input>
+          <el-form-item label="期望数据格式" key="4" class="fromtopmag" prop="consultType">
+              <el-radio-group v-model="form.dataFormat">
+                <el-radio label="API">API</el-radio>
+                <el-radio label="excel">excel</el-radio>
+              </el-radio-group>
           </el-form-item>
         </el-form>
         <div class="newbutflex">
@@ -49,30 +37,26 @@
         </span>
       </el-dialog>
     </el-card>
-    <ConsultDetail ref="content" v-show="isshowMessage" :visible.sync="isshowMessage"></ConsultDetail>
+    <DataApplicationDetail ref="content" v-show="isshowMessage" :visible.sync="isshowMessage"></DataApplicationDetail>
   </div>
 </template>
 <script>
 import { MessageBox, Message } from 'element-ui'
-import { postConsultAdd, getConsultById, postConsultEdit } from '@/api/api'
-import ConsultDetail from './ConsultDetail'
+import { postApplicationAdd, getApplicationById, postApplicationEdit } from '@/api/api'
+import DataApplicationDetail from './DataApplicationDetail'
 import { mapState } from 'vuex'
 
 export default {
-  name: 'NewConsult',
-  components: { ConsultDetail },
+  name: 'NewApplication',
+  components: { DataApplicationDetail },
   data() {
     return {
       //   表单
       form: {
         id: '',
-        consultTitle: '',
-        consultContent: '',
-        consultType: '',
-      },
-      dataDictionary: {
-        // 反馈类型
-        consultType: 'consult_type',
+        applicationTitle: '',
+        applicationReason: '',
+        dataFormat: '',
       },
       checkAll: false,
       isIndeterminate: false,
@@ -89,9 +73,9 @@ export default {
       // 预览
       isshowMessage: false,
       rules: {
-        consultTitle: [{ required: true, message: '请输入反馈标题', trigger: 'blur' }],
-        consultType: [{ required: true, message: '请输入反馈类型', trigger: 'blur' }],
-        consultContent: [{ required: true, message: '请输入反馈内容', trigger: 'blur' }],
+        applicationTitle: [{ required: true, message: '请输入申请标题', trigger: 'blur' }],
+        applicationReason: [{ required: true, message: '请输入申请理由', trigger: 'blur' }],
+        dataFormat: [{ required: true, message: '期望数据格式', trigger: 'blur' }],
       },
       loadhandle: false,
       // 加载
@@ -99,29 +83,12 @@ export default {
     }
   },
   mounted() {
-    // 新增页面选择框的数据-请求数据字典得到
-    this.dictionaryList()
   },
   methods: {
-    // 反馈类型
-    changeAlign(val) {
-      if (val != '') {
-        this.form.consultType = val
-      }
-    },
-     // 新增页面选择框的数据-请求数据字典得到
-    dictionaryList() {
-      let {
-        consultType,
-      } = this.dataDictionary
-
-      // 反馈类型
-      this.$store.dispatch('getConsultTypeList', consultType)
-    },
     //编辑
     duplicateAnnounce(row) {
       this.drawerLoading = true
-      getConsultById(row.id).then((res) => {
+      getApplicationById(row.id).then((res) => {
         if (res.success) {
           this.form = res.body
           this.drawerLoading = false
@@ -130,7 +97,7 @@ export default {
     },
     // 保存
     preserve() {
-      if (this.form.consultTitle == '') {
+      if (this.form.applicationTitle == '') {
         Message.error('请填写标题')
       } else {
         this.selectId = '1'
@@ -142,9 +109,9 @@ export default {
         this.cleanUp()
         this.isShowSave = false
         this.$emit('update:visible', false)
-      } else {
+      } else {console.log(this.form.id)
         if(this.form.id == ''){//保存
-          postConsultAdd(this.form).then((res) => {
+          postApplicationAdd(this.form).then((res) => {
             if (res.result.success) {
               Message({
                 message: '保存成功！',
@@ -160,7 +127,7 @@ export default {
             }
           })
         }else{//修改
-          postConsultEdit(this.form).then((res) => {
+          postApplicationEdit(this.form).then((res) => {
           if (res.result.success) {
             Message({
               message: res.message,
@@ -185,9 +152,9 @@ export default {
     },
     cleanUp() {
       this.form = {
-        consultTitle: '',
-        consultContent: '',
-        consultType: '',
+        applicationTitle: '',
+        applicationReason: '',
+        dataFormat: '',
       }
     },
     // 取消

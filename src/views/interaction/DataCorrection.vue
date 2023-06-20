@@ -42,7 +42,7 @@
         style="width: 100%"
       >
         <el-table-column prop="sn" label="序号"> </el-table-column>
-        <el-table-column prop="correctionTitle" label="纠错标题"> </el-table-column>
+        <el-table-column prop="correctionTitle" label="数据资源"> </el-table-column>
         <el-table-column prop="resourceName" label="资源名称"> </el-table-column>
         <el-table-column prop="correctionContent" label="纠错内容"> </el-table-column>
         <el-table-column prop="createdTime" label="反馈时间"> </el-table-column>
