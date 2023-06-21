@@ -109,7 +109,7 @@ export default {
         this.cleanUp()
         this.isShowSave = false
         this.$emit('update:visible', false)
-      } else {console.log(this.form.id)
+      } else {
         if(this.form.id == ''){//保存
           postApplicationAdd(this.form).then((res) => {
             if (res.result.success) {

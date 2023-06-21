@@ -20,6 +20,10 @@ const delConsult = (delId) => getAction(`/api/consult/delConsult?id=${delId}`)
 
 //数据纠错管理
 const correctionList = (params) => postAction('/api/dataCorrection/dataCorrectionList', params) 
+const deleteCorrection = (delId) => getAction(`/api/dataCorrection/delDataCorrection?id=${delId}`)
+const getCorrectionById = (id) => getAction(`/api/dataCorrection/getDataCorrectionById?id=${id}`)
+const postCorrectionAdd = (params) => postAction('/api/dataCorrection/save', params)
+const postCorrectionEdit = (params) => postAction('/api/dataCorrection/update', params)
 //调查问卷
 const questionnaireList = (params) => postAction('/api/questionnaire/questionnaireList', params)
 //权益保护
@@ -608,6 +612,10 @@ export {
     postApplicationEdit,
     // 数据纠错new
     correctionList,
+    deleteCorrection,
+    postCorrectionAdd,
+    getCorrectionById,
+    postCorrectionEdit,
     //调查问卷
     questionnaireList,
     //权益保护
