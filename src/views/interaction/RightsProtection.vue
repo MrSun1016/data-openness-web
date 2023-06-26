@@ -4,11 +4,11 @@
       <el-card>
         <el-form :inline="true" :model="cement" size="small" ref="cement" class="demo-form-inline faderfrom">
           <div class="divffromflex">
-            <el-form-item label="保护方式" prop="title" class="topfromitem">
-              <el-input size="small" v-model="cement.protectionType" placeholder="请输入" class="aitemml"></el-input>
+            <el-form-item label="数据资源" prop="title" class="topfromitem">
+              <el-input size="small" v-model="cement.catalogName" placeholder="请输入" class="aitemml"></el-input>
             </el-form-item>
 
-            <el-form-item label="申请时间：">
+            <el-form-item label="提交时间：">
               <el-date-picker
                 v-model="datepicker"
                 :default-time="['00:00:00', '23:59:59']"
@@ -29,13 +29,26 @@
         </el-form>
       </el-card>
       <el-card class="cardmargtop">
-        <el-button class="butPrimary" type="primary" size="small" @click="newAdd" v-has="'isNotice:issueNotice'"
-          >新增</el-button
-        >
+        <el-button class="butPrimary" type="primary" size="small" @click="newAdd" v-has="'protection:save'"
+          >新增</el-button>
+        <el-dropdown trigger="click" class="piliangfz">
+            <el-button type="text" class="piliangbut">
+              批量操作 <i class="el-icon-caret-bottom el-icon--right"></i>
+            </el-button>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item class="buttblok" @click.native="isShowExcleLeadingin" v-has="'protection:batchImport'"
+                >批量导入</el-dropdown-item
+              >
+              <el-dropdown-item class="buttblok" @click.native="isShowBatchExport" v-has="'protection:batchExport'"
+                >批量导出</el-dropdown-item
+              >
+            </el-dropdown-menu>
+        </el-dropdown>
+
         <el-table
           :header-cell-style="{
-            background: '#FAFAFA',
-            fontWeight: '400',
+            background: '#E6F7FF',
+            fontWeight: '600',
             color: '#333333',
             fontSize: '14px',
           }"
@@ -47,22 +60,24 @@
           @selection-change="handleSelect"
           :row-class-name="tableRowClassName"
         >
-          <el-table-column type="selection" align="center" min-width="8%"> </el-table-column>
           <el-table-column prop="sn" label="序号" min-width="8%"></el-table-column>
-          <el-table-column prop="protectionType" label="保护方式" min-width="20%"> </el-table-column>
+          <el-table-column prop="protectionType" label="保护方式" min-width="10%"> </el-table-column>
           <el-table-column prop="realName" label="用户名称" min-width="12%"> </el-table-column>
-          <el-table-column prop="catalogName" label="数据资源" min-width="12%"> </el-table-column>
-          <el-table-column prop="sourceUnit" label="数源部门" min-width="12%"> </el-table-column>
+          <el-table-column prop="catalogName" label="数据资源" min-width="12%">
+                <template slot-scope="{ row }">
+                    <el-button type="text" class="itemSlotheden2" @click="isonview(row)">{{ row.catalogName || '-' }}</el-button>
+                </template>
+          </el-table-column>
+          <el-table-column prop="sourceUnit" label="数源部门" min-width="14%"> </el-table-column>
           <el-table-column prop="dataFormat" label="提供方式" min-width="12%"> </el-table-column>
-          <el-table-column prop="status" label="状态" min-width="12%"> </el-table-column>
+          <el-table-column prop="protectionStatus" label="状态" min-width="10%"> </el-table-column>
           <el-table-column prop="createdTime" label="申请时间" min-width="12%"> </el-table-column>
-          <el-table-column label="操作" min-width="13%">
+          <el-table-column label="操作" min-width="10%">
             <template slot-scope="{ row }">
               <div class="tempFlex">
-                <div @click="isonupdate(row)" class="tabnamewei margdiv" v-has="'isNotice:noticeCopy'">编辑</div>
-                <div @click="isondelete(row)" class="tabnamewei margdiv" v-has="'isNotice:delete'">删除</div>
-                <div @click="isonview(row)" class="tabnamewei margdiv" v-has="'isNotice:noticeCopy'">详情</div>
-                <!--<div class="tabnamewei" @click="duplicate(row)" v-has="'isNotice:noticeCopy'">复制</div>-->
+                <div @click="isondelete(row)" class="tabnamewei margdiv" v-has="'protection:delete'">删除</div>
+
+                <div @click="isonupdate(row)" class="tabnamewei margdiv" v-has="'protection:update'">修改</div>
               </div>
             </template>
           </el-table-column>
@@ -83,6 +98,7 @@
         >
         </el-pagination>
       </el-card>
+
       <!-- 保存 -->
       <el-dialog title="保存提示" :visible.sync="isShowdelete" width="30%">
         <el-divider></el-divider>
@@ -94,38 +110,37 @@
       </el-dialog>
     </div>
     <!-- 新增 -->
-    <NewQuestion
+    <EditProtection
       ref="NewAnnoun"
       v-show="isshowNewAnnoun"
       :visible.sync="isshowNewAnnoun"
       @refresh="refresh"
-    ></NewQuestion>
+    ></EditProtection>
     <!-- 预览 -->
-    <CommonQuestionDetail ref="content" v-show="isshowContent"   :visible.sync="isshowContent"></CommonQuestionDetail>
+    <ProtectionDetail ref="content" v-show="isshowContent"   :visible.sync="isshowContent"></ProtectionDetail>
   </div>
 </template>
 <script>
 import { MessageBox, Message } from 'element-ui'
 import { mapState } from 'vuex'
-import { rightsProtectionList, queryById, postedit,deleteQuestion } from '@/api/api'
-import NewQuestion from './modules/NewQuestion'
-import CommonQuestionDetail from './modules/CommonQuestionDetail'
+import { protectionList, queryById, postedit,deleteProtection } from '@/api/api'
+import EditProtection from './modules/EditProtection'
+import ProtectionDetail from './modules/ProtectionDetail'
 export default {
-  name: 'Questionnaire',
+  name: 'RightsProtection',
   components: {
-    NewQuestion,
-    CommonQuestionDetail,
+    EditProtection,
+    ProtectionDetail,
   },
   data() {
     return {
       cement: {
         sn: '',
-        protectionType: '',
+        catalogName: '',
         createdTime: '',
         startTime: '',
         endTime: '',
-        status: '',
-        catalogId: '',
+        attachmentDownload: '',
         pageNum: 1,
         pageSize: 10,
       },
@@ -134,7 +149,6 @@ export default {
       tabData: [],
       loading: false,
       selectTableID: [],
-      announcement: 'announcement_status',
       // 预览
       isshowContent: false,
       // 新增
@@ -172,7 +186,7 @@ export default {
       } else {
         delId = this.selectTableID
       }
-      deleteQuestion(delId).then((res) => {
+      deleteProtection(delId).then((res) => {
         if (res.success) {
           Message({
             message: "删除成功!",
@@ -216,7 +230,7 @@ export default {
         this.cement.startTime = ''
         this.cement.endTime = ''
       }
-      rightsProtectionList(this.cement)
+      protectionList(this.cement)
         .then((res) => {
           if (res.success) {
             this.tabData = res.body.content
@@ -278,6 +292,13 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.itemSlotheden2 {
+  width: 115px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  text-align:left;
+}
 .divffromflex {
   display: flex;
   justify-content: space-between;
@@ -336,5 +357,43 @@ export default {
   line-height: 200px;
   font-size: 16px;
   color: #000;
+}
+.piliangfz {
+  position: relative;
+  width: 120px;
+  // margin-right: 20px;
+}
+.piliangbut {
+  position: relative;
+  width: 120px;
+  height: 32px;
+  border-radius: 4px;
+  border: 1px solid #1890ff;
+  color: #1890ff;
+  // margin-right: 20px;
+  line-height: 32px;
+  font-size: 14px;
+  padding: 0 17px;
+  i {
+    margin-left: 15px;
+    color: #1890ff;
+  }
+}
+/deep/.el-dropdown-menu__item {
+  color: #1890ff;
+}
+/deep/.el-dropdown-menu__item.is-disabled {
+  color: #bbb;
+}
+.itme-title {
+  width: 160px;
+  display: inline-block;
+}
+.over-item {
+  cursor: pointer;
+  width: 20%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 </style>

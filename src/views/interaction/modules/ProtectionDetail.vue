@@ -1,23 +1,25 @@
 <template>
   <div>
     <el-card class="cardhei">
-      <div class="title"><span>《</span>{{ questionItem.catalogName }}<span>》数据纠错</span></div>
+      <div class="title"><span>《</span>{{ questionItem.catalogName }}<span>》下架申请</span></div>
       <el-divider></el-divider>
       <div class="divbody">
         <el-form
           ref="form"
           :model="form"
-          :rules="rules"
           label-position="left"
           size="small"
           v-loading="drawerLoading"
           label-width="120px"
         >
           <p>
-            <span class="itme-title">纠错详情： </span><span>{{ questionItem.correctionContent || '-' }}</span>
+            <span class="itme-title">权益说明： </span><span>{{ questionItem.createdTime || '-' }}</span>
           </p>
           <p>
-            <span class="itme-title">附件下载：</span><span>
+            <span class="itme-title">{{ questionItem.protectionContent || '-' }}</span>
+          </p>
+          <p>
+            <span class="itme-title"></span><span>
                <template v-for="(item) in uploadFile">
                   <el-button type="text" @click="downLoad(item)">{{
                     item || '无'
@@ -35,17 +37,18 @@
 </template>
 
 <script>
-import { getCorrectionById } from '@/api/api'
+import { getProtectionById } from '@/api/api'
 import { download } from '@/api/manage'
 import { mapState } from 'vuex'
 import { MessageBox, Message } from 'element-ui'
 export default {
-  name: 'CorrectionDetail',
+  name: 'ProtectionDetail',
   data() {
     return {
       questionItem: {
         catalogName: '',
-        correctionContent: '',
+        protectionType: '',
+        protectionContent: '',
         attachmentDownload: [],
         createdTime: ''
       },
@@ -73,7 +76,7 @@ export default {
         })
     },
     getContent(row) {
-      getCorrectionById(row.id).then(res => {
+      getProtectionById(row.id).then(res => {
         if (res.success) {
           this.questionItem = res.body
           this.uploadFile = res.body.attachmentDownload.split(",")

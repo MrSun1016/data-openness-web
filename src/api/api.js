@@ -24,10 +24,17 @@ const deleteCorrection = (delId) => getAction(`/api/dataCorrection/delDataCorrec
 const getCorrectionById = (id) => getAction(`/api/dataCorrection/getDataCorrectionById?id=${id}`)
 const postCorrectionAdd = (params) => postAction('/api/dataCorrection/save', params)
 const postCorrectionEdit = (params) => postAction('/api/dataCorrection/update', params)
+const queryBAWO = (params) => postAction('/api/dataCorrection/queryBAWO', params)
+
 //调查问卷
 const questionnaireList = (params) => postAction('/api/questionnaire/questionnaireList', params)
 //权益保护
-const rightsProtectionList = (params) => postAction('/api/rightsProtection/rightsProtectionList', params)
+const protectionList = (params) => postAction('/api/rightsProtection/rightsProtectionList', params)
+const deleteProtection = (delId) => getAction(`/api/rightsProtection/delRightsProtection?id=${delId}`)
+const getProtectionById = (id) => getAction(`/api/rightsProtection/getRightsProtectionById?id=${id}`)
+const postProtectionAdd = (params) => postAction('/api/rightsProtection/save', params)
+const postProtectionEdit = (params) => postAction('/api/rightsProtection/update', params)
+
 //数据申请公开
 const applicationList = (params) => postAction('/api/dataApplication/dataApplicationList', params)
 const delApplication = (delId) => getAction(`/api/dataApplication/delDataApplication?id=${delId}`)
@@ -619,10 +626,12 @@ export {
     //调查问卷
     questionnaireList,
     //权益保护
-    rightsProtectionList,
-  
-
-
+    protectionList,
+    deleteProtection,
+    getProtectionById,
+    postProtectionAdd,
+    postProtectionEdit,
+    queryBAWO,
     // 数据纠错
     setDataErrorCorrection,
     // 前台热门申请
