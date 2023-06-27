@@ -4,6 +4,8 @@ import { getDictItems } from '@/api/api'
 const indatafrom = {
     state: {
         datefromList: {
+            consultType: {},
+            //旧的***********************************
             application: {},
             shuyuansource: {},
             catalogingStatus: {},
@@ -95,6 +97,9 @@ const indatafrom = {
         }
     },
     mutations: {
+        RECEIVE_CONSULTTYPE(state, consultType) {
+          state.datefromList.consultType = consultType
+        },
         RECEIVE_APPLICATION(state, application) {
             state.datefromList.application = application
         },
@@ -203,9 +208,6 @@ const indatafrom = {
         RECEIVE_RELEASETYPE(state, releaseType) {
             state.datefromList.releaseType = releaseType
         },
-        RECEIVE_SHARETYPE(state, shareType) {
-            state.datefromList.shareType = shareType
-        },
         RECEIVE_MESSAGETYPE(state, messageType) {
             state.datefromList.messageType = messageType
         },
@@ -238,6 +240,15 @@ const indatafrom = {
         },
     },
     actions: {
+      //反馈类型
+        getConsultTypeList({ commit }, consultType) {
+          // 开放类型
+          getDictItems(consultType).then(res => {
+            if (res.success) {
+              commit('RECEIVE_CONSULTTYPE', res.result)
+            }
+          })
+        },
         // 使用应用系统
         getUseAppSystem({ commit }, useAppSystem) {
             getDictItems(useAppSystem).then(res => {

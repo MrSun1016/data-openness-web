@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-card class="cardhei">
-      <div>问题详情</div>
+      <div class="title"><span>《</span>{{ questionItem.catalogName }}<span>》数据纠错</span></div>
       <el-divider></el-divider>
       <div class="divbody">
         <el-form
@@ -14,10 +14,7 @@
           label-width="120px"
         >
           <p>
-            <span class="itme-title">问题标题： </span><span>{{ questionItem.title || '-' }}</span>
-          </p>
-          <p>
-            <span class="itme-title">提交时间：</span><span>{{ questionItem.createdTime || '-' }}</span>
+            <span class="itme-title">纠错详情： </span><span>{{ questionItem.correctionContent || '-' }}</span>
           </p>
           <p>
             <span class="itme-title">附件下载：</span><span>
@@ -27,10 +24,6 @@
                   }}</el-button>
                 </template>
             </span>
-          </p>
-          <p>
-            <span class="itme-title">答复： </span>
-            <span class="itme-cont">{{ questionItem.content || '-' }}</span>
           </p>
         </el-form>
         <div class="butPosition">
@@ -42,17 +35,17 @@
 </template>
 
 <script>
-import { getQuestionById } from '@/api/api'
+import { getCorrectionById } from '@/api/api'
 import { download } from '@/api/manage'
 import { mapState } from 'vuex'
 import { MessageBox, Message } from 'element-ui'
 export default {
-  name: 'CommonQuestionDetail',
+  name: 'CorrectionDetail',
   data() {
     return {
       questionItem: {
-        title: '',
-        content: '',
+        catalogName: '',
+        correctionContent: '',
         attachmentDownload: [],
         createdTime: ''
       },
@@ -80,7 +73,7 @@ export default {
         })
     },
     getContent(row) {
-      getQuestionById(row.id).then(res => {
+      getCorrectionById(row.id).then(res => {
         if (res.success) {
           this.questionItem = res.body
           this.uploadFile = res.body.attachmentDownload.split(",")
@@ -102,6 +95,13 @@ export default {
 </script>
 
 <style lang="less" scoped>
+/deep/.title {
+    height: 60px;
+    line-height: 60px;
+    text_align:center;
+    font_size:18px;
+    font-weight:bold;
+  }
 .itme-cont{
   width: 100%;
   height: 50%;

@@ -6,13 +6,41 @@ import { UI_CACHE_DB_DICT_DATA } from "@/store/mutation-types"
 // 常见问题
 const questionList = (params) => postAction('/api/commonQuestion/questionList', params)
 const getQuestionById = (id) => getAction(`/api/commonQuestion/getQuestionById?id=${id}`)
+const postQuestionAdd = (params) => postAction('/api/commonQuestion/save', params)
+const postQuestionEdit = (params) => postAction('/api/commonQuestion/update', params)
+const deleteQuestion = (delId) => getAction(`/api/commonQuestion/delQuestion?id=${delId}`)
 //咨询管理
 const consultList = (params) => postAction('/api/consult/consultList', params)
+const postConsultAdd = (params) => postAction('/api/consult/save', params)
+const postConsultEdit = (params) => postAction('/api/consult/update', params)
+const getConsultById = (id) => getAction(`/api/consult/getConsultById?id=${id}`)
+const delConsult = (delId) => getAction(`/api/consult/delConsult?id=${delId}`)
 //数据需求管理
-const demandList = (params) => postAction('/api/dataDemand/demandList', params) 
+// const demandList = (params) => postAction('/api/dataDemand/demandList', params) 
 
 //数据纠错管理
 const correctionList = (params) => postAction('/api/dataCorrection/dataCorrectionList', params) 
+const deleteCorrection = (delId) => getAction(`/api/dataCorrection/delDataCorrection?id=${delId}`)
+const getCorrectionById = (id) => getAction(`/api/dataCorrection/getDataCorrectionById?id=${id}`)
+const postCorrectionAdd = (params) => postAction('/api/dataCorrection/save', params)
+const postCorrectionEdit = (params) => postAction('/api/dataCorrection/update', params)
+const queryBAWO = (params) => postAction('/api/dataCorrection/queryBAWO', params)
+
+//调查问卷
+const questionnaireList = (params) => postAction('/api/questionnaire/questionnaireList', params)
+//权益保护
+const protectionList = (params) => postAction('/api/rightsProtection/rightsProtectionList', params)
+const deleteProtection = (delId) => getAction(`/api/rightsProtection/delRightsProtection?id=${delId}`)
+const getProtectionById = (id) => getAction(`/api/rightsProtection/getRightsProtectionById?id=${id}`)
+const postProtectionAdd = (params) => postAction('/api/rightsProtection/save', params)
+const postProtectionEdit = (params) => postAction('/api/rightsProtection/update', params)
+
+//数据申请公开
+const applicationList = (params) => postAction('/api/dataApplication/dataApplicationList', params)
+const delApplication = (delId) => getAction(`/api/dataApplication/delDataApplication?id=${delId}`)
+const getApplicationById = (id) => getAction(`/api/dataApplication/getDataApplicationById?id=${id}`)
+const postApplicationAdd = (params) => postAction('/api/dataApplication/save', params)
+const postApplicationEdit = (params) => postAction('/api/dataApplication/update', params)
 /**************************************下面是旧的****************************************/
 
 
@@ -574,14 +602,36 @@ export {
     //常见问题管理
     questionList,
     getQuestionById,
+    postQuestionAdd,
+    postQuestionEdit,
+    deleteQuestion,
     //咨询管理
     consultList,
-    //数据需求
-    demandList,
+    postConsultAdd,
+    postConsultEdit,
+    getConsultById,
+    delConsult,
+    //数据申请公开
+    applicationList,
+    delApplication,
+    getApplicationById,
+    postApplicationAdd,
+    postApplicationEdit,
     // 数据纠错new
     correctionList,
-
-
+    deleteCorrection,
+    postCorrectionAdd,
+    getCorrectionById,
+    postCorrectionEdit,
+    //调查问卷
+    questionnaireList,
+    //权益保护
+    protectionList,
+    deleteProtection,
+    getProtectionById,
+    postProtectionAdd,
+    postProtectionEdit,
+    queryBAWO,
     // 数据纠错
     setDataErrorCorrection,
     // 前台热门申请

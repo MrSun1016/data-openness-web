@@ -4,8 +4,11 @@
       <el-card>
         <el-form :inline="true" :model="cement" size="small" ref="cement" class="demo-form-inline faderfrom">
           <div class="divffromflex">
-            <el-form-item label="问题标题" prop="title" class="topfromitem">
-              <el-input size="small" v-model="cement.title" placeholder="请输入" class="aitemml"></el-input>
+            <el-form-item label="申请标题" prop="title" class="topfromitem">
+              <el-input size="small" v-model="cement.applicationTitle" placeholder="请输入" class="aitemml"></el-input>
+            </el-form-item>
+            <el-form-item label="申请理由" prop="title" class="topfromitem">
+              <el-input size="small" v-model="cement.applicationReason" placeholder="请输入" class="aitemml"></el-input>
             </el-form-item>
 
             <el-form-item label="提交时间：">
@@ -29,23 +32,17 @@
         </el-form>
       </el-card>
       <el-card class="cardmargtop">
-        <el-button class="butPrimary" type="primary" size="small" @click="newAdd" v-has="'commonQuestion:save'"
-          >新增问答</el-button>
+        <el-button class="butPrimary" type="primary" size="small" @click="newAdd" v-has="'dataApplication:save'"
+          >新增申请</el-button>
         <el-dropdown trigger="click" class="piliangfz">
             <el-button type="text" class="piliangbut">
               批量操作 <i class="el-icon-caret-bottom el-icon--right"></i>
             </el-button>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item class="buttblok" @click.native="OffShelfList" v-has="'iscatalog:shelvesInBatches'"
-                >下架申请</el-dropdown-item
-              >
-              <el-dropdown-item class="buttblok" @click.native="isShowBatchShelf" v-has="'iscatalog:batchListing'"
-                >上架申请</el-dropdown-item
-              >
-              <el-dropdown-item class="buttblok" @click.native="isShowExcleLeadingin" v-has="'commonQuestion:batchImport'"
+              <el-dropdown-item class="buttblok" @click.native="isShowExcleLeadingin" v-has="'dataApplication:update'"
                 >批量导入</el-dropdown-item
               >
-              <el-dropdown-item class="buttblok" @click.native="isShowBatchExport" v-has="'commonQuestion:batchExport'"
+              <el-dropdown-item class="buttblok" @click.native="isShowBatchExport" v-has="'dataApplication:delete'"
                 >批量导出</el-dropdown-item
               >
             </el-dropdown-menu>
@@ -66,22 +63,24 @@
           @selection-change="handleSelect"
           :row-class-name="tableRowClassName"
         >
-          <el-table-column type="selection" align="center" min-width="8%"> </el-table-column>
-          <el-table-column prop="sn" label="序号" min-width="8%"></el-table-column>
-          <el-table-column prop="title" label="问题" min-width="20%"> 
+          <el-table-column type="selection" align="center" min-width="5%"> </el-table-column>
+          <el-table-column prop="sn" label="序号" min-width="5%"></el-table-column>
+          <el-table-column prop="applicationTitle" label="申请标题" min-width="15%"> 
                 <template slot-scope="{ row }">
-                    <el-button type="text" class="itemSlotheden2" @click="isonview(row)">{{ row.title || '-' }}</el-button>
+                    <el-button type="text" class="itemSlotheden2" @click="isonview(row)">{{ row.applicationTitle || '-' }}</el-button>
                 </template>
           </el-table-column>
-          <el-table-column prop="content" class="over-item" label="答复" min-width="20%"> </el-table-column>
-          <el-table-column prop="createdTime" label="发布时间" min-width="20%"> </el-table-column>
-          <el-table-column prop="realName" label="发布人" min-width="12%"> </el-table-column>
-          <el-table-column label="操作" min-width="13%">
+          <el-table-column prop="applicationReason" class="over-item" label="申请理由" min-width="20%"> </el-table-column>
+          <el-table-column prop="realName" class="over-item" label="用户名称" min-width="10%"> </el-table-column>
+          <el-table-column prop="dataFormat" class="over-item" label="提供方式" min-width="10%"> </el-table-column>
+          <el-table-column prop="applicationStatus" label="状态" min-width="10%"> </el-table-column>
+          <el-table-column prop="createdTime" label="申请时间" min-width="15%"> </el-table-column>
+          <el-table-column label="操作" min-width="10%">
             <template slot-scope="{ row }">
               <div class="tempFlex">
-                <div @click="isondelete(row)" class="tabnamewei margdiv" v-has="'commonQuestion:delete'">删除</div>
+                <div @click="isondelete(row)" class="tabnamewei margdiv" v-has="'dataApplication:delete'">删除</div>
 
-                <div @click="isonupdate(row)" class="tabnamewei margdiv" v-has="'commonQuestion:update'">修改</div>
+                <div @click="isonupdate(row)" class="tabnamewei margdiv" v-has="'dataApplication:update'">修改</div>
               </div>
             </template>
           </el-table-column>
@@ -113,46 +112,49 @@
       </el-dialog>
     </div>
     <!-- 新增 -->
-    <NewQuestion
+    <NewApplication
       ref="NewAnnoun"
       v-show="isshowNewAnnoun"
       :visible.sync="isshowNewAnnoun"
       @refresh="refresh"
-    ></NewQuestion>
+    ></NewApplication>
     <!-- 预览 -->
-    <CommonQuestionDetail ref="content" v-show="isshowContent"   :visible.sync="isshowContent"></CommonQuestionDetail>
+    <DataApplicationDetail ref="content" v-show="isshowContent"   :visible.sync="isshowContent"></DataApplicationDetail>
   </div>
 </template>
 <script>
 import { MessageBox, Message } from 'element-ui'
 import { mapState } from 'vuex'
-import { questionList, queryById, postedit,deleteQuestion } from '@/api/api'
-import NewQuestion from './modules/NewQuestion'
-import CommonQuestionDetail from './modules/CommonQuestionDetail'
+import { applicationList,delApplication } from '@/api/api'
+import NewApplication from './modules/NewApplication'
+import DataApplicationDetail from './modules/DataApplicationDetail'
 export default {
-  name: 'CommonQuestion',
+  name: 'DataApplication',
   components: {
-    NewQuestion,
-    CommonQuestionDetail,
+    NewApplication,
+    DataApplicationDetail,
   },
   data() {
     return {
       cement: {
         sn: '',
-        title: '',
+        applicationTitle: '',
+        applicationReason: '',
+        realName: '',
+        dataFormat: '',
+        status: '',
+        applicationStatus: '',
+        pageNum: 1,
+        pageSize: 10,
         createdTime: '',
         startTime: '',
         endTime: '',
-        attachmentDownload: '',
-        pageNum: 1,
-        pageSize: 10,
       },
       total: 0,
       datepicker: [],
       tabData: [],
       loading: false,
       selectTableID: [],
-      announcement: 'announcement_status',
       // 预览
       isshowContent: false,
       // 新增
@@ -160,7 +162,6 @@ export default {
       // 删除
       isShowdelete: false,
       ids: '',
-      topItem: {},
     }
   },
   created() {
@@ -190,7 +191,7 @@ export default {
       } else {
         delId = this.selectTableID
       }
-      deleteQuestion(delId).then((res) => {
+      delApplication(delId).then((res) => {
         if (res.success) {
           Message({
             message: "删除成功!",
@@ -220,6 +221,7 @@ export default {
     },
     refresh() {
       this.getRolesTable()
+      this.loading = true
     },
     // 分页
     getRolesTable(page = 1) {
@@ -234,7 +236,7 @@ export default {
         this.cement.startTime = ''
         this.cement.endTime = ''
       }
-      questionList(this.cement)
+      applicationList(this.cement)
         .then((res) => {
           if (res.success) {
             this.tabData = res.body.content

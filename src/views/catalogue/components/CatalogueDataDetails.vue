@@ -89,13 +89,9 @@
           </div>
         </div>
       </div>
-      
-      <el-dialog title="纠错内容" :visible.sync="dialogVisible" width="30%">
-        <el-input type="textarea" :rows="5" placeholder="请输入纠错内容" v-model="text"> </el-input>
-        <span slot="footer" class="dialog-footer">
-          <el-button @click="dialogVisible = false">取 消</el-button>
-          <el-button type="primary" @click="dataErrorCorrection">提 交</el-button>
-        </span>
+      <!--纠错内容-->
+      <el-dialog title="" :visible.sync="dialogVisible" width="50%">
+          <EditCorrection ref="correction" />
       </el-dialog>
 
       <div class="content-right-btns" style="display: flex; flex-direction: column;">
@@ -105,7 +101,7 @@
           size="mini"
           type="primary"
           style="margin:0 0 20px 0;height: 32px;"
-          @click="dialogVisible=true"
+          @click="dataCorrection()"
           ><img style="margin-right: 8px;width: 20px;height: 20px;" src="~@assets//correction.png" alt="" />数据纠错</el-button
         >
 
@@ -219,6 +215,7 @@
     <CatalogueDrawer ref="drawer" />
     <!-- 申请归集弹窗 -->
     <ApplyForCollectionDialog ref="dialog" />
+
   </div>
 </template>
 
@@ -226,12 +223,15 @@
 import CatalogueTabs from '@views/catalogue/components/CatalogueTabs'
 import CatalogueDrawer from '@views/catalogue/components/CatalogueDrawer'
 import ApplyForCollectionDialog from '@views/catalogue/components/ApplyForCollectionDialog'
+import EditCorrection from '@views/interaction/modules/EditCorrection'
+
 import { getResourceMarket, getMatters , getDataUseApiInterfaceInfo,setDataErrorCorrection} from '@/api/api'
 export default {
   components: {
     CatalogueTabs,
     CatalogueDrawer,
     ApplyForCollectionDialog,
+    EditCorrection,
   },
   name: 'CatalogueDataDetails',
   data() {
@@ -260,6 +260,10 @@ export default {
     this.fetchDataUseApiInterfaceInfo()
   },
   methods: {
+    dataCorrection(){
+        this.dialogVisible = true
+        this.$refs.correction.getaddCorrection()
+    },
     dataErrorCorrection(){
       let {text,id}=this
       if(text == '' || text.trim() == ''){
