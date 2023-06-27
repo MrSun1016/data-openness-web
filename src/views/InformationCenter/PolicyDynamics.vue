@@ -1,14 +1,14 @@
 <template>
   <div>
-    <div v-show="!isNewData">
+    <div v-show="!isNewData && !isshowMessage">
       <el-card class="box-card">
         <el-form :inline="true" ref="learning" size="small" :model="learning" class="farderfromflex">
           <div class="divffromflex">
-            <el-form-item label="标题：" prop="informationName">
+            <el-form-item label="政策标题：" prop="informationName">
               <el-input v-model="learning.informationName" placeholder="请输入" size="small"></el-input>
             </el-form-item>
-            <el-form-item label="资讯管理类型：" prop="informationType">
-              <el-select v-model="learning.informationType" clearable placeholder="请选择" size="small">
+            <el-form-item label="状态：" prop="releaseState">
+              <el-select v-model="learning.releaseState" clearable placeholder="请选择" size="small">
                 <el-option
                   :label="manag.text"
                   :value="manag.value"
@@ -38,8 +38,8 @@
         </el-form>
       </el-card>
       <el-card class="cardmargtop">
-        <el-button type="primary" size="small" @click="isNewData = true" v-has="'isLearningWorld:issueData'"
-          >新增资讯</el-button
+        <el-button type="primary" size="small" @click="addRelease" v-has="'isLearningWorld:issueData'"
+          >发布政策</el-button
         >
         <el-button
           type="primary"
@@ -63,16 +63,15 @@
           :row-class-name="tableRowClassName"
         >
           <el-table-column type="selection" align="center"> </el-table-column>
-          <el-table-column prop="informationType" label="类型"> </el-table-column>
-          <el-table-column label="标题" :show-overflow-tooltip="true">
+          <el-table-column label="政策标题" :show-overflow-tooltip="true">
             <template slot-scope="{ row, $index }">
-              <el-button type="text" slot="reference" class="itemSlotheden2" @click="toAddCatalogue(row)">{{ row.informationName }}</el-button>
+              <el-button type="text" slot="reference" class="itemSlotheden2" @click="preview(row)">{{ row.informationName }}</el-button>
               <!-- <i class="el-icon-top"></i> -->
             </template>
           </el-table-column>
-          <el-table-column prop="releaseScope" label="发布范围"> </el-table-column>
           <el-table-column prop="releaseTime" label="发布时间"> </el-table-column>
-          <el-table-column prop="releasePerson" label="发布人"> </el-table-column>
+          <el-table-column prop="releaseState" label="状态"> </el-table-column>
+          <el-table-column prop="releasePerson" label="操作人"> </el-table-column>
           <el-table-column label="操作">
             <template slot-scope="{ row, $index }">
               <el-button type="text" slot="reference" @click="deleteWorld(row)" v-has="'isLearningWorld:delete'"
@@ -103,10 +102,10 @@
         <el-dialog title="提示" :visible.sync="deleteDraft" width="30%">
           <el-divider class="dividerhrcol"></el-divider>
           <p class="dialogcenter" v-show="informationId.length != 0">
-            <i class="el-icon-info iconcolor"></i> 是否确认删除该目录？
+            <i class="el-icon-info iconcolor"></i> 是否确认删除该资讯？
           </p>
           <p class="dialogcenter" v-show="informationId.length == 0">
-            <i class="el-icon-info iconcolor"></i> 是否确认批量删除该目录？
+            <i class="el-icon-info iconcolor"></i> 是否确认批量删除该资讯？
           </p>
           <span slot="footer" class="dialog-footer">
             <el-button size="small" @click="deleteDraft = false">取 消</el-button>
@@ -116,18 +115,24 @@
       </el-card>
     </div>
     <InformationNewData ref="dataFrom" :datefromList="datefromList" v-show="isNewData" @isShowNewData="isShowNewData" />
+    <!-- <PreviewContent ref="content" v-show="isshowMessage" :visible.sync="isshowMessage" /> -->
+    <MessageContent ref="content" v-show="isshowMessage" :visible.sync="isshowMessage"></MessageContent>
   </div>
 </template>
 <script>
 import InformationNewData from '@/views/InformationCenter/InformationNewData'
-import { informationPage } from '@/api/api'
+import { informationPage, getInformationInfo } from '@/api/api'
 import { deleteInformation } from '@/api/department'
 import { mapState } from 'vuex'
 import { MessageBox, Message } from 'element-ui'
+// import PreviewContent from './PreviewContent.vue'
+import MessageContent from './MessageContent'
 export default {
-  name: 'InformationCenter',
+  name: 'PolicyDynamics',
   components: {
     InformationNewData,
+    // PreviewContent,
+    MessageContent,
   },
   data() {
     return {
@@ -143,7 +148,8 @@ export default {
         startDate: '',
         endDate: '',
         uploadFileName: '',
-        informationType: '',
+        releaseState: '',
+        informationType: '2',
       },
       total: 0,
       datepicker: [],
@@ -153,7 +159,16 @@ export default {
       deleteDraft: false,
       informationId: [],
       // 数据字典
-      management: 'information_type',
+      management: 'release_state',
+      isshowMessage: false,
+      contenItem: {
+        titile: '',
+        createdTime: '',
+        deptName: '',
+        viewNum: '',
+        msgAbstract: '',
+        msgContent: ''
+      },
     }
   },
   mounted() {
@@ -192,7 +207,8 @@ export default {
         startDate: '',
         endDate: '',
         uploadFileName: '',
-        informationType: '',
+        releaseState: '',
+        informationType: '2',
       }
       this.datepicker = []
     },
@@ -289,11 +305,32 @@ export default {
         var Y = date.getFullYear() + '-'
         var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-'
         var D = (date.getDate() < 10 ? '0' + date.getDate() : date.getDate()) + ' '
-        var h = date.getHours() < 10 ? '0' + date.getHours() : date.getHours() + ':'
+        var h = date.getHours() < 10 ? '0' + date.getHours() + ':' : date.getHours() + ':'
         var m = (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()) + ':'
         var s = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds()
         return Y + M + D + h + m + s
       }
+    },
+    // 预览
+    preview(row) {
+      this.isshowMessage = true
+      // getInformationInfo(row.id).then((res) => {
+      //   if (res.success) {
+      //     this.contenItem.createdTime = this.timeCycle(res.result.createdTime)
+      //     this.contenItem.deptName = res.result.deptName
+      //     this.contenItem.viewNum = res.result.viewNum
+      //     this.contenItem.msgContent = res.result.msgContent
+      //   }
+      // });
+      // this.$refs.content.announcementpreview(this.contenItem, 'new')
+      this.$refs.content.getContent(row)
+    },
+    // 新增发布信息
+    addRelease() {
+      this.$refs.dataFrom.clean();
+      this.$refs.dataFrom.form.title = '新增政策动态';
+      this.$refs.dataFrom.form.informationType = '2';
+      this.isNewData = true;
     },
   },
   computed: {

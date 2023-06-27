@@ -9,6 +9,7 @@
         />
         <!-- 编辑器 -->
         <Editor
+          ref="Editor"
           style="height: 400px; overflow-y: hidden"
           :defaultConfig="editorConfig"
           v-model="html"
@@ -98,7 +99,8 @@
                     message: `${res.data.originalName} 上传失败，请重新尝试`
                   });
                 }
-                insertFn(res.data.link, res.data.name, res.data.link);
+                let url = window.location.origin+'/dtwave-om/api/file/information/download?fileName='+res.data.originalName;
+                insertFn(url, res.data.name, url);
               },
 
               // 单个文件上传成功之后
@@ -180,6 +182,7 @@
                     message: `${res.data.originalName} 上传失败，请重新尝试`
                   });
                 }
+                // let url = window.location.origin+'/dtwave-om/api/file/information/download?fileName='+res.data.originalName;
                 insertFn(res.data.link, res.data.link);
               },
               // 上传进度的回调函数
@@ -218,6 +221,14 @@
       onChange(editor) {
         this.$emit("input", editor.getHtml());
         console.log("onChange", editor.getHtml()); // onChange 时获取编辑器最新内容
+      },
+      clean() {
+        this.editor = null;
+        this.html = null;
+      },
+      assignment(msgContent) {
+        this.editor = Object.seal(this.editor);
+        this.html = msgContent
       },
     },
     mounted() {},

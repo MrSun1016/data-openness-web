@@ -1,14 +1,18 @@
 <template>
-  <!-- <div class="fullscreen"> -->
   <div>
-    <!-- <el-card style="height: 100%;overflow: scroll;"> -->
     <el-card>
       <div class="closeicon">
         <i class="el-icon-close icon-font" @click="closeMessage"></i>
       </div>
       <div class="body-div">
         <h2 class="title-h2">{{ contenItem.titile }}</h2>
+        <div class="Information-bar">
+          <div class="information">发布时间：{{ contenItem.createdTime }}</div>
+          <div class="information">信息来源：{{ contenItem.deptName }}</div>
+          <div class="information">访问量：{{ contenItem.viewNum }}</div>
+        </div>
         <div class="content-div">
+          <!-- <div class="content-p">摘要：{{ contenItem.msgAbstract }}</div> -->
           <div class="content-p2" v-html="contenItem.msgContent">
           </div>
         </div>
@@ -17,32 +21,31 @@
   </div>
 </template>
 <script>
-import { queryById } from '@/api/api'
+import { getInformationInfo } from '@/api/api'
 import { MessageBox, Message } from 'element-ui'
 export default {
-  name: 'PreviewContent',
+  name: 'MessageContent',
   data() {
     return {
       contenItem: {
         titile: '',
-        sendTime: '',
-        sender: '',
+        createdTime: '',
+        deptName: '',
         viewNum: '',
         msgAbstract: '',
         msgContent: ''
       },
-      valName: '',
-      isFullscreen: false, // 是否全屏
+      valName: ''
     }
   },
   mounted() {},
   methods: {
     getContent(row) {
       let record = row.id
-      queryById(record).then(res => {
+      getInformationInfo(record).then(res => {
         if (res.success) {
           this.contenItem = res.result
-          this.contenItem.sendTime = this.formatTime(this.contenItem.sendTime)
+          this.contenItem.createdTime = this.formatTime(this.contenItem.createdTime)
         } else {
           Message.error(res.message)
         }
@@ -93,15 +96,4 @@ export default {
     margin-top: 10px;
   }
 }
-.fullscreen {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    // border: 1px solid #ccc; 
-    // margin-top: 0px;
-    z-index: 1000;
-    overflow: scroll;
-  }
 </style>
