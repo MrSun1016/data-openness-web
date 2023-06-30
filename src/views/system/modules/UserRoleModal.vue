@@ -72,7 +72,7 @@
         expandedKeysss:[],
         allTreeKeys:[],
         autoExpandParent: true,
-        checkStrictly: false,
+        checkStrictly: true,
         title:"角色权限配置",
         visible: false,
         loading: false,
