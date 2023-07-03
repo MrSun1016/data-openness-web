@@ -24,7 +24,7 @@ const deleteCorrection = (delId) => getAction(`/api/dataCorrection/delDataCorrec
 const getCorrectionById = (id) => getAction(`/api/dataCorrection/getDataCorrectionById?id=${id}`)
 const postCorrectionAdd = (params) => postAction('/api/dataCorrection/save', params)
 const postCorrectionEdit = (params) => postAction('/api/dataCorrection/update', params)
-const queryBAWO = (params) => postAction('/api/dataCorrection/queryBAWO', params)
+const queryBAWO = (params) => postAction('/api/rightsProtection/queryBAWO', params)
 
 //调查问卷
 const questionnaireList = (params) => postAction('/api/questionnaire/questionnaireList', params)

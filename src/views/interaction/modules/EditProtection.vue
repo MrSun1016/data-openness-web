@@ -49,21 +49,66 @@
           </el-form-item>
         </el-form>
         <div class="newbutflex">
-          <el-button type="primary" size="small" class="butfromccwei" @click="preserve">保 存</el-button>
+          <el-button type="primary" size="small" class="butfromccwei" @click="preserve">提 交</el-button>
           <el-button size="small" @click="closeNewsAdd" class="butfromccwei">取 消</el-button>
         </div>
       </div>
-      <!--数据资源列表
-      <el-dialog :titleBAW="数据资源列表" :visible.sync="openBAW" width="500px" append-to-body
-        :close-on-click-modal="false" :close-on-press-escape="false">
-        <div>
-          <el-table :data="fromB">
-            <el-table-column label="数据目录" align="center" prop="catalogName" />
-            <el-table-column label="数源单位" align="center" prop="sourceUnit" />
-            <el-table-column label="数据格式" align="center" prop="dataFormat" />
+      <!--数据资源列表-->
+       <el-dialog title="请选择数据资源" :visible.sync="dialogTransfer" width="45%">
+        <el-divider class="dividerhrcol"></el-divider>
+       <!-- <div class="dialogForm">
+          <el-form :model="form" class="formFlex" @submit.native.prevent @keyup.enter.native="changeApiName">
+            <el-form-item label="API： ">
+              <el-input
+                v-model="form.name"
+                placeholder="请输入API名称或API路径"
+                size="small"
+                class="inputForm"
+              ></el-input>
+              <el-button size="small" type="primary" @click="changeApiName">搜 索</el-button>
+            </el-form-item>
+          </el-form>
+        </div>-->
+        <el-card class="box-card">
+          <el-table
+            :data="gridData"
+            :header-cell-style="{ color: '#333333' }"
+            highlight-current-row
+            @current-change="handleCurrentChange"
+          >
+            <el-table-column label="目录名称" min-width="25%" :show-overflow-tooltip="true">
+              <template slot-scope="{ row, $index }">
+                <span class="itemSlotheden">{{ row.catalogName || '-' }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column label="数源单位" min-width="25%">
+              <template slot-scope="{ row, $index }">
+                <el-tooltip class="item" effect="dark" :content="row.sourceUnit" placement="top-start">
+                  <span class="itemSlotheden">{{ row.sourceUnit || '-' }}</span>
+                </el-tooltip>
+              </template>
+            </el-table-column>
+            <el-table-column label="数据格式" min-width="25%">
+              <template slot-scope="{ row, $index }">
+                <el-tooltip class="item" effect="dark" :content="row.dataFormat" placement="top-start">
+                  <span class="itemSlotheden">{{ row.dataFormat || '-' }}</span>
+                </el-tooltip>
+              </template>
+            </el-table-column>
           </el-table>
+        </el-card>
+        <div slot="footer" class="dialog-footer">
+          <el-button size="small" @click="cancelTransfer">取 消</el-button>
+          <el-button
+            size="small"
+            type="primary"
+            @click="determineTransfer"
+            :disabled="loadSubmit"
+            :loading="loadSubmit"
+            >{{ loadSubmit ? '提交中...' : '确认' }}</el-button
+          >
         </div>
-      </el-dialog>-->
+      </el-dialog>
 
 
       <!-- 保存 -->
@@ -109,7 +154,7 @@ export default {
       },
       checkedCities: [],
       checkAll: false,
-      isIndeterminate: false,
+      dialogTransfer: false,
       //   上传
       file: '',
       filename: '',
@@ -134,23 +179,64 @@ export default {
         catalogName: [{ required: true, message: '请输入信息资源名称', trigger: 'blur' }],
         protectionContent: [{ required: true, message: '请输入公告内容', trigger: 'blur' }],
       },
+      gridData: [],
+      currentRow: {
+        catalogId: '',
+        catalogName: '',
+        sourceUnit: '',
+        dataFormat: '',
+      },
       loadSave: false,
       loadhandle: false,
       // 加载
       drawerLoading: false,
+      loadSubmit: false,
     }
   },
   mounted() {
     this.catalogId = this.$route.query.id
   },
   methods: {
+     // 单选点击表格行
+    handleCurrentChange(val) {
+      this.currentRow.catalogId = val.catalogId
+      this.currentRow.catalogName = val.catalogName
+      this.form.catalogId = val.catalogId
+      this.form.catalogName = val.catalogName
+    },
+    cancelTransfer() {// 取消
+      this.dialogTransfer = false
+      this.form.name = ''
+      this.currentRow = {
+        catalogId: '',
+        catalogName: '',
+        sourceUnit: '',
+        dataFormat: '',
+      }
+    },
     queryBAWO() {
-      this.openBAW = true
-     queryBAWO().then(response => {
-        let res = [];
-        res.push(response.data);
-        this.fromB = res;
-      });
+      this.dialogTransfer = true
+      queryBAWO(this.form).then((res) => {
+            if (res.success) {
+              this.gridData = res.body.content
+            } else {
+              Message.error(res.message)
+            }
+          })
+        .catch(() => {
+          Message.error(res.message)
+        })
+    }, // 新增数据目录
+    determineTransfer(row) {
+      this.dialogTransfer = false
+      this.loadSubmit = false
+      // this.currentRow = {
+      //   catalogId: row.catalogId,
+      //   catalogName: row.catalogName,
+      //   sourceUnit: row.sourceUnit,
+      //   dataFormat: row.dataFormat,
+      // }
+
     },
     handleChange(file, fileList) {
       let resFileName = file.name.split('.')
@@ -191,7 +277,6 @@ export default {
     },
     // 保存
     preserve() {
-      this.form.catalogName =  this.catalogNames
       if (this.form.catalogName == '') {
         Message.error('请填写标题')
       } else {
@@ -205,11 +290,11 @@ export default {
         this.isShowSave = false
         this.$emit('update:visible', false)
       } else {
-        this.form.catalogId = this.catalogId
-        this.form.catalogName =  this.catalogNames
-        if(this.form.id == ''){//保存
+        console.log(this.form.catalogId)
+         
+        if(this.form.catalogId == ''){//保存
           postProtectionAdd(this.form).then((res) => {
-            if (res.result.success) {
+            if (res.success) {
               Message({
                 message: '保存成功！',
                 type: 'success',
@@ -225,7 +310,7 @@ export default {
           })
         }else{//修改
           postProtectionEdit(this.form).then((res) => {
-          if (res.result.success) {
+          if (res.success) {
             Message({
               message: res.message,
               type: 'success',
