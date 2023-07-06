@@ -290,9 +290,7 @@ export default {
         this.isShowSave = false
         this.$emit('update:visible', false)
       } else {
-        console.log(this.form.catalogId)
-         
-        if(this.form.catalogId == ''){//保存
+        if(this.form.id == ''){//保存
           postProtectionAdd(this.form).then((res) => {
             if (res.success) {
               Message({

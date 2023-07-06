@@ -361,6 +361,8 @@ const getUnreadMessageQuantity = (params) => postAction('/api/news/getUnreadMess
 // 工单处理
 // 查询工单处理
 const getWorkcaTalog = (params) => postAction('/api/workcatalog/list', params)
+// 查询互动交流工单处理
+const getWorkinteraction = (params) => postAction('/api/workinteraction/workList', params)
 //获取工单列表
 const getWorkTypeList = (type) => getAction(`/api/workcatalog/getWorkTypeList?type=${type}`, null)
 //审批工单
@@ -822,6 +824,7 @@ export {
     deleteServiceMatters,
     // 查询工单
     getWorkcaTalog,
+    getWorkinteraction,
     //审批工单
     geApprovalData,
     // 测试新增数据源
