@@ -646,7 +646,7 @@ export default {
           this.queryWorkOrder.approvalStarTime = ''
           this.queryWorkOrder.approvalEndTime = ''
         }
-        getWorkcaTalog(this.queryWorkOrder).then(res => {
+        getWorkinteraction(this.queryWorkOrder).then(res => {
           if (res.success) {
             this.loading = false
             this.loading1 = false

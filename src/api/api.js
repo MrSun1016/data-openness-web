@@ -379,6 +379,8 @@ const getImportDataExcel = (params) => postAction('/api/cataLog/importDataExcel'
 const getDownloadName = (downloadName) => getAction(`/api/cataLog/download/${downloadName}`, null)
 // 数据项excel下载
 const getDownloadExcel = (params) => getAction('/api/file/download', params)
+//互动交流-工单审批通过
+const processByDateId = (params) => postAction('/processFlow/task/processByDateId', params)
 // 工单审批通过
 const getCompleteByDateId = (params) => postAction('/flowable/task/completeByDateId', params)
 // 工单批量审批
@@ -788,6 +790,7 @@ export {
 
     // 工单下架查看
     getShelfApplication,
+    processByDateId,
     // 工单审批通过
     getCompleteByDateId,
     //工单批量审批
