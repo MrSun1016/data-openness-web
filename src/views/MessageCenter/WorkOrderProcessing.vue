@@ -330,7 +330,7 @@
 import SharingApplication from '@views/MessageCenter/components/SharingApplication'
 import operationLog from '@views/MessageCenter/components/OperationLog'
 import ActHistoricDetailBtn from '@views/flowable/components/ActHistoricDetailBtn'
-import { getWorkcaTalog, getWorkTypeList, batchCompleteByDateId, batchTaskRejectByDataId } from '@/api/api'
+import { getWorkcaTalog,getWorkinteraction, getWorkTypeList, batchCompleteByDateId, batchTaskRejectByDataId } from '@/api/api'
 import { Message } from 'element-ui'
 export default {
   name: 'WorkOrderProcessing',
@@ -607,7 +607,8 @@ export default {
           this.queryWorkOrder.starTime = ''
           this.queryWorkOrder.endTime = ''
         }
-        getWorkcaTalog(this.queryWorkOrder).then(res => {
+        // getWorkcaTalog(this.queryWorkOrder).then(res => {
+        getWorkinteraction(this.queryWorkOrder).then(res => {  
           if (res.success) {
             this.loading = false
             this.loading1 = false
@@ -645,7 +646,7 @@ export default {
           this.queryWorkOrder.approvalStarTime = ''
           this.queryWorkOrder.approvalEndTime = ''
         }
-        getWorkcaTalog(this.queryWorkOrder).then(res => {
+        getWorkinteraction(this.queryWorkOrder).then(res => {
           if (res.success) {
             this.loading = false
             this.loading1 = false

@@ -24,7 +24,7 @@ const deleteCorrection = (delId) => getAction(`/api/dataCorrection/delDataCorrec
 const getCorrectionById = (id) => getAction(`/api/dataCorrection/getDataCorrectionById?id=${id}`)
 const postCorrectionAdd = (params) => postAction('/api/dataCorrection/save', params)
 const postCorrectionEdit = (params) => postAction('/api/dataCorrection/update', params)
-const queryBAWO = (params) => postAction('/api/dataCorrection/queryBAWO', params)
+const queryBAWO = (params) => postAction('/api/rightsProtection/queryBAWO', params)
 
 //调查问卷
 const questionnaireList = (params) => postAction('/api/questionnaire/questionnaireList', params)
@@ -361,6 +361,8 @@ const getUnreadMessageQuantity = (params) => postAction('/api/news/getUnreadMess
 // 工单处理
 // 查询工单处理
 const getWorkcaTalog = (params) => postAction('/api/workcatalog/list', params)
+// 查询互动交流工单处理
+const getWorkinteraction = (params) => postAction('/api/workinteraction/workList', params)
 //获取工单列表
 const getWorkTypeList = (type) => getAction(`/api/workcatalog/getWorkTypeList?type=${type}`, null)
 //审批工单
@@ -377,6 +379,8 @@ const getImportDataExcel = (params) => postAction('/api/cataLog/importDataExcel'
 const getDownloadName = (downloadName) => getAction(`/api/cataLog/download/${downloadName}`, null)
 // 数据项excel下载
 const getDownloadExcel = (params) => getAction('/api/file/download', params)
+//互动交流-工单审批通过
+const processByDateId = (params) => postAction('/processFlow/task/processByDateId', params)
 // 工单审批通过
 const getCompleteByDateId = (params) => postAction('/flowable/task/completeByDateId', params)
 // 工单批量审批
@@ -798,6 +802,7 @@ export {
 
     // 工单下架查看
     getShelfApplication,
+    processByDateId,
     // 工单审批通过
     getCompleteByDateId,
     //工单批量审批
@@ -834,6 +839,7 @@ export {
     deleteServiceMatters,
     // 查询工单
     getWorkcaTalog,
+    getWorkinteraction,
     //审批工单
     geApprovalData,
     // 测试新增数据源
