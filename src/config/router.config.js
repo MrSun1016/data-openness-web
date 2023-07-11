@@ -154,6 +154,12 @@ export const constantRouterMap = [
     component: () => import('@/views/system/FunctionNavigation'),
   },
   {
+    path: '/system/EmbedPage',
+    name: 'embedPage',
+    meta: { title: '嵌入页面', keepAlive: false },
+    component: () => import('@/views/system/EmbedPage'),
+  },
+  {
     path: '/d',
     name: 'catalogue',
     component: OpenPlatformLayout,

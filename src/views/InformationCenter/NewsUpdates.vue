@@ -38,7 +38,7 @@
         </el-form>
       </el-card>
       <el-card class="cardmargtop">
-        <el-button type="primary" size="small" @click="addRelease" v-has="'isLearningWorld:issueData'"
+        <el-button type="primary" size="small" @click="addRelease" v-has="'isNewsUpdates:issueData'"
           >发布新闻</el-button
         >
         <el-button
@@ -46,7 +46,7 @@
           size="small"
           @click="deleteDraft = true"
           :disabled="deleteAll"
-          v-has="'isLearningWorld:allDelete'"
+          v-has="'isNewsUpdates:allDelete'"
           >批量删除</el-button
         >
         <el-table
@@ -74,10 +74,10 @@
           <el-table-column prop="releasePerson" label="操作人"> </el-table-column>
           <el-table-column label="操作">
             <template slot-scope="{ row, $index }">
-              <el-button type="text" slot="reference" @click="deleteWorld(row)" v-has="'isLearningWorld:delete'"
+              <el-button type="text" slot="reference" @click="deleteWorld(row)" v-has="'isNewsUpdates:delete'"
                 >删除</el-button
               >
-              <el-button type="text" slot="reference" @click="modifyNewData(row)" v-has="'isLearningWorld:change'"
+              <el-button type="text" slot="reference" @click="modifyNewData(row)" v-has="'isNewsUpdates:change'"
                 >修改</el-button
               >
             </template>

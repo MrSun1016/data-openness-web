@@ -93,7 +93,11 @@ const indatafrom = {
             state: {},
             // 公告状态
             announcement: {},
-            transportMode: {}
+            transportMode: {},
+            //应用类型
+            applicationType: {},
+            //应用状态
+            applicationStatus: {},
         }
     },
     mutations: {
@@ -237,6 +241,12 @@ const indatafrom = {
         },
         RECEIVE_TRANSPORTMODE(state, transportMode) {
             state.datefromList.transportMode = transportMode
+        },
+        RECEIVE_APPLICATIONTYPE(state, applicationType) {
+            state.datefromList.applicationType = applicationType
+        },
+        RECEIVE_APPLICATIONSTATUS(state, applicationStatus) {
+            state.datefromList.applicationStatus = applicationStatus
         },
     },
     actions: {
@@ -658,6 +668,24 @@ const indatafrom = {
             getDictItems(transportMode).then(res => {
                 if (res.success) {
                     commit('RECEIVE_TRANSPORTMODE', res.result)
+                }
+            })
+        },
+        // 	应用类型	
+        // applicationType
+        getApplicationType({ commit }, applicationType) {
+            getDictItems(applicationType).then(res => {
+                if (res.success) {
+                    commit('RECEIVE_APPLICATIONTYPE', res.result)
+                }
+            })
+        },
+        // 	应用状态		
+        // applicationStatus
+        getApplicationStatus({ commit }, applicationStatus) {
+            getDictItems(applicationStatus).then(res => {
+                if (res.success) {
+                    commit('RECEIVE_APPLICATIONSTATUS', res.result)
                 }
             })
         },

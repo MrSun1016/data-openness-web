@@ -14,7 +14,7 @@
       </el-form-item>
       <el-form-item label="流程分类" prop="category">
         <el-select @change="handleQuery" v-model="queryParams.category" placeholder="请选择流程分类" clearable prop="category">
-          <el-option label="请选择" value="" />
+          <!-- <el-option label="请选择" value="" /> -->
           <el-option v-for="category in categorys" :key="category.id" :label="category.name" :value="category.id" />
         </el-select>
       </el-form-item>
@@ -266,7 +266,7 @@ export default {
       const param1 = Object.assign({
         isLastVersion:1,
       },this.queryParams)
-      listDefinition(param1).then(response => {
+      listDefinition(param1).then(response => {        
         this.definitionList = response.result.records;
         this.total = response.result.total;
         this.loading = false;

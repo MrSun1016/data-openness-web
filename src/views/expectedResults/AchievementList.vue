@@ -4,31 +4,28 @@
       <el-card class="box-card">
         <el-form :inline="true" ref="learning" size="small" :model="learning" class="farderfromflex">
           <div class="divffromflex">
-            <el-form-item label="政策标题：" prop="informationName">
-              <el-input v-model="learning.informationName" placeholder="请输入" size="small"></el-input>
+            <el-form-item label="应用名称：" prop="applyName">
+              <el-input v-model="learning.applyName" placeholder="请输入" size="small"></el-input>
             </el-form-item>
-            <el-form-item label="状态：" prop="releaseState">
-              <el-select v-model="learning.releaseState" clearable placeholder="请选择" size="small">
+            <el-form-item label="应用类型：" prop="applicationType">
+              <el-select v-model="learning.applicationType" clearable placeholder="请选择" size="small">
                 <el-option
                   :label="manag.text"
                   :value="manag.value"
-                  v-for="(manag, index) in datefromList.management"
+                  v-for="(manag, index) in datefromList.applicationType"
                   :key="manag.value"
                 ></el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="发布时间：">
-              <el-date-picker
-                v-model="datepicker"
-                :default-time="['00:00:00', '23:59:59']"
-                value-format="yyyy-MM-dd HH:mm:ss"
-                type="daterange"
-                range-separator="至"
-                start-placeholder="开始日期"
-                end-placeholder="结束日期"
-                class="datawei"
-              >
-              </el-date-picker>
+            <el-form-item label="应用状态：" prop="applicationStatus">
+              <el-select v-model="learning.applicationStatus" clearable placeholder="请选择" size="small">
+                <el-option
+                  :label="manag.text"
+                  :value="manag.value"
+                  v-for="(manag, index) in datefromList.applicationStatus"
+                  :key="manag.value"
+                ></el-option>
+              </el-select>
             </el-form-item>
             <el-form-item size="large">
               <el-button type="primary" size="mini" class="buthei" @click="onSubmit">查 询</el-button>
@@ -38,15 +35,15 @@
         </el-form>
       </el-card>
       <el-card class="cardmargtop">
-        <el-button type="primary" size="small" @click="addRelease" v-has="'isPolicyDynamics:issueData'"
-          >发布政策</el-button
+        <el-button type="primary" size="small" @click="addRelease" v-has="'isAchievementList:issueData'"
+          >新增</el-button
         >
         <el-button
           type="primary"
           size="small"
           @click="deleteDraft = true"
           :disabled="deleteAll"
-          v-has="'isPolicyDynamics:allDelete'"
+          v-has="'isAchievementList:allDelete'"
           >批量删除</el-button
         >
         <el-table
@@ -63,23 +60,19 @@
           :row-class-name="tableRowClassName"
         >
           <el-table-column type="selection" align="center"> </el-table-column>
-          <el-table-column label="政策标题" :show-overflow-tooltip="true">
+          <el-table-column label="应用名称" :show-overflow-tooltip="true">
             <template slot-scope="{ row, $index }">
-              <el-button type="text" slot="reference" class="itemSlotheden2" @click="preview(row)">{{ row.informationName }}</el-button>
+              <el-button type="text" slot="reference" class="itemSlotheden2" @click="preview(row)">{{ row.applyName }}</el-button>
               <!-- <i class="el-icon-top"></i> -->
             </template>
           </el-table-column>
-          <el-table-column prop="releaseTime" label="发布时间"> </el-table-column>
-          <el-table-column prop="releaseState" label="状态"> </el-table-column>
-          <el-table-column prop="releasePerson" label="操作人"> </el-table-column>
+          <el-table-column prop="applicationType" label="应用类型"> </el-table-column>
+          <el-table-column prop="applicationStatus" label="应用状态"> </el-table-column>
           <el-table-column label="操作">
             <template slot-scope="{ row, $index }">
-              <el-button type="text" slot="reference" @click="deleteWorld(row)" v-has="'isPolicyDynamics:delete'"
-                >删除</el-button
-              >
-              <el-button type="text" slot="reference" @click="modifyNewData(row)" v-has="'isPolicyDynamics:change'"
-                >修改</el-button
-              >
+              <el-button type="text" slot="reference" @click="modifyNewData(row)" v-has="'isAchievementList:change'">编辑</el-button>
+              <el-button type="text" slot="reference" @click="modifyNewData(row)" v-has="'isAchievementList:logs'">操作日志</el-button>
+              <el-button type="text" slot="reference" @click="deleteWorld(row)" v-has="'isAchievementList:delete'">删除</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -101,11 +94,11 @@
         <!-- 删除 -->
         <el-dialog title="提示" :visible.sync="deleteDraft" width="30%">
           <el-divider class="dividerhrcol"></el-divider>
-          <p class="dialogcenter" v-show="informationId.length != 0">
-            <i class="el-icon-info iconcolor"></i> 是否确认删除该资讯？
+          <p class="dialogcenter" v-show="achievementId.length != 0">
+            <i class="el-icon-info iconcolor"></i> 是否确认删除？
           </p>
-          <p class="dialogcenter" v-show="informationId.length == 0">
-            <i class="el-icon-info iconcolor"></i> 是否确认批量删除该资讯？
+          <p class="dialogcenter" v-show="achievementId.length == 0">
+            <i class="el-icon-info iconcolor"></i> 是否确认批量删除？
           </p>
           <span slot="footer" class="dialog-footer">
             <el-button size="small" @click="deleteDraft = false">取 消</el-button>
@@ -114,31 +107,28 @@
         </el-dialog>
       </el-card>
     </div>
-    <InformationNewData ref="dataFrom" :datefromList="datefromList" v-show="isNewData" @isShowNewData="isShowNewData" />
-    <!-- <PreviewContent ref="content" v-show="isshowMessage" :visible.sync="isshowMessage" /> -->
+    <AchievementNewData ref="dataFrom" :datefromList="datefromList" v-show="isNewData" @isShowNewData="isShowNewData" />
     <MessageContent ref="content" v-show="isshowMessage" :visible.sync="isshowMessage"></MessageContent>
   </div>
 </template>
 <script>
-import InformationNewData from '@/views/InformationCenter/InformationNewData'
-import { informationPage, getInformationInfo } from '@/api/api'
-import { deleteInformation } from '@/api/department'
+import AchievementNewData from '@/views/expectedResults/AchievementNewData'
+import { achievementPage, getAchievementInfo } from '@/api/api'
+import { deleteAchievement } from '@/api/department'
 import { mapState } from 'vuex'
 import { MessageBox, Message } from 'element-ui'
-// import PreviewContent from './PreviewContent.vue'
 import MessageContent from './MessageContent'
 export default {
-  name: 'PolicyDynamics',
+  name: 'AchievementList',
   components: {
-    InformationNewData,
-    // PreviewContent,
+    AchievementNewData,
     MessageContent,
   },
   data() {
     return {
       deleteAll: true,
       learning: {
-        informationName: '',
+        applyName: '',
         id: 0,
         orderByField: '',
         pageNum: 1,
@@ -148,8 +138,9 @@ export default {
         startDate: '',
         endDate: '',
         uploadFileName: '',
-        releaseState: '',
-        informationType: '2',
+        applicationType: '',//应用类型
+        applicationStatus: '',//应用状态
+        achievementType: '3',
       },
       total: 0,
       datepicker: [],
@@ -157,9 +148,10 @@ export default {
       tabData: [],
       isNewData: false,
       deleteDraft: false,
-      informationId: [],
+      achievementId: [],
       // 数据字典
-      management: 'release_state',
+      applicationType: 'application_type',//应用类型-数据字典
+      applicationStatus: 'application_status',//应用状态-数据字典
       isshowMessage: false,
       contenItem: {
         titile: '',
@@ -177,8 +169,8 @@ export default {
   },
   methods: {
     getFrom() {
-      // 数源应用系统
-      this.$store.dispatch('getManagement', this.management)
+      this.$store.dispatch('getApplicationType', this.applicationType)
+      this.$store.dispatch('getApplicationStatus', this.applicationStatus)
     },
     // 查 询
     onSubmit() {
@@ -197,7 +189,7 @@ export default {
     resetForm(learning) {
       this.$refs[learning].resetFields()
       this.learning = {
-        informationName: '',
+        applyName: '',
         id: 0,
         orderByField: '',
         pageNum: 1,
@@ -207,8 +199,9 @@ export default {
         startDate: '',
         endDate: '',
         uploadFileName: '',
-        releaseState: '',
-        informationType: '2',
+        applicationType: '',//应用类型
+        applicationStatus: '',//应用状态
+        achievementType: '3',
       }
       this.datepicker = []
     },
@@ -219,7 +212,7 @@ export default {
     // 根据选择加当前页发请求
     getLearningWorld(page = 1) {
       this.learning.pageNum = page
-      informationPage(this.learning).then((res) => {
+      achievementPage(this.learning).then((res) => {
         if (res.success) {
           this.tabData = res.body.content
           this.total = res.body.total
@@ -248,12 +241,12 @@ export default {
     },
     // 删除
     deleteWorld(row) {
-      this.informationId.push(row.id)
+      this.achievementId.push(row.id)
       this.deleteDraft = true
     },
     deleteDraftli() {
-      if (this.informationId.length != 0) {
-        deleteInformation(this.informationId).then((res) => {
+      if (this.achievementId.length != 0) {
+        deleteAchievement(this.achievementId).then((res) => {
           if (res.success) {
             Message({
               message: '删除成功！',
@@ -267,7 +260,7 @@ export default {
           }
         })
       } else {
-        deleteInformation(this.selectTableID).then((res) => {
+        deleteAchievement(this.selectTableID).then((res) => {
           if (res.success) {
             Message({
               message: '删除成功！',
@@ -281,7 +274,7 @@ export default {
           }
         })
       }
-      this.informationId = []
+      this.achievementId = []
       this.selectTableID = []
     },
     isShowNewData(val) {
@@ -314,7 +307,7 @@ export default {
     // 预览
     preview(row) {
       this.isshowMessage = true
-      // getInformationInfo(row.id).then((res) => {
+      // getAchievementInfo(row.id).then((res) => {
       //   if (res.success) {
       //     this.contenItem.createdTime = this.timeCycle(res.result.createdTime)
       //     this.contenItem.deptName = res.result.deptName
@@ -327,9 +320,9 @@ export default {
     },
     // 新增发布信息
     addRelease() {
-      this.$refs.dataFrom.clean();
-      this.$refs.dataFrom.form.title = '新增政策动态';
-      this.$refs.dataFrom.form.informationType = '2';
+      // this.$refs.dataFrom.clean();
+      // this.$refs.dataFrom.form.title = '新增公告动态';
+      // this.$refs.dataFrom.form.achievementType = '3';
       this.isNewData = true;
     },
   },

@@ -124,3 +124,11 @@ export function deleteInformation(parameter) {
     data: parameter,
   })
 }
+// 删除应用成果
+export function deleteAchievement(parameter) {
+  return axios({
+    url: '/api/achievement/deleteAchievement',
+    method: 'delete',
+    data: parameter,
+  })
+}

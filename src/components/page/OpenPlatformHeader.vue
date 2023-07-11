@@ -21,6 +21,7 @@
           <el-menu-item index="/system/datastandard">数据规范</el-menu-item>
           <el-menu-item index="/system/helpdocument">帮助文档</el-menu-item>
           <el-menu-item index="/system/FunctionNavigation" v-if="token">功能导航</el-menu-item>
+          <!-- <el-menu-item index="/system/EmbedPage" v-if="token">嵌入页面</el-menu-item> -->
           <!-- <el-menu-item index="/openPlatform/home">资源市场</el-menu-item> -->
           <!-- <el-menu-item index="/Home">后台管理</el-menu-item> -->
           <!-- <el-menu-item :route="`http://59.208.164.227:60010/logging?userName=${this.onUserName()}&path=modelFactory`">可视化建模</el-menu-item>  -->
