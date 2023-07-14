@@ -73,7 +73,7 @@ import dataCatalogue from '@views/MessageCenter/components/DataCatalogue'
 import operationLog from '@views/MessageCenter/components/OperationLog'
 import dataExplain from '@views/MessageCenter/components/DataExplain'
 import soldOut from '@views/MessageCenter/components/SoldOut'
-import { geApprovalData, processByDateId, getTaskRejectByDataId, getShelfApplication } from '@/api/api'
+import { geApprovalData, processByDateId, getTaskProcessByDataId, getShelfApplication } from '@/api/api'
 import { Message, MessageBox } from 'element-ui'
 export default {
   name: 'BusinessReview',
@@ -225,7 +225,7 @@ export default {
       } else {
         // 驳回
         this.loading = true
-        getTaskRejectByDataId(this.completeByDateId)
+        getTaskProcessByDataId(this.completeByDateId)
           .then((res) => {
             if (res.code == 200) {
               setTimeout(() => {

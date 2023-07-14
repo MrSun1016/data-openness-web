@@ -10,6 +10,7 @@ const indatafrom = {
             shuyuansource: {},
             catalogingStatus: {},
             catalogueList: {},
+            openCataStatus: {},
             aggregate: {},
             // 共享类型
             sharetype: {},
@@ -115,6 +116,9 @@ const indatafrom = {
         },
         RECEIVE_CATALOGUELIST(state, catalogueList) {
             state.datefromList.catalogueList = catalogueList
+        },
+        RECEIVE_OPENCATASTATUS(state, openCataStatus) {
+            state.datefromList.openCataStatus = openCataStatus
         },
         RECEIVE_AGGREGATE(state, aggregate) {
             state.datefromList.aggregate = aggregate
@@ -330,6 +334,14 @@ const indatafrom = {
             getDictItems(cata).then(res => {
                 if (res.success) {
                     commit('RECEIVE_CATALOGUELIST', res.result)
+                }
+            })
+        },
+        getOpenStatusList({ commit }, cata) {
+            // 开放状态
+            getDictItems(cata).then(res => {
+                if (res.success) {
+                    commit('RECEIVE_OPENCATASTATUS', res.result)
                 }
             })
         },

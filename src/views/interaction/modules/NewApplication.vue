@@ -112,7 +112,7 @@ export default {
       } else {
         if(this.form.id == ''){//保存
           postApplicationAdd(this.form).then((res) => {
-            if (res.result.success) {
+            if (res.success) {
               Message({
                 message: '保存成功！',
                 type: 'success',
@@ -123,7 +123,7 @@ export default {
               this.$emit('refresh')
             } else {
               this.isShowSave = false
-              Message.error(res.result.message)
+              Message.error(res.message)
             }
           })
         }else{//修改

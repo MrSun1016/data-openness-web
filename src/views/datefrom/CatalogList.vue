@@ -1,7 +1,6 @@
 <template>
   <div>
-    <!-- 数据编目--编目列表 -->
-    <!-- 编目列表 -->
+    <!-- 开放数据列表 -->
     <div v-show="!isshowHaredetails">
       <el-card class="box-card cardping">
         <!-- 头部input框 -->
@@ -17,25 +16,6 @@
           <div class="divffromflex">
             <el-form-item label="数据目录" prop="catalogName" class="topfromitem">
               <el-input size="small" v-model="formInline.catalogName" placeholder="请输入" class="aitemml"></el-input>
-            </el-form-item>
-
-            <el-form-item label="应用系统" class="topfromitem" prop="sourceSystem">
-              <el-select
-                v-model="formInline.sourceSystem"
-                size="small"
-                ref="sourceSystem"
-                @keydown.enter.native="disableVisible"
-                clearable
-                placeholder="请选择"
-                class="aitemml"
-              >
-                <el-option
-                  :label="source.appName"
-                  :value="source.appName"
-                  v-for="(source, index) in sourceList"
-                  :key="source.id"
-                ></el-option>
-              </el-select>
             </el-form-item>
             <el-form-item label="数源单位" prop="sourceUnit">
               <el-select
@@ -53,6 +33,24 @@
                   :value="source.nodeName"
                   v-for="source in citys"
                   :key="source.id"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="归集状态" prop="imputationStatus">
+              <el-select
+                ref="imputationStatus"
+                @keydown.enter.native="disableVisible"
+                v-model="formInline.imputationStatus"
+                size="small"
+                clearable
+                placeholder="请选择"
+                class="aitemml"
+              >
+                <el-option
+                  :label="aggre.text"
+                  :value="aggre.value"
+                  v-for="aggre in datefromList.aggregate"
+                  :key="aggre.value"
                 ></el-option>
               </el-select>
             </el-form-item>
@@ -76,7 +74,7 @@
                 ></el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="目录状态" class="topfromitem" prop="cataStatus">
+            <el-form-item label="交换状态" class="topfromitem" prop="cataStatus">
               <el-select
                 v-model="formInline.cataStatus"
                 ref="cataStatus"
@@ -94,11 +92,11 @@
                 ></el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="归集状态" prop="imputationStatus">
+            <el-form-item label="开放状态" prop="openCataStatus">
               <el-select
-                ref="imputationStatus"
+                ref="openCataStatus"
                 @keydown.enter.native="disableVisible"
-                v-model="formInline.imputationStatus"
+                v-model="formInline.openCataStatus"
                 size="small"
                 clearable
                 placeholder="请选择"
@@ -107,7 +105,7 @@
                 <el-option
                   :label="aggre.text"
                   :value="aggre.value"
-                  v-for="aggre in datefromList.aggregate"
+                  v-for="aggre in datefromList.openCataStatus"
                   :key="aggre.value"
                 ></el-option>
               </el-select>
@@ -147,7 +145,6 @@
               >
             </el-dropdown-menu>
           </el-dropdown>
-          <!-- <el-button class="yinyongwei">引 用</el-button> -->
         </div>
 
         <!-- 多选表格列表 -->
@@ -173,19 +170,19 @@
               
             </template>
           </el-table-column>
-          <el-table-column prop="sourceSystem" label="应用系统"> </el-table-column>
+          <!--<el-table-column prop="sourceSystem" label="应用系统"> </el-table-column>-->
           <el-table-column prop="sourceUnit" label="数源单位"> </el-table-column>
-          <el-table-column label="编目状态">
+          <el-table-column prop="dataFormat" label="数据格式"> </el-table-column>
+          <el-table-column prop="openTypeStr" label="开放条件"> </el-table-column>
+          <!--<el-table-column label="编目状态">
             <template slot-scope="{ row }">
-              <!-- background-color: #ff0800; -->
               <div class="yuancolor1" v-show="row.catalogStatuStr == '已提交待审核'"></div>
               <div class="yuancolor2" v-show="row.catalogStatuStr == '审核不通过'"></div>
               <div class="yuancolor3" v-show="row.catalogStatuStr == '审核通过'"></div>
-              <!-- <span>{{ statusbtn(row.catalogStatus) }}</span> -->
               <span>{{ row.catalogStatuStr }}</span>
             </template>
-          </el-table-column>
-          <el-table-column label="目录状态">
+          </el-table-column>-->
+          <el-table-column label="交换状态">
             <template slot-scope="{ row, $index }">
               <div class="yuancolor1" v-show="row.cataStatuStr == '未上架'"></div>
               <div class="yuancolor1" v-show="row.cataStatuStr == '上架中'"></div>
@@ -201,21 +198,15 @@
               <span>{{ row.cataStatuStr }}</span>
             </template>
           </el-table-column>
-          <el-table-column prop="imputationStatuStr" label="归集状态">
+          <el-table-column prop="openTypeStr" label="开放状态">
+          </el-table-column>
+          <!--<el-table-column prop="imputationStatuStr" label="归集状态">
             <template slot-scope="{ row, $index }">
               <div class="yuancolor2" v-show="row.imputationStatuStr == '未归集'"></div>
               <div class="yuancolor3" v-show="row.imputationStatuStr == '已归集'"></div>
               <span>{{ row.imputationStatuStr }}</span>
             </template>
-          </el-table-column>
-          <!-- <el-table-column prop="delFlag  " label="状态">
-            <template slot-scope="{ row, $index }">
-              <div class="yuancolor2" v-show="row.delFlag == '1'"></div>
-              <div class="yuancolor3" v-show="row.delFlag == '0'"></div>
-              <span v-show="row.delFlag == '1'">已删除</span>
-              <span v-show="row.delFlag == '0'">未删除</span>
-            </template>
-          </el-table-column> -->
+          </el-table-column>-->
           <el-table-column label="操作" width="230px">
             <template slot-scope="{ row, $index }">
               <div>
@@ -625,15 +616,12 @@
 <script>
 import { mapState } from 'vuex'
 
-// import CatalogingDetails from '@/views/datefrom/components/CatalogingDetails'
-// import ExcelLeadingin from '@/views/datefrom/components/ExcelLeadingin'
 import CatalogingLog from '@/views/datefrom/components/CatalogingLog'
 import Sharedetails from '@/views/datefrom/components/Sharedetails'
 import { Message, MessageBox } from 'element-ui'
 import { download } from '@/api/manage'
 import { queryUserMassge } from '@/api/api'
 import {
-  postDataFromList,
   postDataFromPage,
   postdeleteBatch,
   getCataLogDataItem,
@@ -651,7 +639,6 @@ import { getExportXls } from '@/api/department'
 export default {
   name: 'Datefrom',
   components: {
-    // ExcelLeadingin,
     Sharedetails,
     CatalogingLog,
   },
@@ -675,14 +662,14 @@ export default {
       dictionary: {
         // 数源应用系统
         system: 'source_system',
-        // 数源单位
-        // source: 'source_unit',
         // 编目状态
         status: 'catalog_status',
         // 目录状态
         cata: 'cata_status',
         // 归集状态
         imputation: 'imputation_status',
+         // 开放状态
+        open: 'open_cata_status',
         // 预警信息下架理由
         earlywarning: 'early_warning_information',
         // 健康码信息下架理由
@@ -696,20 +683,16 @@ export default {
         status: '',
         cataStatus: '',
         imputationStatus: '',
+        openCataStatus: '',
         pageNum: 1,
         pageSize: 10,
         rowStart: 0,
       },
-      // 分页器
-      // page: 1, // 当前页码
-      // limit: 10, // 每页记录数
       total: 0, //总共数据条数
 
       // 下面的表格list
       dateFromList: [],
 
-      // 增加修改组件
-      // isshowModify: false,
       // 点击编辑保存当前的id
       flag: '',
 
@@ -824,14 +807,12 @@ export default {
           // console.log(this.$route.params.formInline)
           // console.log(this.formInline)
           let row = this.$route.params.itemId
-          // console.log(row)
           this.$nextTick(() => {
             this.getRoles(this.formInline.pageNum)
             this.isshowHaredetails = true
             this.$refs.sharedetails.loading = true
             this.$refs.sharedetails.loading1 = true
             this.$refs.sharedetails.activeName = 'second'
-            // this.$refs.sharedetails.activeName = 'first'
             this.$refs.sharedetails.inquireData.catalogId = row
             this.$refs.sharedetails.fetchShareDataPage()
             this.$refs.sharedetails.dateFrom()
@@ -889,8 +870,6 @@ export default {
           } else {
             this.newDepa = res.body
           }
-          // this.orgCode1 = res.body.orgCode
-          // this.departName = res.body.departName
         }
       })
     },
@@ -898,11 +877,6 @@ export default {
       let resFileName = file.name.split('.')
       this.fileName1.fileName = resFileName[0]
     },
-    // checkWidth() {
-    //   const boxWidth = this.$refs['tooltipBox'].offsetWidth
-    //   const itemWidth = this.$refs['tooltipItem'].offsetWidth
-    //   this.showTooltip = boxWidth > itemWidth
-    // },
     disableVisible() {
       this.$refs.sourceSystem.visible = false
       this.$refs.sourceUnit.visible = false
@@ -963,7 +937,6 @@ export default {
           function treeToArr(data, res = []) {
             data.forEach((item) => {
               res.push({
-                // pid: pid,
                 id: item.id,
                 nodeCode: item.nodeCode,
                 nodeName: item.nodeName,
@@ -1023,7 +996,7 @@ export default {
     // 导入exel请求
     postfile() {},
     DateFrom() {
-      let { system, status, cata, imputation, earlywarning, health } = this.dictionary
+      let { system, status, cata, imputation, open, earlywarning, health } = this.dictionary
       // 数源应用系统
       this.$store.dispatch('getApplicationList', system)
 
@@ -1038,8 +1011,9 @@ export default {
 
       // 归集状态
       this.$store.dispatch('getAggregateList', imputation)
+      // 开放状态
+      this.$store.dispatch('getOpenStatusList', open)
       // 预警信息下架理由
-      // earlywarning: 'early_warning_information',
       this.$store.dispatch('getEarlywarning', earlywarning)
       // 健康码信息下架理由
       // health: 'health_code_information'
@@ -1048,22 +1022,15 @@ export default {
 
     // 新增
     addshowModify() {
-      // this.isshowModify = true
-      // /datefrom/AddOrModify
-      // this.$bus.$emit('addData', 'add')
       this.$router.push({
         path: '/datefrom/AddOrModify',
         query: {
           comeFrom: '1',
         },
       })
-      // this.$refs.add.getAddData(false)
     },
     // 点击编辑
     showUpdateAdd(row) {
-      // this.isshowModify = true
-      // console.log('236', this.examine)
-      // this.$refs.add.getUpdateAddData(row.id)
       console.log('369')
       console.log(row.id)
       // this.$bus.$emit('updateAddData', row.id)
@@ -1078,10 +1045,6 @@ export default {
     },
     // 点击复制
     copydatafromitem(row) {
-      // let copyId = [row.id]
-      // this.isshowModify = true
-      // this.$refs.add.getCopyData(row.id)
-      // this.$bus.$emit('copyData', row.id)
       this.$router.push({
         path: '/datefrom/AddOrModify',
         query: {
@@ -1142,8 +1105,6 @@ export default {
           }
         })
       }
-      // console.log(1, this.selectID)
-      // console.log(2, this.shelfForm.ofTheShelf)
     },
     // 全选
     // 选中背景色
@@ -1281,25 +1242,6 @@ export default {
       this.datacheckedCities = []
       this.indexcheckedCities = []
     },
-
-    // 表格状态
-    // statusbtn(val) {
-    //   for (const key in this.datefromList.catalogingStatus) {
-    //     if (this.datefromList.catalogingStatus[key].value == val) {
-    //       return this.datefromList.catalogingStatus[key].text
-    //     }
-    //   }
-    // },
-    // catastatusbtn(val) {
-    //   for (const key in this.datefromList.catalogueList) {
-    //     if (this.datefromList.catalogueList[key].value == val) {
-    //       // console.log(this.datefromList.catalogueList[key].value,val);
-    //       // console.log(val);
-    //       return this.datefromList.catalogueList[key].text
-    //     }
-    //   }
-    // },
-
     // 上架申请
     submitApplication(row) {
       this.releaseApplication = true
@@ -1391,12 +1333,6 @@ export default {
         applyFlieName: '', // 文件上传
       })
     },
-    // 点击批量操作
-    // isSelectIdItem() {
-    //   if (this.selectID.length == 0) {
-    //     Message.error('请至少勾选一个选项')
-    //   }
-    // },
 
     isShowBatchShelf() {
       if (this.shelfList.length == 0) {
@@ -1574,12 +1510,6 @@ export default {
         this.processVisible = false
       })
     },
-
-    // 新增关闭
-    // closeModify(val) {
-    //   this.isshowModify = val
-    //   // this.getRoles()
-    // },
     goBack(val) {
       this.isshowHaredetails = val
     },

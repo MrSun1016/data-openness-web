@@ -253,8 +253,6 @@ const getaddNewNodeList = (nodeId, params) => postAction(`/api/cataLog/view?id=$
 // 数据编目的请求
 // 数据字典请求最上面的框
 const getDictItems = (dictCode, params) => getAction(`/sys/dict/getDictItems/${dictCode}`, null)
-// 数据编目主页面list数据
-const postDataFromList = (params) => postAction('/api/cataLog/list', params)
 // 数据编目主页面list数据分页
 const postDataFromPage = (params) => postAction('/api/cataLog/page', params)
 
@@ -381,6 +379,8 @@ const getDownloadName = (downloadName) => getAction(`/api/cataLog/download/${dow
 const getDownloadExcel = (params) => getAction('/api/file/download', params)
 //互动交流-工单审批通过
 const processByDateId = (params) => postAction('/processFlow/task/processByDateId', params)
+//互动交流-工单驳回
+const getTaskProcessByDataId = (params) => postAction('/processFlow/task/taskProcessByDataId', params)
 // 工单审批通过
 const getCompleteByDateId = (params) => postAction('/flowable/task/completeByDateId', params)
 // 工单批量审批
@@ -803,6 +803,7 @@ export {
     // 工单下架查看
     getShelfApplication,
     processByDateId,
+    getTaskProcessByDataId,
     // 工单审批通过
     getCompleteByDateId,
     //工单批量审批
@@ -848,7 +849,6 @@ export {
     getDownloadName,
     // 数据编目的请求
     getDictItems,
-    postDataFromList,
     postDataFromPage,
     postdeleteBatch,
     postdownload,
