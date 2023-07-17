@@ -2,7 +2,7 @@
   <div class="bigScreen-Page">
     <!-- <top-select :title="title" @mySelect='mySelect' :selectData="[{selectName:'选择日期',indicator:'month',types:'monthPicker'}]"></top-select> -->
     <!-- <div class="switchNav" v-if="reload"> -->
-      <overview-page ref="overviewPage"   :date="date"></overview-page>
+      <overview-page ref="overviewPage" :date="date"></overview-page>
     <!-- </div> -->
   </div>
 </template>
