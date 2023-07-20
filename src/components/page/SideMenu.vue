@@ -1,6 +1,9 @@
 <template>
   <div id="menus-left">
     <!-- :default-active="activeIndex" -->
+    <div class="menusSearch">
+      <el-input class="menusInput" placeholder="请输入关键字" suffix-icon="el-icon-search" v-model="input1"> </el-input>
+    </div>
     <el-menu
       ref="menu"
       v-loading="loading"
@@ -44,7 +47,8 @@ export default {
       indexId: '',
       isShowItem: false,
       keyPathId: '',
-      loading: false
+      loading: false,
+      input1: ''
     }
   },
   activated() {
@@ -192,8 +196,19 @@ export default {
 
 <style lang="less" scoped>
 #menus-left {
-  width: 288px;
+  width: 100%;
   height: calc(100vh - 64px);
+  .menusSearch {
+    width: 100%;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    background-color: #dde1e7;
+    .menusInput {
+      width: 90%;
+    }
+  }
   .el-menu-vertical-demo {
     width: 288px;
     height: 100%;
@@ -207,6 +222,18 @@ export default {
     }
     /deep/ .el-icon-arrow-down {
       margin-right: 32px;
+    }
+    /deep/ .el-submenu__title {
+      background-color: #e9ecf0 !important;
+    }
+    /deep/ .el-submenu__title:hover {
+      background-color: #ffffff !important;
+    }
+    /deep/ .el-menu-item:hover {
+      background-color: #ffffff !important;
+    }
+    /deep/ .el-menu-item {
+      background-color: #f6f6f9 !important;
     }
     // /deep/.el-submenu .el-menu-item {
     //   border-bottom: 1px solid #dcdee0;

@@ -1,6 +1,10 @@
 <template>
   <div id="DataCatalogue">
     <div>
+      <div class="dataSearch">
+        <el-input class="dataInput" placeholder="请输入关键字" suffix-icon="el-icon-search" v-model="datainput">
+        </el-input>
+      </div>
       <div>
         <div class="search">
           <!-- 基础筛选 -->
@@ -24,21 +28,6 @@
             {{ isIconClass ? '基础筛选' : '高级筛选' }}</label
           >
         </div>
-        <el-form class="el-form" inline @submit.native.prevent>
-          <el-form-item label="目录名称">
-            <el-input
-              v-model="resource.catalogName"
-              size="small"
-              placeholder="请输入编目名称"
-              @change="search"
-              clearable
-            ></el-input>
-          </el-form-item>
-          <el-form-item>
-            <el-button type="primary" size="small" @click="search">搜索</el-button>
-            <el-button size="small" @click="handleReset">重置</el-button>
-          </el-form-item>
-        </el-form>
       </div>
       <div>
         <!-- 表格 -->
@@ -72,7 +61,7 @@ export default {
   components: {
     BasedScreening,
     AdvancedFilter,
-    CatalogueTable,
+    CatalogueTable
   },
   data() {
     return {
@@ -93,10 +82,11 @@ export default {
         rowStart: 0,
         shareType: [], //共享类型
         updateFrequency: [], //更新频率
-        treeItemId: '',
+        treeItemId: ''
       },
       total: 0,
       catalogueTableData: [],
+      datainput: ''
     }
   },
   //通过监视
@@ -105,7 +95,7 @@ export default {
       handler(newVal, oldVal) {
         // this.isShowList = !newVal
         this.handleCurrentChange()
-      },
+      }
     },
     $route: {
       handler(val, oldVal) {
@@ -122,8 +112,8 @@ export default {
         }
       },
       // 深度观察监听
-      deep: true,
-    },
+      deep: true
+    }
   },
   activated() {
     // this.resource.categoryCode = ''
@@ -133,7 +123,7 @@ export default {
   mounted() {
     this.handleCurrentChange()
     this.$bus.$emit('handleNodeCode', this.handleCurrentChange)
-    this.$bus.$on('code', (keyNameList) => {
+    this.$bus.$on('code', keyNameList => {
       this.resource.categoryCode = keyNameList.keyName
       this.resource.treeItemId = keyNameList.treeItemId
       // this.handleCurrentChange()
@@ -176,12 +166,12 @@ export default {
       this.currtpageNum = page
       this.resource.pageNum = page
       ResourceMarketpage(this.resource)
-        .then((res) => {
+        .then(res => {
           if (res.success) {
             this.$refs.catalogTbaleRef.tableLoading = false
             this.catalogueTableData = res.body.content
             this.total = res.body.total
-            this.catalogueTableData.forEach((v) => {
+            this.catalogueTableData.forEach(v => {
               if (v.notionalPoolingNum == null) v.notionalPoolingNum = 0
               else v.notionalPoolingNum
               v.releaseTime = this.formatTime(v.releaseTime, 'hms')
@@ -197,14 +187,10 @@ export default {
             Message.error(res.header.message)
           }
         })
-        .catch((_) => {
+        .catch(_ => {
           Message.error(res.header.message)
           this.$refs.catalogTbaleRef.tableLoading = false
         })
-    },
-    // 搜索
-    search() {
-      this.handleCurrentChange()
     },
     // 数据格式选择数据
     changeResource(resourceType) {
@@ -230,8 +216,8 @@ export default {
     changeFrequency(updateFrequency) {
       this.resource.updateFrequency = updateFrequency
       this.handleCurrentChange()
-    },
-  },
+    }
+  }
 }
 </script>
 
@@ -247,6 +233,17 @@ export default {
   }
   .el-form {
     padding: 0 32px;
+  }
+}
+.dataSearch {
+  width: 100%;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  background-color: #dde1e7;
+  .dataInput {
+    width: 95%;
   }
 }
 .pagination-box {

@@ -2,13 +2,11 @@
   <div>
     <PlatformLayout />
     <div id="OpenPlatformLayout">
-      <div>
-        <div style="overflow-y: scroll; height: 100%; background-color: #fff">
-          <SideMenu />
-        </div>
+      <div style="overflow-y: scroll; height: 20%; background-color: #fff">
+        <SideMenu />
       </div>
-        <div class="content">
-          <router-view />
+      <div class="content">
+        <router-view />
       </div>
     </div>
   </div>
@@ -21,19 +19,22 @@ export default {
   name: 'OpenPlatformLayout',
   components: {
     PlatformLayout,
-    SideMenu,
-  },
+    SideMenu
+  }
 }
 </script>
 
 <style lang="less" scoped>
 #OpenPlatformLayout {
+  width: 90%;
   display: flex;
-  background-color: #f2f2f3;
+  margin: 20px auto;
+  justify-content: space-between;
+  background-color: #fff;
   .content {
-    width: 100%;
-    padding: 24px;
-    background: #f2f2f3;
+    width: 80%;
+    padding-left: 24px;
+    background: #fff;
   }
 }
 </style>

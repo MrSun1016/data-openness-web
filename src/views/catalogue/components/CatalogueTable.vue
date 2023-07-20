@@ -2,33 +2,28 @@
   <div id="CatalogueTable">
     <!-- 头部 -->
     <div class="table-header">
-      <label>
-        <div class="items" @click="handleCataloguesSort('updateTime')" style="fontweight: 500">
-          发布时间
-          <i class="icons-items"
-            ><i :class="{ active: timeSortAct === 2 }" class="el-icon-caret-bottom"></i
-            ><i :class="{ active: timeSortAct === 1 }" class="el-icon-caret-top"></i
-          ></i>
-        </div>
-      </label>
-      <label>
-        <div class="items" @click="handleCataloguesSort('notionalPoolingNum')" style="fontweight: 500">
-          归集量
-          <i class="icons-items"
-            ><i :class="{ active: catalogSort === 2 }" class="el-icon-caret-bottom"></i
-            ><i :class="{ active: catalogSort === 1 }" class="el-icon-caret-top"></i
-          ></i>
-        </div>
-      </label>
-      <label>
-        <div class="items" @click="handleCataloguesSort('viewNum')" style="fontweight: 500">
-          浏览量
-          <i class="icons-items"
-            ><i :class="{ active: browseSort === 2 }" class="el-icon-caret-bottom"></i
-            ><i :class="{ active: browseSort === 1 }" class="el-icon-caret-top"></i
-          ></i>
-        </div>
-      </label>
+      <div :class="{ active: headercolo === '1' }" @click="handleCataloguesSort('updateTime')" style="fontweight: 500">
+        发布时间
+      </div>
+      <div
+        :class="{ active: headercolo === '2' }"
+        @click="handleCataloguesSort('notionalPoolingNum')"
+        style="fontweight: 500"
+      >
+        更新时间
+      </div>
+      <div :class="{ active: headercolo === '3' }" @click="handleCataloguesSort('viewNum')" style="fontweight: 500">
+        热门推荐
+      </div>
+      <div :class="{ active: headercolo === '4' }" @click="handleCataloguesSort('viewNum')" style="fontweight: 500">
+        访问量
+      </div>
+      <div :class="{ active: headercolo === '5' }" @click="handleCataloguesSort('viewNum')" style="fontweight: 500">
+        下载量/申请量
+      </div>
+      <div :class="{ active: headercolo === '6' }" @click="handleCataloguesSort('viewNum')" style="fontweight: 500">
+        评分
+      </div>
       <!-- <el-button type="text" class="items" style="fontWeight: 500">数据目录{{ total }}个</el-button> -->
     </div>
     <!-- 头部End -->
@@ -38,66 +33,25 @@
         <div class="content-left">
           <div class="info">
             <div class="info-items">
-              <span
-                style="color: #1890ff; margin-right: 40px; cursor: pointer; fontweight: 600"
-                @click="goCatalogueDetail(item)"
-                >{{ item.catalogName || '-' }}</span
-              >
-              <el-tag v-if="typeof item.dataRange == 'string'" class="tag" size="mini">
-                {{ item.dataRange || '-' }}
-              </el-tag>
-
-              <el-tag v-else class="tag" v-for="tagsRange in item.dataRange" :key="tagsRange" size="mini">
-                {{ tagsRange || '-' }}
-              </el-tag>
-              <!-- <el-tag class="tag" size="mini" v-for="dataRanges in dataRanges" :key="dataRanges">{{
-                dataRanges == '[]' ? '-' : 'dataRanges'
-              }}</el-tag> -->
+              <div class="info-tltile">高中学校信息</div>
+              <div>评分：7.8分</div>
             </div>
-            <div class="info-items">
-              <span>重点领域：</span> <span>{{ item.keyAreasType || '-' }}</span>
+            <div class="info-center">
+              <div class="info-information">
+                <div class="divinformation">来源部门：<span>教育局</span></div>
+                <div class="divinformation">目录发布时间：<span>教育局</span></div>
+                <div class="divinformation">申请量：<span>教育局</span></div>
+                <div class="divinformation">开放等级：<span>教育局</span></div>
+                <div class="divinformation">数据领域：<span>教育局</span></div>
+                <div class="divinformation">数据更新时间：<span>教育局</span></div>
+                <div class="divinformation">访问量：<span>教育局</span></div>
+              </div>
+              <div class="iconPointedStar">
+                <img src="~@assets/images/收藏.png" alt="" />
+                <!-- <img src="~@assets/images/五角星空.png" alt="" /> -->
+              </div>
             </div>
-            <div class="info-items">
-              <span>数源单位：</span> <span>{{ item.sourceUnit || '-' }}</span>
-            </div>
-            <div class="info-items">
-              <span>{{ item.upOrRelease }}：</span> <span>{{ item.releaseTime || '-' }}</span>
-            </div>
-            <div class="info-items" style="color: #333333">
-              <span style="margin-right: 10px" v-show="item.shareType">{{ item.shareType }}</span>
-              <span style="margin-right: 10px">浏览量：{{ item.viewNum }}次</span>
-              <span>归集量：{{ item.notionalPoolingNum || '0' }}条</span>
-            </div>
-          </div>
-          <div class="btns">
-            <el-button
-              v-login
-              v-if="item.interfaceIsMount == '1' && (item.isHistory != '1' || item.relatedGovernment != '是')"
-              type="primary"
-              size="small"
-              @click="handeleDrawer('接口', item)"
-              style="margin-bottom: 20px"
-              ><img style="margin-right: 8px" src="~@assets//port.png" alt="" />申请接口</el-button
-            >
-
-            <el-button
-              v-login
-              :disabled="item.isHide"
-              v-if="item.interfaceIsMount != '1' && item.tableIsMount != '1' && (item.isHistory != '1' || item.relatedGovernment != '是')"
-              type="text"
-              class="piliangbut"
-              @click="onApplyForCollection(item.id)"
-            >
-              申请归集
-            </el-button>
-            <el-button
-              v-login 
-              v-if="item.tableIsMount == '1' && (item.isHistory != '1' || item.relatedGovernment != '是')"
-              type="primary"
-              size="small"
-              @click="handeleDrawer('库表', item)"
-              ><img style="margin-right: 8px" src="~@assets/cusa.png" alt="" /> 申请库表</el-button
-            >
+            <el-button class="dataPreview" type="primary" @click="toDetails">数据预览</el-button>
           </div>
         </div>
         <!-- <el-divider></el-divider> -->
@@ -120,7 +74,7 @@ export default {
   name: 'CatalogueTable',
   components: {
     CatalogueDrawer,
-    ApplyForCollectionDialog,
+    ApplyForCollectionDialog
   },
   props: ['catalogueTableData', 'serviceName'],
   data() {
@@ -134,6 +88,7 @@ export default {
       dataRangeItem: '',
       sortType: '',
       num: '',
+      headercolo: '1'
     }
   },
   activated() {
@@ -145,12 +100,20 @@ export default {
     else this.timeSortAct = 1
     this.handleCataloguesSort(querySortType)
   },
-  created(){
+  created() {
     // this.handleCataloguesSort(querySortType)
   },
   mounted() {},
   computed: {},
   methods: {
+    // 跳详情
+    toDetails() {
+      this.$router.push({
+        path: '/catalogue/datacatalogue/details',
+        query: {}
+      })
+    },
+
     onApplyForCollection(id) {
       this.$refs.dialog.collectionDialog = true
       this.$refs.dialog.catalogId = id
@@ -176,13 +139,13 @@ export default {
               // 倒序
               this.$emit('handleSort', sortType, 'asc')
             }
+          } else {
+            this.timeSortAct = 1
+            if (this.serviceName == '事项') {
+              this.$emit('handleMatterSort', sortType, 'desc')
             } else {
-              this.timeSortAct = 1
-              if (this.serviceName == '事项') {
-                this.$emit('handleMatterSort', sortType, 'desc')
-              } else {
-                this.$emit('handleSort', sortType, 'desc')
-              }
+              this.$emit('handleSort', sortType, 'desc')
+            }
           }
           break
         case 'notionalPoolingNum':
@@ -251,15 +214,15 @@ export default {
           isHide: itemData.isHide,
           dataFormat: itemData.dataFormat,
           isHistory: itemData.isHistory,
-          relatedGovernment: itemData.relatedGovernment,
-        },
+          relatedGovernment: itemData.relatedGovernment
+        }
       })
       localStorage.setItem('catalogName', itemData.catalogName)
       let catalogId = itemData.id
       // let catalogId = "307020400930030000/000085"
-      getDataUseInfo(catalogId).then((res) => {
+      getDataUseInfo(catalogId).then(res => {
         if (res.success) {
-          console.log(res,'1111111')
+          console.log(res, '1111111')
           this.$bus.$emit('onExatableData', res.body)
         }
       })
@@ -272,66 +235,73 @@ export default {
       this.$refs.drawer.interfaceInit()
       if (title == '库表') this.$refs.drawer.fetchDataItemInfo()
       else return
-    },
-  },
+    }
+  }
 }
 </script>
 
 <style lang="less" scoped>
 #CatalogueTable {
+  margin-top: 10px;
   .table-header {
-    height: 48px;
+    height: 45px;
     color: #333333;
     display: flex;
     align-items: center;
-    background: #e6f7ff;
-    .items {
-      margin-left: 36px;
+    background: #f6f6f9;
+    div {
+      margin: 0 35px;
       display: flex;
       align-items: center;
       cursor: pointer;
-      .icons-items {
-        display: flex;
-        flex-direction: column-reverse;
-        color: #bfbfbf;
-        margin-left: 11px;
-        .el-icon-caret-bottom {
-          margin-top: -8px;
-        }
-      }
     }
   }
   .table-content {
     .content-left {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 24px 33px 0 32px;
-      background-color: #fff;
+      // display: flex;
+      // justify-content: space-between;
+      // align-items: center;
+      padding: 18px 33px 0 32px;
+      background-color: #fafafb;
+      border-bottom: 1px solid #f3f5f8;
       .info-items {
-        margin: 10px 0;
-      }
-      .tag {
-        // margin-right: 16px;
-        border-radius: 10px;
-        padding: 0 12px;
-        text-align: center;
-      }
-      .btns {
-        width: 108px;
+        margin-bottom: 15px;
         display: flex;
-        flex-direction: column;
-        .piliangbut {
-          // height: 36px;
-          margin-bottom: 10px;
-          border-radius: 4px;
-          border: 1px solid #1890ff;
-          color: #1890ff;
-          font-size: 14px;
+        align-items: center;
+        justify-content: space-between;
+        .info-tltile {
+          font-size: 20px;
+          color: #191c20;
         }
-        /deep/.el-button + .el-button {
-          margin-left: 0px !important;
+      }
+      .info-center {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        .info-information {
+          width: 90%;
+          display: flex;
+          flex-wrap: wrap;
+          .divinformation {
+            width: 200px;
+            color: #919aa8;
+            margin: 0 0 15px 0;
+            span {
+              color: #4f5967;
+            }
+          }
         }
+        .iconPointedStar {
+          display: flex;
+          flex-direction: row-reverse;
+          width: 10%;
+          img {
+            width: 32px;
+          }
+        }
+      }
+      .dataPreview {
+        margin-bottom: 10px;
       }
     }
   }

@@ -24,6 +24,6 @@ import CatalogueHead from '@views/catalogue/components/CatalogueHead'
 
 <style lang="less" scoped>
 #DataCatalogueDetails{
-    background: #F1F2F5;
+    background: #fff;
 }
 </style>

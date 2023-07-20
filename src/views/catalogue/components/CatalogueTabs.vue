@@ -1,37 +1,37 @@
 <template>
   <div id="CatalogueTable">
     <el-tabs class="tabs" v-model="catalogueTableName">
-      <el-tab-pane label="库表" name="cusa" :disabled="disabled1">
+      <el-tab-pane label="文件" name="cusa">
         <CatalogueCusa :catalogDataDetails="catalogDataDetails" />
       </el-tab-pane>
-      <el-tab-pane label="接口" name="prot" :disabled="disabled2">
-        <CataloguePort :catalogDataDetails="catalogDataDetails" :shareApiInfo="shareApiInfo" />
-      </el-tab-pane>
-      <el-tab-pane label="数据示例" name="example" :disabled="disabled3">
-        <CatalogueExample :catalogDataDetails="catalogDataDetails" />
+      <el-tab-pane label="接口" name="prot">
+        <CataloguePort
+          @handeleDrawer="handeleDrawer"
+          :catalogDataDetails="catalogDataDetails"
+          :shareApiInfo="shareApiInfo"
+        />
       </el-tab-pane>
     </el-tabs>
+    <CatalogueDrawer ref="drawer" />
   </div>
 </template>
 
 <script>
-import CatalogueExample from '@views/catalogue/components/CatalogueExample'
 import CataloguePort from '@views/catalogue/components/CataloguePort'
 import CatalogueCusa from '@views/catalogue/components/CatalogueCusa'
+import CatalogueDrawer from '@views/catalogue/components/CatalogueDrawer'
+
 export default {
-  props: ['catalogDataDetails', 'dataFormat','shareApiInfo'],
+  props: ['catalogDataDetails', 'dataFormat', 'shareApiInfo'],
   name: 'CatalogueTable',
   components: {
     CatalogueCusa,
     CataloguePort,
-    CatalogueExample,
+    CatalogueDrawer
   },
   data() {
     return {
-      catalogueTableName: 'prot',
-      disabled1: false,
-      disabled2: false,
-      disabled3: false,
+      catalogueTableName: 'cusa'
     }
   },
   created() {},
@@ -41,68 +41,46 @@ export default {
   mounted() {
     ;(this.interfaceIsMount = this.$route.query.interfaceIsMount), (this.tableIsMount = this.$route.query.tableIsMount)
     ;(this.isHistory = this.$route.query.isHistory), (this.relatedGovernment = this.$route.query.relatedGovernment)
-    this.initTabs()
   },
   methods: {
-    initTabs() {
-      // let currentName = this.$route.query.dataFormat
-      //是历史数据且是事项主线目录
-      if (this.isHistory == '1' && this.relatedGovernment == '是') {
-        this.catalogueTableName = 'cusa'
-        // 库表
-        this.disabled1 = false
-        // 接口
-        this.disabled2 = true
-        // 数据示例
-        this.disabled3 = true
-        // 接口
-      } else if (this.interfaceIsMount == '1' && this.tableIsMount == '1') {
-        this.catalogueTableName = 'cusa'
-        this.disabled1 = false
-        this.disabled2 = false
-        this.disabled3 = false
-        // 库表-excel
-      } else if (this.tableIsMount == '1') {
-        this.catalogueTableName = 'cusa'
-        // 库表
-        this.disabled1 = false
-        // 接口
-        this.disabled2 = true
-        // 数据示例
-        this.disabled3 = false
-        // 数据示例
-      } else if ( this.interfaceIsMount == '1') {
-        this.catalogueTableName = 'prot' 
-        // 库表
-        this.disabled1 = true
-        // 接口
-        this.disabled2 = false
-        // 数据示例
-        this.disabled3 = true
-      }else if (this.interfaceIsMount == null && this.tableIsMount == null) {//针对事项主线目录历史数据
-        this.catalogueTableName = ' '
-        this.disabled1 = false
-        this.disabled2 = true
-        this.disabled3 = true
-      } else if (this.interfaceIsMount != '1' && this.tableIsMount != '1') {
-        this.catalogueTableName = ' '
-        this.disabled1 = true
-        this.disabled2 = true
-        this.disabled3 = true
-      }
-    },
-  },
+    handeleDrawer(row, title) {
+      console.log('drawer')
+      // this.id = this.$route.query.id
+      // this.$refs.drawer.catalogName = row.catalogName
+      // this.$refs.drawer.title = title
+      this.$refs.drawer.drawer = true
+      // this.$refs.drawer.cataId = this.id
+      // this.$refs.drawer.catalogId = this.$route.query.id
+      // this.$refs.drawer.fetchQueryAppName()
+      // this.$refs.drawer.interfaceInit()
+      // if (title == '库表') this.$refs.drawer.fetchDataItemInfo()
+      // else return
+    }
+  }
 }
 </script>
 
 <style lang="less" scoped>
 #CatalogueTable {
   background: #fff;
-  /deep/.el-tabs__nav-scroll {
-    padding: 0 32px;
+  /deep/.el-tabs__item {
+    background-color: #f6f6f9;
+    color: #4888ff;
   }
-  /deep/.el-tabs__nav-wrap::after {
-    border-bottom: 1px solid #1890ff;
+  /deep/.el-tabs__item.is-active {
+    background-color: #4888ff;
+    color: #fff;
+  }
+  /deep/ .el-tabs__item {
+    padding: 0px;
+    width: 90px;
+    text-align: center;
+  }
+  /deep/ .el-tabs__nav-wrap::after {
+    background-color: #f6f6f9;
+  }
+  /deep/ .el-tabs__active-bar {
+    width: 90px;
   }
 }
 </style>

@@ -12,151 +12,132 @@
     <div v-loading="drawerLoading">
       <div class="title">
         {{ catalogName }}-<span>{{ title }}</span
-        >资源-共享申请
+        >-API开放申请
       </div>
-      <el-form
-        inline
-        ref="catalogueformRules"
-        class="form-data-box"
-        :rules="catalogueformRules"
-        label-position="left"
-        label-width="149px"
-        :model="catalogueData.catalogueApplyData"
-      >
-        <el-row
-          style="margin-left: 0px !important; margin-right: 0px !important; padding: 32px 32px 0 32px"
-          :gutter="20"
+      <div class="drawerConten">
+        <el-form
+          inline
+          ref="catalogueformRules"
+          class="form-data-box"
+          :rules="catalogueformRules"
+          label-position="left"
+          label-width="140px"
+          :model="catalogueData.catalogueApplyData"
         >
-          <el-col :span="12">
-            <el-form-item label="申请标题：">
-              <el-input
-                size="small"
-                disabled
-                clearable
-                v-model="catalogueData.catalogueApplyData.title"
-                placeholder="请输入"
-              ></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="应用系统：">
-              <el-input
-                disabled
-                size="small"
-                clearable
-                v-model="catalogueData.catalogueApplyData.appSystem"
-                placeholder="请输入"
-              ></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="数源单位：">
-              <el-input
-                disabled
-                size="small"
-                clearable
-                v-model="catalogueData.catalogueApplyData.applyDept"
-                placeholder="请输入"
-              ></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="主题分类：">
-              <el-input
-                size="small"
-                clearable
-                disabled
-                v-model="catalogueData.catalogueApplyData.keyAreasType"
-                placeholder="请输入"
-              ></el-input>
-            </el-form-item>
-          </el-col>
-          <!-- <el-col :span="12">
-            <el-form-item label="是否永久申请：" prop="ifForever">
-              <el-radio-group v-model="catalogueData.catalogueApplyData.ifForever">
-                <el-radio label="0">否</el-radio>
-                <el-radio label="1">是</el-radio>
-              </el-radio-group>
-            </el-form-item>
-          </el-col> -->
-          <el-col :span="12">
-            <el-form-item label="使用应用系统：" prop="useAppSystem">
-              <el-select
-                @visible-change="visibleChange"
-                ref="refSelect"
-                clearable
-                size="small"
-                placeholder="请选择"
-                v-model="catalogueData.catalogueApplyData.useAppSystem"
-              >
-                <el-option v-for="item in sourceList" :key="item.id" :label="item.appName" :value="item.appName">
-                </el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="启动时间：" prop="startTime">
-              <el-date-picker
-                style="width: 192.5px"
-                v-model="catalogueData.catalogueApplyData.startTime"
-                type="date"
-                size="small"
-                placeholder="选择启动时间"
-                :picker-options="pickerOptions"
-              >
-              </el-date-picker>
-            </el-form-item>
-          </el-col>
+          <el-row
+            style="margin-left: 0px !important; margin-right: 0px !important; padding: 32px 32px 0 32px"
+            :gutter="20"
+          >
+            <el-col :span="12">
+              <el-form-item label="数源单位：">
+                <el-input
+                  size="small"
+                  disabled
+                  clearable
+                  v-model="catalogueData.catalogueApplyData.title"
+                  placeholder="请输入"
+                ></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="来源系统：">
+                <el-input
+                  disabled
+                  size="small"
+                  clearable
+                  v-model="catalogueData.catalogueApplyData.appSystem"
+                  placeholder="请输入"
+                ></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="24">
+              <el-form-item label="申请说明：" prop="applyRemark" class="expl-df">
+                <el-input
+                  class="expl-input"
+                  type="textarea"
+                  minlength="20"
+                  maxlength="500"
+                  clearable
+                  v-model.trim="catalogueData.catalogueApplyData.applyRemark"
+                  placeholder="请输入"
+                  show-word-limit
+                  :rows="3"
+                ></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="系统名称：">
+                <el-input
+                  disabled
+                  size="small"
+                  clearable
+                  v-model="catalogueData.catalogueApplyData.applyDept"
+                  placeholder="请输入"
+                ></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="系统领域：">
+                <el-input
+                  size="small"
+                  clearable
+                  disabled
+                  v-model="catalogueData.catalogueApplyData.keyAreasType"
+                  placeholder="请输入"
+                ></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12"> </el-col>
+            <el-col :span="12">
+              <el-form-item label="开发者类型：" prop="useAppSystem">
+                <el-select
+                  @visible-change="visibleChange"
+                  ref="refSelect"
+                  clearable
+                  size="small"
+                  placeholder="请选择"
+                  v-model="catalogueData.catalogueApplyData.useAppSystem"
+                >
+                  <el-option v-for="item in sourceList" :key="item.id" :label="item.appName" :value="item.appName">
+                  </el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
 
-          <el-col :span="14">
-            <el-form-item label="结束时间：" prop="endTime">
-              <el-date-picker
-                style="width: 192.5px"
-                v-model="catalogueData.catalogueApplyData.endTime"
-                type="date"
-                size="small"
-                placeholder="选择结束时间"
-                :picker-options="pickerOptions1"
-              >
-              </el-date-picker>
-        <el-button style="margin-left:12px" size="small" @click="catalogueData.catalogueApplyData.endTime=Date.parse(new Date('2099-12-31'))">永久</el-button>
-
-            </el-form-item>
-          </el-col>
-          <el-col :span="24" style="position: relative">
-            <el-form-item label="资源服务申请表：" prop="applyFileName" label-width="161px" class="apply-ipt">
-              <el-input
-                @click.native="handleFileUp"
-                :disabled="true"
-                size="small"
-                class="link-ping"
-                v-model="catalogueData.catalogueApplyData.applyFileName"
-                placeholder="请上传"
-              >
-                <template slot="append"><img src="~@/assets/link.png" alt="" /></template>
-              </el-input>
-            </el-form-item>
-            <p class="download">
-              点击
-              <span style="color: #1890ff; cursor: pointer" @click="onDownload">模版</span>
-              下载《孝感市政务信息资源使用申请表》，申请审批盖章后上传
-            </p>
-          </el-col>
-          <el-col :span="24" style="margin-top: 20px">
-            <el-form-item label="申请说明：" prop="applyRemark" class="expl-df">
-              <el-input
-                type="textarea"
-                minlength="20"
-                maxlength="500"
-                clearable
-                v-model.trim="catalogueData.catalogueApplyData.applyRemark"
-                placeholder="请输入20-500字"
-                show-word-limit
-                :rows="3"
-              ></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="24">
+            <el-col :span="24">
+              <el-form-item label="申请说明：" prop="applyRemark" class="expl-df">
+                <el-input
+                  type="textarea"
+                  minlength="20"
+                  maxlength="500"
+                  clearable
+                  v-model.trim="catalogueData.catalogueApplyData.applyRemark"
+                  placeholder="请输入20-500字"
+                  show-word-limit
+                  :rows="3"
+                ></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="24" style="position: relative">
+              <el-form-item label="资源服务申请表：" prop="applyFileName" label-width="161px" class="apply-ipt">
+                <el-input
+                  @click.native="handleFileUp"
+                  :disabled="true"
+                  size="small"
+                  class="link-ping"
+                  v-model="catalogueData.catalogueApplyData.applyFileName"
+                  placeholder="请上传"
+                >
+                  <template slot="append"><img src="~@/assets/link.png" alt=""/></template>
+                </el-input>
+              </el-form-item>
+              <p class="download">
+                点击
+                <span style="color: #1890ff; cursor: pointer" @click="onDownload">模版</span>
+                下载《孝感市政务信息资源使用申请表》，申请审批盖章后上传
+              </p>
+            </el-col>
+            <!-- <el-col :span="24">
             <el-form-item
               v-if="title != '接口'"
               label="申请数据项："
@@ -164,11 +145,6 @@
               prop="checkedList"
               label-width="100%"
             >
-              <!-- <span style="position: absolute; top: -40px; left: 100px; display: inline-block"
-                >（提示：<span style="color: #d40000">红色文字</span>为不予共享；<span style="color: #1890ff"
-                  >蓝色文字</span
-                >为有条件共享；黑色文字为无条件共享）</span
-              > -->
               <span style="position: absolute; top: -40px; left: 100px; display: inline-block; font-size: 12px"
                 >（提示：<span style="color: #1890ff">蓝色文字</span>为有条件共享；<span style="color: black"
                   >黑色文字</span
@@ -176,7 +152,7 @@
                 为无条件共享；<span style="color: red">红色文字</span
                 >为不予共享，若需要共享请线下协调数源部门授权共享）</span
               >
-              <!-- 复选框 -->
+              
               <div class="checkboxs">
                 <el-checkbox-group v-model="catalogueData.catalogueApplyData.checkedList">
                   <el-checkbox
@@ -199,22 +175,25 @@
                 </el-checkbox-group>
               </div>
             </el-form-item>
-          </el-col>
-        </el-row>
-      </el-form>
-      <!-- 承诺/协议书 -->
-      <div class="protocol" style="display: flex">
-        <el-checkbox @change="handeSubmitBtn($event)" v-model="checke">已仔细阅读并确认</el-checkbox>
-        <div @click="protocolDrawer = true" style="cursor: pointer">
-          <span class="font">《孝感市大数据能力平台使用安全协议书》</span
-          ><span class="font">《孝感市大数据能力平台安全保密承诺书》</span>
+          </el-col> -->
+          </el-row>
+        </el-form>
+        <!-- 承诺/协议书 -->
+        <div class="commitment">
+          <div class="protocol" style="display: flex">
+            <el-checkbox @change="handeSubmitBtn($event)" v-model="checke">已仔细阅读并确认</el-checkbox>
+            <div @click="protocolDrawer = true" style="cursor: pointer">
+              <span class="font">《孝感市大数据能力平台使用安全协议书》</span
+              ><span class="font">《孝感市大数据能力平台安全保密承诺书》</span>
+            </div>
+          </div>
+          <div class="btns">
+            <el-button size="small" @click="handeleBtns(false)" class="cancel-btn">取消</el-button>
+            <el-button type="primary" size="small" :disabled="disabled" :loading="loading" @click="handeleBtns(true)"
+              >提交
+            </el-button>
+          </div>
         </div>
-      </div>
-      <div class="btns">
-        <el-button size="small" @click="handeleBtns(false)" class="cancel-btn">取消</el-button>
-        <el-button type="primary" size="small" :disabled="disabled" :loading="loading" @click="handeleBtns(true)"
-          >提交
-        </el-button>
       </div>
     </div>
     <!-- :z-index="200" -->
@@ -326,7 +305,7 @@ import {
   getStartShareApply,
   getShareUpdate,
   getCompleteByDateId,
-  getDictItems,
+  getDictItems
 } from '@/api/api'
 import { download } from '@/api/manage'
 export default {
@@ -336,22 +315,22 @@ export default {
       drawerLoading: false,
       pickerOptions: {
         //返回true不可选，返回false可选
-        disabledDate: (time) => {
+        disabledDate: time => {
           return time.getTime() < Date.now() - 8.64e7
-        },
+        }
       },
       pickerOptions1: {
         //返回true不可选，返回false可选
-        disabledDate: (time) => {
+        disabledDate: time => {
           return time.getTime() < Date.now() - 8.64e7
-        },
+        }
       },
       sourceList: [],
       showFile: true,
       checked: false,
       loading1: false,
       fileName: {
-        fileName: '',
+        fileName: ''
       },
       upFileVisible: false,
       downloadName: '孝感市政务信息资源使用申请表',
@@ -379,8 +358,8 @@ export default {
           applyFileName: '',
           applyRemark: '',
           // 复选框选中的值
-          checkedList: [],
-        },
+          checkedList: []
+        }
       },
       catalogueCataData: [
         {
@@ -401,8 +380,8 @@ export default {
           primaryKey: '',
           serialNumber: 0,
           shareProperty: '',
-          sharingCondition: null,
-        },
+          sharingCondition: null
+        }
       ],
       catalogId: '',
       checked: '',
@@ -438,23 +417,23 @@ export default {
         updatedTime: '',
         useAppSystem: '', //使用应用系统
         usingTime: '',
-        visitNum: 'visitNum',
+        visitNum: 'visitNum'
       },
       catalogueformRules: {
         title: [
           {
-            required: true,
-          },
+            required: true
+          }
         ],
         appSystem: [
           {
-            required: true,
-          },
+            required: true
+          }
         ],
         applyDept: [
           {
-            required: true,
-          },
+            required: true
+          }
         ],
         // ifForever: [
         //   {
@@ -468,58 +447,58 @@ export default {
             type: 'date',
             required: true,
             message: '请选择',
-            trigger: 'change',
-          },
+            trigger: 'change'
+          }
         ],
         endTime: [
           {
             type: 'date',
             required: true,
             message: '请选择',
-            trigger: 'change',
-          },
+            trigger: 'change'
+          }
         ],
         applyFileName: [
           {
             required: true,
             message: '请上传',
-            trigger: 'blur',
-          },
+            trigger: 'blur'
+          }
         ],
         shareOff: [
           {
             required: true,
             message: '请输入',
-            trigger: 'change',
-          },
+            trigger: 'change'
+          }
         ],
         applyRemark: [
           {
             required: true,
             message: '请输入',
-            trigger: 'blur',
+            trigger: 'blur'
           },
           {
             min: 20,
             max: 500,
             message: '长度在 20 到 500 个字数',
-            trigger: 'blur',
-          },
+            trigger: 'blur'
+          }
         ],
         useAppSystem: [
           {
             required: false,
             message: '请输入',
-            trigger: 'blur',
-          },
+            trigger: 'blur'
+          }
         ],
         checkedList: [
           {
             required: true,
             message: '请至少选择一个数据项',
-            trigger: 'change',
-          },
-        ],
+            trigger: 'change'
+          }
+        ]
       },
       rejectStatus: 0,
       processCode: '',
@@ -528,7 +507,7 @@ export default {
       queryType: '',
       checkFlag: false,
       catalogId: '',
-      applyId: '',
+      applyId: ''
     }
   },
   activated() {
@@ -544,7 +523,7 @@ export default {
       } else {
         this.showFile = true
       }
-    },
+    }
   },
   methods: {
     handleChange(file, fileList) {
@@ -561,7 +540,7 @@ export default {
     },
     fetchApplyInfo() {
       getApplyInfo(this.applyId)
-        .then((res) => {
+        .then(res => {
           if (res.code == 200) {
             this.catalogName = res.result.title
             this.catalogueData.catalogueApplyData.title = res.result.title
@@ -587,11 +566,11 @@ export default {
             Message({
               message: res.header.message,
               type: 'error',
-              customClass: 'messageIndex',
+              customClass: 'messageIndex'
             })
           }
         })
-        .catch((err) => {})
+        .catch(err => {})
     },
     handleCancel() {
       this.drawerSmallMask2 = false
@@ -604,7 +583,7 @@ export default {
       if (visible) {
         // 获取element select组件DOM结构
         let bkpRef = this.$refs.refSelect.popperElm
-        if (!Array.from(bkpRef.children).some((v) => v.className === 'bkp_add_fixed_bottom_select')) {
+        if (!Array.from(bkpRef.children).some(v => v.className === 'bkp_add_fixed_bottom_select')) {
           // 创建元素获取元素
           const el = document.createElement('div')
           el.className = 'bkp_add_fixed_bottom_select'
@@ -644,14 +623,14 @@ export default {
         path: '/systemmaintenance',
         query: {
           flag: true,
-          add: '新增',
-        },
+          add: '新增'
+        }
       })
       this.drawer = false
     },
     // 使用应用系统
     fetchQueryAppName() {
-      queryAppName().then((res) => {
+      queryAppName().then(res => {
         this.sourceList = res.body
       })
     },
@@ -661,10 +640,10 @@ export default {
       this.$refs.excleUpload.clearFiles()
     },
     dictionaryList() {
-      getDictItems(this.impTemplate).then((res) => {
+      getDictItems(this.impTemplate).then(res => {
         // console.log(this.fileName.fileName)
         // 目录下架申请模板
-        let downloadName = res.result.find((fileName) => {
+        let downloadName = res.result.find(fileName => {
           return fileName.text == '孝感市政务信息资源使用申请表'
         })
         this.downloadName = `${downloadName.text}.doc`
@@ -680,14 +659,14 @@ export default {
         Message({
           message: `上传${res.header.message}`,
           type: 'success',
-          customClass: 'messageIndex',
+          customClass: 'messageIndex'
         })
         this.catalogueData.catalogueApplyData.applyFileName = file.response.body
       } else {
         Message({
           message: res.header.message,
           type: 'error',
-          customClass: 'messageIndex',
+          customClass: 'messageIndex'
         })
       }
     },
@@ -696,11 +675,11 @@ export default {
     },
     onDownload() {
       download({
-        fileName: this.downloadName,
+        fileName: this.downloadName
       })
-        .then((res) => {
+        .then(res => {
           const blob = new Blob([res], {
-            type: 'application/json;charset=UTF-8',
+            type: 'application/json;charset=UTF-8'
           }) // res就是接口返回的文件流
           const link = document.createElement('a') // 创建a标签
           const objectUrl = window.URL.createObjectURL(blob)
@@ -709,7 +688,7 @@ export default {
           link.click()
           window.URL.revokeObjectURL(objectUrl) // 释放内存
         })
-        .catch((error) => {
+        .catch(error => {
           this.$message.warning('模板导出失败')
         })
     },
@@ -752,7 +731,7 @@ export default {
     },
     // 确认提交
     handleCatalogSubmit() {
-      this.$refs.catalogueformRules.validate((valid) => {
+      this.$refs.catalogueformRules.validate(valid => {
         if (valid) {
           this.loading1 = true
           this.loading = true
@@ -786,7 +765,7 @@ export default {
     },
     handleGxApplyFiledItemBoList() {
       this.submitData.gxApplyFiledItemBoList = []
-      this.catalogueCataData.forEach((v) => {
+      this.catalogueCataData.forEach(v => {
         if (this.catalogueData.catalogueApplyData.checkedList.indexOf(v.name) != -1) {
           this.submitData.gxApplyFiledItemBoList.push(v)
         }
@@ -799,8 +778,8 @@ export default {
     //审批任务
     fetchCompleteByDateId() {
       getCompleteByDateId({
-        processCode: this.processCode,
-      }).then((res) => {
+        processCode: this.processCode
+      }).then(res => {
         if (res.code == 200) {
           this.handeleAffirmSubmit()
           this.loading = false
@@ -818,7 +797,7 @@ export default {
     },
     //更新数据
     fetchShareUpdate() {
-      getShareUpdate(this.submitData).then((res) => {
+      getShareUpdate(this.submitData).then(res => {
         if (res.success) {
           // this.applyId = res.applyId
           this.upFileVisible = false
@@ -829,16 +808,16 @@ export default {
           Message({
             message: res.message,
             type: 'success',
-            customClass: 'messageIndex',
+            customClass: 'messageIndex'
           })
           setTimeout(() => {
-            this.$emit('onInquire');//刷新驳回页面
-          }, 1000);
+            this.$emit('onInquire') //刷新驳回页面
+          }, 1000)
         } else {
           Message({
             message: res.header.message,
             type: 'error',
-            customClass: 'messageIndex',
+            customClass: 'messageIndex'
           })
           this.drawerSmallMask2 = false
           this.loading = false
@@ -848,7 +827,7 @@ export default {
     },
     // 查询共享申请默认内容
     fetchApplyDefaultInfo() {
-      getApplyDefaultInfo(this.catalogId).then((res) => {
+      getApplyDefaultInfo(this.catalogId).then(res => {
         if (res.success) {
           this.catalogueData.catalogueApplyData.title = res.result.title
           this.catalogueData.catalogueApplyData.appSystem = res.result.appSystem
@@ -858,17 +837,17 @@ export default {
           Message({
             message: res.header.message,
             type: 'error',
-            customClass: 'messageIndex',
+            customClass: 'messageIndex'
           })
         }
       })
     },
     // 查询关联的复选框数据项
     fetchDataItemInfo() {
-      getDataItemInfo(this.catalogId, this.applyId).then((res) => {
+      getDataItemInfo(this.catalogId, this.applyId).then(res => {
         if (res.success) {
           this.catalogueCataData = res.result
-          this.catalogueCataData.forEach((v) => {
+          this.catalogueCataData.forEach(v => {
             if (v.isShow == '1') {
               this.catalogueData.catalogueApplyData.checkedList.push(v.name)
             }
@@ -878,7 +857,7 @@ export default {
     },
     //发起共享申请
     fetchStartShareApply() {
-      getStartShareApply(this.submitData).then((res) => {
+      getStartShareApply(this.submitData).then(res => {
         if (res.success) {
           // Message({
           //   message: `操作${res.header.message}`,
@@ -894,7 +873,7 @@ export default {
           Message({
             message: res.header.message,
             type: 'error',
-            customClass: 'messageIndex',
+            customClass: 'messageIndex'
           })
           this.loading = false
           this.loading1 = false
@@ -904,7 +883,7 @@ export default {
     },
     //新增数据
     fetchShareSave() {
-      getShareSave(this.submitData).then(async (res) => {
+      getShareSave(this.submitData).then(async res => {
         if (res.code == 200) {
           this.catalogueData.catalogueApplyData.useAppSystem = res.result.useAppSystem
           this.catalogueData.catalogueApplyData.ifForever = '0'
@@ -919,13 +898,13 @@ export default {
           Message({
             message: res.message,
             type: 'success',
-            customClass: 'messageIndex',
+            customClass: 'messageIndex'
           })
           this.handeleAffirmSubmit()
           this.fetchStartShareApply()
           setTimeout(() => {
-            this.$emit('onInquire');//刷新驳回页面
-          }, 1000);
+            this.$emit('onInquire') //刷新驳回页面
+          }, 1000)
         } else if (res.code === 500) {
           this.loading1 = false
           this.loading = false
@@ -933,7 +912,7 @@ export default {
           Message({
             message: res.message,
             type: 'error',
-            customClass: 'messageIndex',
+            customClass: 'messageIndex'
           })
         }
       })
@@ -941,20 +920,21 @@ export default {
     // 取消/提交
     handeleBtns(flag) {
       flag ? (this.drawerSmallMask2 = true) : (this.drawerSmallMask = true)
-    },
-  },
+    }
+  }
 }
 </script>
 
 <style lang="less" scoped>
 #CatalogueDrawer {
   /deep/.title {
+    margin: 30px 40px 0 20px;
     height: 60px;
-    color: #1890ff;
+    color: #000000;
+    font-size: 17px;
     line-height: 60px;
     padding-left: 32px;
-    font-weight: 500;
-    border-bottom: 1px solid #1890ff;
+    background-color: #f0f2f4;
   }
 
   .form-data-box {
@@ -984,7 +964,7 @@ export default {
   }
 
   .protocol {
-    padding: 32px;
+    padding: 32px 32px 0 32px;
     font-size: 14px;
 
     .font {
@@ -1016,6 +996,19 @@ export default {
   /deep/.el-form-item {
     margin-right: 0px !important;
   }
+}
+
+.drawerConten {
+  height: 88vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+.commitment {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 /deep/ .el-dialog__body {
@@ -1068,14 +1061,14 @@ export default {
 .expl-df {
   display: flex;
   /deep/.el-form-item__content {
-    width: 100%;
+    width: 90%;
+    margin-left: 8px;
   }
 }
-.check-df {
-  /deep/.el-form-item__content {
-    width: 100%;
-  }
-}
+// .expl-input {
+//   width: 500px;
+// }
+
 .apply-ipt {
   display: flex;
   /deep/.el-form-item__content {

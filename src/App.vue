@@ -1,6 +1,6 @@
 <template>
   <a-config-provider :locale="locale">
-    <div id="app">
+    <div id="app" :class="text">
       <keep-alive>
         <router-view v-if="$route.meta.keepAlive" />
       </keep-alive>
@@ -23,7 +23,8 @@ export default {
     return {
       locale: zhCN,
       // isRouterAlive:true
-      ratio: null
+      ratio: null,
+      text: 'app-class'
     }
   },
   activated() {
@@ -84,43 +85,35 @@ export default {
         if (ratio) {
           ratio = Math.round(ratio * 100)
         }
-        switch (ratio) {
-          case 100:
-            this.text = 'text-class'
-            break
-          case 110:
-            this.text = 'text-class2'
-            break
-          case 125:
-            this.text = 'text-class3'
-            break
-          case 150:
-            this.text = 'text-class4'
-            break
+
+        if (ratio < 150) {
+          this.text = 'app-class'
+        } else if (ratio >= 150) {
+          this.text = 'app-class2'
         }
         this.ratio = ratio
       })
     })
-  },
-  watch: {
-    ratio: {
-      handler: function(val) {
-        console.log('valapp', val)
-        // if (val < 900) {
-        //   console.log(val + '屏幕宽度小于900px')
-        // } else {
-        //   console.log(val + '屏幕宽度大于900px')
-        // }
-      },
-      immediate: true,
-      deep: true
-    }
   }
+  // watch: {
+  //   ratio: {
+  //     handler: function(val) {
+  //       console.log('valapp', val)
+  //     },
+  //     immediate: true,
+  //     deep: true
+  //   }
+  // }
 }
 </script>
 <style lang="less" scoped>
-#app {
-  width: 100%;
+.app-class {
+  // width: 100%;
+  height: 100%;
+  // filter: grayscale(100%)
+}
+.app-class2 {
+  width: 1654px;
   height: 100%;
   // filter: grayscale(100%)
 }
