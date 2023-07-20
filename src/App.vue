@@ -81,7 +81,6 @@ export default {
         } else if (window.outerWidth !== undefined && window.innerWidth !== undefined) {
           ratio = window.outerWidth / window.innerWidth
         }
-        console.log('ratio', ratio)
         if (ratio) {
           ratio = Math.round(ratio * 100)
         }
@@ -95,15 +94,6 @@ export default {
       })
     })
   }
-  // watch: {
-  //   ratio: {
-  //     handler: function(val) {
-  //       console.log('valapp', val)
-  //     },
-  //     immediate: true,
-  //     deep: true
-  //   }
-  // }
 }
 </script>
 <style lang="less" scoped>
