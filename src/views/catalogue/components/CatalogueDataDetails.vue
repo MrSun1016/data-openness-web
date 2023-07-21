@@ -145,7 +145,7 @@ export default {
       this.$refs.dialog.collectionDialog = true
       this.$refs.dialog.catalogId = this.$route.query.id
     },
-    
+
     fetchgetResourceMarket() {
       getResourceMarket(this.id).then(async res => {
         if (res.success) {
@@ -185,7 +185,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@theme-color: #4888FF;
+@theme-color: #4888ff;
 .content-box {
   width: 100%;
   background-color: #fff;
@@ -218,7 +218,7 @@ export default {
         line-height: 25px;
         margin-left: 15px;
         border-radius: 3px;
-        background-color: #5F97FF;
+        background-color: #5f97ff;
       }
     }
   }
