@@ -1,189 +1,243 @@
 <template>
-  <div id="ServeMenu">
-    <div class="trees">
-      <el-tree
-        ref="treeRef"
-        highlight-current
-        class="tree-line"
-        :data="citys"
-        node-key="id"
-        :props="defaultProps"
-        @node-click="handleNodeClick"
-      >
-        <!-- :default-expanded-keys="['001']"
-         :current-node-key="currentNodeKey"
-          :default-checked-keys="[3]" -->
-        <template slot-scope="{ node }">
-          <el-tooltip effect="dark" :content="node.label" placement="top">
-            <div style="overflow: hidden; text-overflow: ellipsis">{{ node.label }}</div>
-          </el-tooltip>
-        </template>
-      </el-tree>
+  <div id="menus-left">
+    <!-- :default-active="activeIndex" -->
+    <div class="menusSearch">
+      <el-input class="menusInput" placeholder="请输入关键字" suffix-icon="el-icon-search" v-model="input1"> </el-input>
     </div>
+    <el-menu
+      ref="menu"
+      v-loading="loading"
+      :unique-opened="true"
+      class="el-menu-vertical-demo"
+      background-color="#fff"
+      text-color="#333333"
+      :active-text-color="activeTextColor"
+      @open="handleOpen"
+      @select="handleSelect"
+    >
+      <!-- @close="close" -->
+      <el-submenu :index="item.categoryName" v-for="item in tabsList" :key="item.id">
+        <template slot="title">
+          <span style="margin-left: 12px">{{ item.categoryName }}</span>
+        </template>
+        <div class="diving" v-show="isShowItem">数据加载中...</div>
+        <!-- <el-menu-item :index="item2.id" v-for="item2 in dataTreeList" :key="item2.id">
+          <span>{{ item2.categoryName }}</span></el-menu-item
+        > -->
+        <MenuTree :dataTreeList="dataTreeList"></MenuTree>
+      </el-submenu>
+    </el-menu>
   </div>
 </template>
 
 <script>
-import { mechanismTree2 } from '@/api/api'
+import MenuTree from '@/components/page/MenuTree'
+import { getTargetcopy, getNodesShare, queryDeptTreeList, getRootNodeId } from '@/api/api'
 export default {
   name: 'ServeMenu',
+  components: {
+    MenuTree
+  },
   data() {
     return {
-      currentNodeKey: '',
-      // isCitysOpen:false,
-      citys: [],
-      defaultProps: {
-        children: 'children',
-        label: 'name',
-      },
+      activeTextColor: '#1890FF',
+      // activeIndex: '1',
+      tabsList: [],
+      dataTreeList: [],
+      indexId: '',
+      isShowItem: false,
+      keyPathId: '',
+      loading: false,
+      input1: ''
     }
   },
-  created() {
-    this.chanismTree()
+  activated() {
+    this.getTargetcopyList()
+    // this.$refs.menu.close(this.index)
   },
-  // watch: {
-  //   $route: 'chanismTree',
-  // },
-  methods: {
-    // 默认高亮显示
-    chanismTree() {
-      mechanismTree2().then((res) => {
-        if (res.success) {
-          this.citys = res.body
+  mounted() {
+    // this.getTargetcopyList()
+  },
+  watch: {
+    $route: {
+      handler: function(val, oldVal) {
+        if (val.path == '/service/serviceitem') {
+          this.$refs.menu.close(this.indexId)
+          this.$refs.menu.activeIndex = null
         }
-        if (this.citys.length > 0) {
-          this.currentNodekey = this.citys[0]
-          this.$nextTick(() => {
-            this.$refs.treeRef.setCurrentKey(this.currentNodekey)
+      },
+      // 深度观察监听
+      deep: true
+    }
+  },
+  methods: {
+    // 页面树状结构数据
+    getTargetcopyList() {
+      this.loading = true
+      // 最上面tabs的数据
+      getNodesShare(10).then(res => {
+        if (res.success) {
+          this.tabsList = res.body
+          this.tabsList.map((item, index) => {
+            item.id = item.id + ''
           })
+          this.loading = false
         }
       })
     },
-    handleNodeClick(itemData) {
-      if (itemData.name === '湖北省') {
-        this.$bus.$emit('handleNode', '')
-        this.$bus.$emit('changeHandleNode', '')
-      } else {
-        this.$bus.$emit('handleNode', itemData.name)
-        this.$bus.$emit('changeHandleNode', itemData.name)
+    // tabs下面的树状结构图
+    handleOpen(key, keyPath) {
+      this.indexId = key
+      if (key == '部门信息资源目录') {
+        this.isShowItem = true
+        this.keyPathId = key
+        this.dataTreeList = []
+        queryDeptTreeList().then(res => {
+          if (res.success) {
+            // this.dataTreeList = res.result
+            // this.dataTreeList.map((item, index) => {
+            //   this.$set(item, 'categoryName', item.departName)
+            //   item.id = item.id + ''
+            // })
+            let that = this
+            function treeToArr(data) {
+              data.forEach(item => {
+                that.$set(item, 'categoryName', item.departName)
+                if (item.children && item.children.length !== 0) {
+                  treeToArr(item.children)
+                }
+              })
+              return data
+            }
+            this.dataTreeList = treeToArr(res.result)
+            this.isShowItem = false
+          }
+        })
+      } else if (key == '区县信息资源目录') {
+        this.isShowItem = true
+        this.keyPathId = key
+        this.dataTreeList = []
+        let keyId = '100000'
+        getRootNodeId(keyId).then(res => {
+          if (res.success) {
+            // this.dataTreeList = res.body
+            // this.dataTreeList.map((item, index) => {
+            //   this.$set(item, 'categoryName', item.departName)
+            //   item.id = item.id + ''
+            // })
+            let that = this
+            function treeToArr(data) {
+              data.forEach(item => {
+                that.$set(item, 'categoryName', item.departName)
+                if (item.children && item.children.length !== 0) {
+                  treeToArr(item.children)
+                }
+              })
+              return data
+            }
+            this.dataTreeList = treeToArr(res.body)
+            this.isShowItem = false
+          }
+        })
+      } else if (key == '基础信息资源目录' || key == '主题信息资源目录') {
+        this.isShowItem = true
+        this.keyPathId = key
+        let idKeyPath
+        this.tabsList.map((item, index) => {
+          if (item.categoryName == key) idKeyPath = item.id
+        })
+        this.dataTreeList = []
+        getTargetcopy(idKeyPath).then(res => {
+          if (res.success) {
+            this.dataTreeList = res.body.children
+            this.dataTreeList.map((item, index) => {
+              item.id = item.id + ''
+            })
+            this.isShowItem = false
+          }
+        })
       }
     },
-  },
-}
-</script>
-<style lang="less" scoped>
-#ServeMenu {
-  width: 288px;
-  // height: 100vh;
-  .trees {
-    width: 288px;
-    height: 100%;
-    // height: 1400px;
-    // overflow: hidden;
-    // overflow-y: scroll;
-  }
-  //  /deep/.el-tree-node__children{
-  //     height: 1400px;
-  //     overflow: hidden;
-  //     overflow-y: scroll;
-  //   }
-  /deep/.tree-line {
-    // width: 288px;
-    padding-top: 20px;
-    .el-tree-node {
-      position: relative;
-      padding-left: 7px; // 缩进量
-    }
-    // .el-tree-node__children {
-    //   padding-left: 16px; // 缩进量
-    // }
-
-    // 竖线
-    .el-tree-node::before {
-      content: '';
-      height: 100%;
-      width: 1px;
-      position: absolute;
-      left: 15px;
-      // left: -3px;
-      top: -26px;
-      border-width: 1px;
-      border-left: 1px dashed #52627c;
-    }
-    // 当前层最后一个节点的竖线高度固定
-    .el-tree-node:last-child::before {
-      height: 38px; // 可以自己调节到合适数值
-    }
-
-    // 横线
-    //   .el-tree-node::after {
-    //     content: "";
-    //     width: 24px;
-    //     height: 20px;
-    //     position: absolute;
-    //     left: -3px;
-    //     top: 12px;
-    //     border-width: 1px;
-    //     border-top: 1px dashed #52627C;
-    //   }
-
-    // 去掉最顶层的虚线，放最下面样式才不会被上面的覆盖了
-    & > .el-tree-node::after {
-      border-top: none;
-    }
-    & > .el-tree-node::before {
-      border-left: none;
-    }
-    // 展开关闭的icon
-    .el-tree-node__expand-icon {
-      font-size: 16px;
-      // 叶子节点（无子节点）
-      &.is-leaf {
-        color: transparent;
-        display: none; // 也可以去掉
+    handleSelect(key, keyPath) {
+      // console.log('1111', key, keyPath)
+      let keyNameList = {
+        keyName: key,
+        treeItemId: ''
+      }
+      if (keyPath[0] == '基础信息资源目录' || keyPath[0] == '主题信息资源目录') {
+        this.dataTreeList.map(item => {
+          if (item.categoryName == key) {
+            keyNameList.keyName = item.id
+          }
+        })
+        // console.log(keyNameList.keyName)
+        keyNameList.treeItemId = '1'
+      } else if (keyPath[0] == '部门信息资源目录') {
+        keyNameList.treeItemId = '2'
+      } else if (keyPath[0] == '区县信息资源目录') {
+        keyNameList.treeItemId = '3'
+      }
+      if (
+        keyNameList.keyName != '基础信息资源目录' &&
+        keyNameList.keyName != '主题信息资源目录' &&
+        keyNameList.keyName != '部门信息资源目录' &&
+        keyNameList.keyName != '区县信息资源目录'
+      ) {
+        // console.log("'code'keyNameList", keyNameList)
+        this.$bus.$emit('code', keyNameList)
       }
     }
+    // close(){
+    //   this.dataTreeList = []
+    // }
   }
-  // 自定义图标
-  /deep/.el-tree .el-tree-node__expand-icon.expanded {
-    -webkit-transform: rotate(0deg);
-    transform: rotate(0deg);
+}
+</script>
+
+<style lang="less" scoped>
+#menus-left {
+  width: 100%;
+  height: calc(100vh - 64px);
+  .menusSearch {
+    width: 100%;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    background-color: #dde1e7;
+    .menusInput {
+      width: 90%;
+    }
   }
-  /deep/.el-tree .el-icon-caret-right:before {
-    background: url('../../assets/add.png') no-repeat 0 3px;
-    content: '';
-    display: block;
-    width: 18px;
-    height: 25px;
-    font-size: 18px;
-    background-size: 18px;
+  .el-menu-vertical-demo {
+    width: 288px;
+    height: 100%;
+    /deep/.el-submenu__title {
+      border-bottom: 1px solid #dcdee0;
+      height: 60px;
+    }
+    .diving {
+      margin-left: 100px;
+      color: #1890ff;
+    }
+    /deep/ .el-icon-arrow-down {
+      margin-right: 32px;
+    }
+    /deep/ .el-submenu__title {
+      background-color: #e9ecf0 !important;
+    }
+    /deep/ .el-submenu__title:hover {
+      background-color: #ffffff !important;
+    }
+    /deep/ .el-menu-item:hover {
+      background-color: #ffffff !important;
+    }
+    /deep/ .el-menu-item {
+      background-color: #f6f6f9 !important;
+    }
+    // /deep/.el-submenu .el-menu-item {
+    //   border-bottom: 1px solid #dcdee0;
+    // }
   }
-  /deep/.el-tree .el-tree-node__expand-icon.expanded.el-icon-caret-right:before {
-    background: url('../../assets/minus.png') no-repeat 0 3px;
-    content: '';
-    display: block;
-    width: 18px;
-    height: 25px;
-    font-size: 18px;
-    background-size: 18px;
-  }
-  /deep/.el-tree-node__expand-icon.is-leaf::before {
-    display: none;
-  }
-  /* 点击节点时的选中颜色 */
-  /deep/ .el-tree-node.is-current > .el-tree-node__content {
-    color: #1890ff !important;
-  }
-  /deep/.el-tree .tree-line {
-    overflow: hidden !important;
-  }
-  /deep/.el-tree-node__label {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  // /deep/.el-tree-node__label:hover{
-  //   color: red;
-  // }
 }
 </style>

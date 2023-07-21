@@ -1,12 +1,10 @@
 <template>
   <div id="serviceItem">
-    <BasedMatter
-      @servicesCycle="servicesCycle"
-      @servicesLicense="servicesLicense"
-      @servicesResources="servicesResources"
-    />
-    <ServiceInquire @serviceValue="serviceValue" />
-    <CatalogueTable
+    <div class="dataSearch">
+      <el-input class="dataInput" placeholder="请输入关键字" suffix-icon="el-icon-search" v-model="datainput">
+      </el-input>
+    </div>
+    <ServiceTable
       ref="catalogTbaleRef"
       :total="total"
       :catalogueTableData="catalogueTableData"
@@ -33,15 +31,13 @@
 <script>
 import { ServiceMatterspage } from '@/api/api'
 import ServiceInquire from '@views/service/components/ServiceInquire'
-import BasedMatter from '@views/catalogue/components/BasedMatter'
-import CatalogueTable from '@views/catalogue/components/CatalogueTable'
+import ServiceTable from '@views/service/components/ServiceTable'
 import { Message } from 'element-ui'
 export default {
   name: 'ServiceItem',
   components: {
-    BasedMatter,
     ServiceInquire,
-    CatalogueTable,
+    ServiceTable
   },
   data() {
     return {
@@ -64,21 +60,21 @@ export default {
         // 默认查孝感市
         sourceUnitCode: '', //树节点编码
         updateFrequency: [], //更新周期/频率
-        userId: '',
+        userId: ''
       },
       catalogueTableData: [],
       total: 0,
-      serviceName: '事项',
+      serviceName: '事项'
     }
   },
   activated() {
     this.searchParams.sourceUnitCode = ''
-    this.$bus.$on('fatherReset', (_) => {
+    this.$bus.$on('fatherReset', _ => {
       this.searchParams.dataFormat = []
       this.searchParams.electronicLicense = []
       this.searchParams.updateFrequency = []
     })
-    this.$bus.$on('changeHandleNode', (nodeCode) => {
+    this.$bus.$on('changeHandleNode', nodeCode => {
       this.searchParams.sourceUnitCode = nodeCode
       this.handleCurrentChange()
     })
@@ -112,12 +108,12 @@ export default {
       this.$refs.catalogTbaleRef.tableLoading = true
       this.searchParams.pageNum = page
       ServiceMatterspage(this.searchParams)
-        .then((res) => {
+        .then(res => {
           if (res.success) {
             this.$refs.catalogTbaleRef.tableLoading = false
             this.catalogueTableData = res.body.content
             this.total = res.body.total
-            this.catalogueTableData.forEach((v) => {
+            this.catalogueTableData.forEach(v => {
               if (v.notionalPoolingNum == null) v.notionalPoolingNum = 0
               else v.notionalPoolingNum
               v.releaseTime = this.formatTime(v.releaseTime, 'hms')
@@ -133,7 +129,7 @@ export default {
             })
           }
         })
-        .catch((_) => {
+        .catch(_ => {
           Message.error(res.header.message)
           this.$refs.catalogTbaleRef.tableLoading = false
         })
@@ -158,16 +154,28 @@ export default {
     servicesResources(resourceType) {
       this.searchParams.dataFormat = resourceType
       this.handleCurrentChange()
-    },
-  },
+    }
+  }
 }
 </script>
 
 <style lang="less" scoped>
 #serviceItem {
+  width: 100%;
   // height: 100%;
-  background: #fff;
+  background: rgb(255, 255, 255);
   padding-bottom: 24px;
+  .dataSearch {
+    width: 100%;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    background-color: #dde1e7;
+    .dataInput {
+      width: 95%;
+    }
+  }
   .divdata {
     width: 100%;
     height: 150px;

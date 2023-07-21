@@ -27,8 +27,8 @@ export default {
 <style lang="less" scoped>
 #OpenPlatformLayout {
   width: 90%;
-  display: flex;
   margin: 20px auto;
+  display: flex;
   justify-content: space-between;
   background-color: #fff;
   .content {
