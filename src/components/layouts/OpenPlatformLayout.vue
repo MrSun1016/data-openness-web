@@ -9,17 +9,20 @@
         <router-view />
       </div>
     </div>
+    <Openfooter></Openfooter>
   </div>
 </template>
 
 <script>
 import PlatformLayout from '@/components/page/PlatformLayout'
 import SideMenu from '@/components/page/SideMenu'
+import Openfooter from '@/components/page/Openfooter'
 export default {
   name: 'OpenPlatformLayout',
   components: {
     PlatformLayout,
-    SideMenu
+    SideMenu,
+    Openfooter
   }
 }
 </script>

@@ -47,6 +47,7 @@
       >
       </el-pagination>
     </div>
+    <FloatingIcon class="floatingIcon"></FloatingIcon>
   </div>
 </template>
 
@@ -56,12 +57,14 @@ import { Message } from 'element-ui'
 import CatalogueTable from '@views/catalogue/components/CatalogueTable'
 import AdvancedFilter from '@views/catalogue/components/AdvancedFilter'
 import BasedScreening from '@views/catalogue/components/BasedScreening'
+import FloatingIcon from '@/components/page/FloatingIcon'
 export default {
   name: 'DataCatalogue',
   components: {
     BasedScreening,
     AdvancedFilter,
-    CatalogueTable
+    CatalogueTable,
+    FloatingIcon
   },
   data() {
     return {
@@ -86,7 +89,7 @@ export default {
       },
       total: 0,
       catalogueTableData: [],
-      dataInput1:''
+      dataInput1: ''
     }
   },
   //通过监视

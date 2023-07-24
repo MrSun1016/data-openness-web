@@ -42,7 +42,8 @@ export default {
   name: 'ServiceItem',
   components: {
     ServiceInquire,
-    ServiceTable
+    ServiceTable,
+    ServiceDetails
   },
   data() {
     return {
@@ -66,21 +67,22 @@ export default {
         // 默认查孝感市
         sourceUnitCode: '', //树节点编码
         updateFrequency: [], //更新周期/频率
-        userId: '',
+        userId: ''
       },
       catalogueTableData: [],
       total: 0,
-      serviceName: '事项'
+      serviceName: '事项',
+      isDetails: false
     }
   },
   activated() {
     this.searchParams.sourceUnitCode = ''
-    this.$bus.$on('fatherReset', (_) => {
+    this.$bus.$on('fatherReset', _ => {
       this.searchParams.dataFormat = []
       this.searchParams.electronicLicense = []
       this.searchParams.updateFrequency = []
     })
-    this.$bus.$on('changeHandleNode', (nodeCode) => {
+    this.$bus.$on('changeHandleNode', nodeCode => {
       this.searchParams.sourceUnitCode = nodeCode
       this.handleCurrentChange()
     })
@@ -118,12 +120,12 @@ export default {
       this.$refs.catalogTbaleRef.tableLoading = true
       this.searchParams.pageNum = page
       ServiceMatterspage(this.searchParams)
-        .then((res) => {
+        .then(res => {
           if (res.success) {
             this.$refs.catalogTbaleRef.tableLoading = false
             this.catalogueTableData = res.body.content
             this.total = res.body.total
-            this.catalogueTableData.forEach((v) => {
+            this.catalogueTableData.forEach(v => {
               if (v.notionalPoolingNum == null) v.notionalPoolingNum = 0
               else v.notionalPoolingNum
               v.releaseTime = this.formatTime(v.releaseTime, 'hms')
@@ -139,7 +141,7 @@ export default {
             })
           }
         })
-        .catch((_) => {
+        .catch(_ => {
           Message.error(res.header.message)
           this.$refs.catalogTbaleRef.tableLoading = false
         })
@@ -164,8 +166,8 @@ export default {
     servicesResources(resourceType) {
       this.searchParams.dataFormat = resourceType
       this.handleCurrentChange()
-    },
-  },
+    }
+  }
 }
 </script>
 
