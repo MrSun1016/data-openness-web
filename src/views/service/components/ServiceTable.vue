@@ -33,21 +33,19 @@
         <div class="content-left">
           <div class="info">
             <div class="info-items">
-              <div class="info-tltile">高中学校信息</div>
+              <div class="info-tltile" @click="toDetails">高中学校信息</div>
               <div>评分：7.8分</div>
             </div>
             <div class="info-center">
-              <div>
-                <img src="" alt="">
-              </div>
+              <!-- <div> -->
+              <img class="imagetu" src="~@assets/images/医院.png" alt="" />
+              <!-- </div> -->
               <div class="info-information">
-                <div class="divinformation">来源部门：<span>教育局</span></div>
-                <div class="divinformation">目录发布时间：<span>教育局</span></div>
-                <div class="divinformation">申请量：<span>教育局</span></div>
-                <div class="divinformation">开放等级：<span>教育局</span></div>
-                <div class="divinformation">数据领域：<span>教育局</span></div>
-                <div class="divinformation">数据更新时间：<span>教育局</span></div>
+                <div class="divinformation">应用类型：<span>教育局</span></div>
+                <div class="divinformation">所属领域：<span>教育局</span></div>
                 <div class="divinformation">访问量：<span>教育局</span></div>
+                <div class="divinformation">发布时间：<span>教育局</span></div>
+                <div class="divinformation">更新时间：<span>教育局</span></div>
               </div>
               <div class="iconPointedStar">
                 <img src="~@assets/images/收藏.png" alt="" />
@@ -62,9 +60,9 @@
     <div class="divdata" v-else v-loading="tableLoading"><p>暂无数据</p></div>
     <!-- <div v-show="loading">数据正在加载中...</div> -->
     <!-- 申请接口-库表 -->
-    <CatalogueDrawer ref="drawer" />
+    <!-- <CatalogueDrawer ref="drawer" /> -->
     <!-- 申请归集弹窗 -->
-    <ApplyForCollectionDialog ref="dialog" />
+    <!-- <ApplyForCollectionDialog ref="dialog" /> -->
   </div>
 </template>
 
@@ -110,10 +108,8 @@ export default {
   methods: {
     // 跳详情
     toDetails() {
-      this.$router.push({
-        path: '/catalogue/datacatalogue/details',
-        query: {}
-      })
+      console.log('toDetails')
+      this.$emit('isServiceDetails', true)
     },
 
     onApplyForCollection(id) {
@@ -263,15 +259,17 @@ export default {
       // display: flex;
       // justify-content: space-between;
       // align-items: center;
-      padding: 18px 33px 0 32px;
+      padding: 18px 33px 15px 32px;
+      // margin-bottom: 20px;
       background-color: #fafafb;
-      border-bottom: 1px solid #f3f5f8;
+      border-bottom: 2px solid #f3f5f8;
       .info-items {
         margin-bottom: 15px;
         display: flex;
         align-items: center;
         justify-content: space-between;
         .info-tltile {
+          cursor: pointer;
           font-size: 20px;
           color: #191c20;
         }
@@ -280,6 +278,12 @@ export default {
         display: flex;
         align-items: center;
         justify-content: space-between;
+        .imagetu {
+          width: 90px;
+          height: 90px;
+          border-radius: 45px;
+          margin-right: 30px;
+        }
         .info-information {
           width: 90%;
           display: flex;

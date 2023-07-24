@@ -1,0 +1,63 @@
+<template>
+  <div id="Openfooter">
+    <div class="conten">
+      <div class="toplink">
+        <img src="~@assets/images/red.png" alt="" />
+        <div>开放协议</div>
+        <div>|</div>
+        <div>使用手册</div>
+        <div>|</div>
+        <div>版权声明</div>
+        <div>|</div>
+        <div>隐私声明</div>
+        <div>|</div>
+        <div>网站地图</div>
+      </div>
+    </div>
+    <div class="">
+      <div>主办：孝感市政务服务和大数据管理局</div>
+      <div>地址：孝感市新桥路1号</div>
+      <div>联系电话：0712-2281666</div>
+      <div>传真：0712-2281359</div>
+    </div>
+    <div>
+      <div>网站标识码：4209000048</div>
+      <div>鄂ICP备05015859号</div>
+      <div>鄂公网安备42090202000171</div>
+      <div>技术支持：孝感市门户网站管理中心</div>
+    </div>
+  </div>
+</template>
+<script>
+export default {
+  name: 'Openfooter',
+  data() {
+    return {}
+  }
+}
+</script>
+
+<style lang="less" scoped>
+#Openfooter {
+  width: 100%;
+  height: 160px;
+  color: #fff;
+  background-color: #4f5967;
+  display: flex;
+  justify-content: center;
+  .conten {
+    width: 50%;
+    height: 100%;
+    // background-color: cadetblue;
+    .toplink {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      img {
+        width: 64px;
+        height: 64px;
+      }
+    }
+  }
+}
+</style>
