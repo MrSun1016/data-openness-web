@@ -21,10 +21,10 @@
     >
       <el-menu-item index="/openPlatform/home">首页</el-menu-item>
       <el-menu-item index="/catalogue/datacatalogue">开放数据</el-menu-item>
-      <el-menu-item index="/service/serviceitem">资讯中心</el-menu-item>
+      <el-menu-item index="/system/helpdocument">资讯中心</el-menu-item>
       <el-menu-item index="/system/policyrule">交流互动</el-menu-item>
       <el-menu-item index="/system/datastandard">开放统计</el-menu-item>
-      <el-menu-item index="/system/helpdocument">应用成果</el-menu-item>
+      <el-menu-item index="/service/serviceitem">应用成果</el-menu-item>
       <!-- <el-menu-item index="/system/FunctionNavigation" v-if="token">功能导航</el-menu-item> -->
     </el-menu>
 

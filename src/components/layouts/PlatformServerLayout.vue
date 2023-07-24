@@ -23,20 +23,23 @@ export default {
   name: 'PlatformServerLayout',
   components: {
     ServeLayout,
-    ServeMenu,
-  },
+    ServeMenu
+  }
 }
 </script>
 
 <style lang="less" scoped>
 #PlatformServerLayout {
-  height: calc(100vh - 64px);
+  width: 90%;
+  margin: 20px auto;
   display: flex;
+  justify-content: space-between;
+  background-color: #fff;
   .content {
     width: 100%;
     padding: 24px;
     // height:100%;
-    background: #f2f2f3;
+    // background: #ffffff;
   }
 }
 </style>
