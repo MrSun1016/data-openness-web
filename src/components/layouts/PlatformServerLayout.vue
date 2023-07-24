@@ -13,17 +13,20 @@
         </div>
       </div>
     </div>
+    <Openfooter></Openfooter>
   </div>
 </template>
 
 <script>
 import ServeLayout from '@/components/page/ServeLayout'
 import ServeMenu from '@/components/page/ServeMenu'
+import Openfooter from '@/components/page/Openfooter'
 export default {
   name: 'PlatformServerLayout',
   components: {
     ServeLayout,
-    ServeMenu
+    ServeMenu,
+    Openfooter
   }
 }
 </script>
@@ -37,7 +40,7 @@ export default {
   background-color: #fff;
   .content {
     width: 100%;
-    padding: 24px;
+    padding: 0 24px 24px 24px;
     // height:100%;
     // background: #ffffff;
   }

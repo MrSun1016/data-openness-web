@@ -1,30 +1,34 @@
 <template>
-  <div id="serviceItem">
-    <div class="dataSearch">
-      <el-input class="dataInput" placeholder="请输入关键字" suffix-icon="el-icon-search" v-model="datainput">
-      </el-input>
-    </div>
-    <ServiceTable
-      ref="catalogTbaleRef"
-      :total="total"
-      :catalogueTableData="catalogueTableData"
-      :serviceName="serviceName"
-      @handleMatterSort="handleMatterSort"
-    />
-    <div class="divdata" v-show="catalogueTableData == []"><p>暂无数据</p></div>
-    <div class="pagination-box">
-      <el-pagination
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page="searchParams.pageNum"
-        :page-sizes="[10, 20, 30, 50]"
-        :page-size="searchParams.pageSize"
-        layout="total, sizes, prev, pager, next, jumper"
-        background
+  <div>
+    <div id="serviceItem" v-show="!isDetails">
+      <div class="dataSearch">
+        <el-input class="dataInput" placeholder="请输入关键字" suffix-icon="el-icon-search" v-model="datainput">
+        </el-input>
+      </div>
+      <ServiceTable
+        ref="catalogTbaleRef"
         :total="total"
-      >
-      </el-pagination>
+        :catalogueTableData="catalogueTableData"
+        :serviceName="serviceName"
+        @handleMatterSort="handleMatterSort"
+        @isServiceDetails="isServiceDetails"
+      />
+      <div class="divdata" v-show="catalogueTableData == []"><p>暂无数据</p></div>
+      <div class="pagination-box">
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="searchParams.pageNum"
+          :page-sizes="[10, 20, 30, 50]"
+          :page-size="searchParams.pageSize"
+          layout="total, sizes, prev, pager, next, jumper"
+          background
+          :total="total"
+        >
+        </el-pagination>
+      </div>
     </div>
+    <ServiceDetails v-show="isDetails" @isServiceDetails="isServiceDetails"></ServiceDetails>
   </div>
 </template>
 
@@ -32,12 +36,13 @@
 import { ServiceMatterspage } from '@/api/api'
 import ServiceInquire from '@views/service/components/ServiceInquire'
 import ServiceTable from '@views/service/components/ServiceTable'
+import ServiceDetails from '@views/service/components/ServiceDetails'
 import { Message } from 'element-ui'
 export default {
   name: 'ServiceItem',
   components: {
     ServiceInquire,
-    ServiceTable,
+    ServiceTable
   },
   data() {
     return {
@@ -65,7 +70,7 @@ export default {
       },
       catalogueTableData: [],
       total: 0,
-      serviceName: '事项',
+      serviceName: '事项'
     }
   },
   activated() {
@@ -92,6 +97,10 @@ export default {
     this.handleCurrentChange()
   },
   methods: {
+    isServiceDetails(val) {
+      this.isDetails = val
+    },
+
     handleMatterSort(type, val) {
       this.searchParams.orderBy = type
       this.searchParams.orderSc = val

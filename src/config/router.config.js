@@ -135,11 +135,17 @@ export const constantRouterMap = [
     meta: { title: '政策法规', keepAlive: false },
     component: () => import('@/views/system/PolicyRule'),
   },
+  // {
+  //   path: '/system/datastandard',
+  //   name: 'datastandard',
+  //   meta: { title: '数据规范', keepAlive: false },
+  //   component: () => import('@/views/system/DataStandard'),
+  // },
   {
-    path: '/system/datastandard',
-    name: 'datastandard',
-    meta: { title: '数据规范', keepAlive: false },
-    component: () => import('@/views/system/DataStandard'),
+    path: '/openStatistics/openTable',
+    name: 'openTable',
+    meta: { title: '开放统计', keepAlive: false },
+    component: () => import('@/views/openStatistics/openTable'),
   },
   {
     path: '/system/helpdocument',
