@@ -33,10 +33,10 @@
       <div v-if="!token" class="textuser" style="cursor: pointer" @click="$router.push('/escsso')">登录/注册</div>
       <div v-else>
         <a-avatar class="avatar" style="margin-right: -5px" :src="userImg" />
-        <span style="color: #fff; padding: 0 12px;" slot="reference">
+        <span style="color: #fff; padding: 0 12px" slot="reference">
           {{ nickname() }}
           <el-tooltip class="over-item" :content="departName" placement="top">
-            <span v-show="departName" style="font-size: 10px; color: #fff;">({{ departName }})</span>
+            <span v-show="departName" style="font-size: 10px; color: #fff">({{ departName }})</span>
           </el-tooltip>
         </span>
         <!-- </el-popover>  -->
@@ -50,20 +50,21 @@
             {{ depars.departName }} <span v-show="orgCode==depars.orgCode" style="font-size: 12px">（当前所在部门）</span>
           </p>-->
           <!-- <div class="pointer" style="font-size: 16px;" @click="handlePath('1')" >资源市场</div> -->
-          <div class="pointer" style="margin-bottom: 10px;font-size: 14px;" @click="handlePath('2')">后台管理</div>
+          <div class="pointer" style="margin-bottom: 10px; font-size: 14px" @click="handlePath('2')">后台管理</div>
           <!-- <div class="pointer" style="margin-top: 15px;font-size: 16px;" @click="handlePath('3')" >可视化建模</div>
           <div class="pointer" style="margin-top: 15px;font-size: 16px;" @click="handlePath('4')" >数栖平台</div>
           <div class="pointer" style="margin-top: 15px;font-size: 16px;" @click="handlePath('5')" >数据安全平台</div> -->
           <!-- <div class="pointer" style="margin-top: 13px;" @click="handleRouter">系统维护</div> -->
           <div
             class="pointer"
-            style="margin-bottom: 10px;font-size: 14px;"
+            style="margin-bottom: 10px; font-size: 14px"
             @click="departmentSwitch(department)"
             v-has="'isDepartment:switch'"
           >
             部门切换
           </div>
-          <div class="pointer" style="font-size: 14px;" @click="handleLogout">退出登录</div>
+          <div class="pointer" style="font-size: 14px;margin-bottom: 10px" @click="handlePath('6')">个人中心</div>
+          <div class="pointer" style="font-size: 14px" @click="handleLogout">退出登录</div>
           <i class="el-icon-arrow-down" slot="reference" style="cursor: pointer"></i>
         </el-popover>
         <!-- <a-icon style="color: #fff" type="down" @click="handleLoginSel" /> -->
@@ -102,7 +103,7 @@ export default {
       userName: '',
       department: {},
       orgCode: '',
-      departName: ''
+      departName: '',
     }
   },
   activated() {},
@@ -121,11 +122,11 @@ export default {
         return true
       }
       return false
-    }
+    },
   },
   methods: {
     fetchUserMassge() {
-      queryUserMassge().then(res => {
+      queryUserMassge().then((res) => {
         if (res.success) {
           // this.orgCode = res.body.orgCode
           this.departName = res.body.departName
@@ -136,9 +137,9 @@ export default {
       return new Promise((resolve, reject) => {
         let obj = {
           orgCode: data.orgCode,
-          username: this.userName
+          username: this.userName,
         }
-        putAction('/sys/selectDepart', obj).then(res => {
+        putAction('/sys/selectDepart', obj).then((res) => {
           if (res.success) {
             const userInfo = res.result.userInfo
             Vue.ls.set(USER_INFO, userInfo, 7 * 24 * 60 * 60 * 1000)
@@ -147,7 +148,7 @@ export default {
             Message({
               message: '切换成功',
               type: 'success',
-              customClass: 'messageIndex'
+              customClass: 'messageIndex',
             })
             location.reload()
             resolve()
@@ -160,7 +161,7 @@ export default {
       })
     },
     fetchDepartList() {
-      getDepartList(this.userName).then(res => {
+      getDepartList(this.userName).then((res) => {
         if (res.code === 200) {
           this.department = res.result
         } else {
@@ -177,7 +178,7 @@ export default {
                     Vue.ls.remove(ACCESS_TOKEN)
                     window.location.href = 'http://xgdsj.xiaogan.gov.cn'
                   })
-                }
+                },
               })
             }
           }
@@ -227,13 +228,15 @@ export default {
           // window.open(`http://59.208.164.226:60001/ent/index.html#/console/overview`, '_blank')
           break
         case '5':
-          getUserInfoToken().then(res => {
+          getUserInfoToken().then((res) => {
             if (res.success) {
               window.open(`https://59.208.164.228:60004/sign/jwtLogin/new?token=${res.result}`, '_blank')
             }
           })
           // window.open(`https://59.208.164.228:60004/#/portal`, '_blank')
-          break
+          break;
+        case '6':
+          this.$router.push("/personalCenter/perCenter")
       }
     },
     handleRouter() {
@@ -277,7 +280,7 @@ export default {
                 return false
               }
             })
-            .catch(err => {
+            .catch((err) => {
               // that.$message.error({
               //   title: '错误',
               //   description: err.message,
@@ -304,18 +307,18 @@ export default {
                 return false
               }
             })
-        }
+        },
       })
     },
     departmentSwitch(department) {
       //部门切换
       let that = this
       this.$refs.selectModal.show(department)
-    }
+    },
   },
   activated() {
     // this.token = JSON.parse(localStorage.getItem('pro__Access-Token'))
-  }
+  },
 }
 </script>
 <style>
