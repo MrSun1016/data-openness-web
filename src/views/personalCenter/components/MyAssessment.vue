@@ -1,21 +1,20 @@
 <template>
-  <div id="myserve">
+  <div id="myassessment">
     <el-table
       :data="tableData"
       style="width: 100%"
       :cell-style="handleCellStyle"
       :header-cell-style="{ background: '#DDE1E7' }"
     >
-      <el-table-column type="index" label="编号" width="50"> </el-table-column>
+      <el-table-column type="index" label="序号" width="50"> </el-table-column>
       <el-table-column prop="name" label="数据资源" width="180"> </el-table-column>
       <el-table-column prop="name" label="数源部门"> </el-table-column>
-      <el-table-column prop="name" label="key"> </el-table-column>
-      <el-table-column prop="name" label="申请/审核时间"> </el-table-column>
-      <el-table-column prop="name" label="状态"> </el-table-column>
+      <el-table-column prop="name" label="数据格式"> </el-table-column>
+      <el-table-column prop="name" label="评价内容"> </el-table-column>
+      <el-table-column prop="name" label="评价时间"> </el-table-column>
       <el-table-column prop="name" label="操作">
         <template slot-scope="scope">
-          <el-button type="text" size="small">接口测试</el-button>
-          <el-button type="text" size="small">取消服务</el-button>
+          <el-button type="text" size="small">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -37,7 +36,7 @@
 
 <script>
 export default {
-  name: 'myserve',
+  name: 'myassessment',
   data() {
     return {
       tableData: [
@@ -111,10 +110,9 @@ export default {
   },
 }
 </script>
-<style>
-</style>
+
 <style lang="less" scoped>
-#myserve {
+#myassessment {
   width: 100%;
   margin: 0 24px;
   //   background-color: #edf1f6;

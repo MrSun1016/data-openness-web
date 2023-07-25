@@ -67,7 +67,11 @@ export default {
 
 <style lang="less" scoped>
 #basicMsg {
-  width: 100%;
+  height: calc(100vh - 105px);
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: auto;
   margin: 0 24px;
   background-color: #edf1f6;
   .usemsg-box {

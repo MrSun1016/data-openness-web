@@ -16,6 +16,11 @@
 </template>
   
   <script>
+/**
+ * handleSelect
+ * 子组件点击方法
+ * 返回当前索引 后续可拿唯一值对应切换右侧对应内容
+ */
 export default {
   name: 'informationMenu',
   data() {
@@ -33,7 +38,7 @@ export default {
   methods: {
     handleSelect(i) {
       this.selectIndex = i
-      this.$emit("handleSelect", i);
+      this.$emit('handleSelect', i)
     },
   },
 }

@@ -1,21 +1,20 @@
 <template>
-  <div id="myserve">
+  <div id="mycollect">
     <el-table
       :data="tableData"
       style="width: 100%"
       :cell-style="handleCellStyle"
       :header-cell-style="{ background: '#DDE1E7' }"
     >
-      <el-table-column type="index" label="编号" width="50"> </el-table-column>
-      <el-table-column prop="name" label="数据资源" width="180"> </el-table-column>
+      <el-table-column type="index" label="序号" width="50"> </el-table-column>
+      <el-table-column prop="name" label="分类" width="180"> </el-table-column>
+      <el-table-column prop="name" label="数据资源"> </el-table-column>
       <el-table-column prop="name" label="数源部门"> </el-table-column>
-      <el-table-column prop="name" label="key"> </el-table-column>
-      <el-table-column prop="name" label="申请/审核时间"> </el-table-column>
-      <el-table-column prop="name" label="状态"> </el-table-column>
+      <el-table-column prop="name" label="数据摘要"> </el-table-column>
+      <el-table-column prop="name" label="更新时间"> </el-table-column>
       <el-table-column prop="name" label="操作">
         <template slot-scope="scope">
-          <el-button type="text" size="small">接口测试</el-button>
-          <el-button type="text" size="small">取消服务</el-button>
+          <el-button type="text" size="small">取消收藏</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -37,7 +36,7 @@
 
 <script>
 export default {
-  name: 'myserve',
+  name: 'mycollect',
   data() {
     return {
       tableData: [
@@ -100,21 +99,20 @@ export default {
     }
   },
   methods: {
-    handleCellStyle({ row, column, rowIndex, columnIndex }) {
-      return {
-        'background-color': '#EDF1F6',
-      }
-    },
-    handleSearch() {},
-    handleSizeChange() {},
-    handleCurrentChange() {},
+      handleCellStyle({ row, column, rowIndex, columnIndex }) {
+        return {
+          'background-color': '#EDF1F6',
+        }
+      },
+      handleSearch() {},
+      handleSizeChange() {},
+      handleCurrentChange() {},
   },
 }
 </script>
-<style>
-</style>
+
 <style lang="less" scoped>
-#myserve {
+#mycollect {
   width: 100%;
   margin: 0 24px;
   //   background-color: #edf1f6;
