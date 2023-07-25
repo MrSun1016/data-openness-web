@@ -27,6 +27,19 @@
         <div style="font-size: 14px; color: #919aa8">2023年07月24日14:46:17</div>
       </div>
     </div>
+    <div class="pagination-box">
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="learning.pageNum"
+        :page-sizes="[10, 20, 30, 50]"
+        :page-size="learning.pageSize"
+        layout="total, sizes, prev, pager, next, jumper"
+        background
+        :total="total"
+      >
+      </el-pagination>
+    </div>
   </div>
 </template>
 
@@ -37,11 +50,16 @@ export default {
     return {
       learning: {
         uploadFileName: '',
+        pageNum: 1,
+        pageSize: 10,
       },
+      total: 0,
     }
   },
   methods: {
     handleSearch() {},
+    handleSizeChange() {},
+    handleCurrentChange() {},
   },
 }
 </script>
@@ -57,8 +75,12 @@ export default {
       height: 80px;
       display: flex;
       align-items: center;
-      border-bottom: 1px solid  #e8e8e8;
+      border-bottom: 1px solid #e8e8e8;
     }
+  }
+  .pagination-box {
+    margin: 10px 0;
+    text-align: center;
   }
   .el-icon-search {
     line-height: 43px;
