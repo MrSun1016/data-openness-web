@@ -26,7 +26,7 @@
         </el-form>
       </div>
       <!-- table -->
-      <el-button type="primary" @click="onSubmit" size="small" style="margin-bottom: 10px">新增</el-button>
+      <el-button type="primary" @click="handleAdd" size="small" style="margin-bottom: 10px">新增</el-button>
       <el-table
         :data="tableData"
         style="width: 100%"
@@ -145,6 +145,9 @@ export default {
     }
   },
   methods: {
+    handleAdd(){
+        this.$router.push("/personalCenter/personalAdd")
+    },
     onSubmit() {
       console.log('submit!')
     },

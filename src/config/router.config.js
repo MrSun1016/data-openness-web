@@ -178,6 +178,12 @@ export const constantRouterMap = [
     component: () => import('@/views/personalCenter/perCenter'),
   },
   {
+    path: '/personalCenter/personalAdd',
+    name: 'personalAdd',
+    meta: { title: '新增', keepAlive: false },
+    component: () => import('@/views/personalCenter/personalAdd'),
+  },
+  {
     path: '/d',
     name: 'catalogue',
     component: OpenPlatformLayout,

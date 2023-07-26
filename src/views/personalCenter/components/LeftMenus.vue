@@ -38,7 +38,7 @@ export default {
   methods: {
     handleSelect(i) {
       this.selectIndex = i
-      this.$emit('handleSelect', i)
+      this.$emit('handleSelect', this.selectIndex)
     },
   },
 }
