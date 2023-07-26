@@ -112,8 +112,8 @@ export default {
   },
   methods: {
     //取消
-    handleCancel(){
-        this.$router.back()
+    handleCancel() {
+      this.$router.back()
     },
     handleRemove(file) {
       console.log(file)
