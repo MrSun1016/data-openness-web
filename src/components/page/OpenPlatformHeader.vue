@@ -22,7 +22,8 @@
       <el-menu-item index="/openPlatform/home">首页</el-menu-item>
       <el-menu-item index="/catalogue/datacatalogue">开放数据</el-menu-item>
       <el-menu-item index="/system/helpdocument">资讯中心</el-menu-item>
-      <el-menu-item index="/system/policyrule">交流互动</el-menu-item>
+      <el-menu-item index="/communication/interaction">交流互动</el-menu-item>
+      <!-- <el-menu-item index="/system/policyrule">交流互动</el-menu-item> -->
       <el-menu-item index="/openStatistics/openTable">开放统计</el-menu-item>
       <!-- <el-menu-item index="/system/datastandard">开放统计</el-menu-item> -->
       <el-menu-item index="/service/serviceitem">应用成果</el-menu-item>
@@ -30,6 +31,15 @@
     </el-menu>
 
     <div class="user-info">
+      <div class="headericon">
+        <!-- <div class="picon">25</div> -->
+        <!-- <el-badge is-dot class="item"> -->
+        <el-badge :value="badgeVal" :max="99" class="item">
+          <!-- <img src="../../../public/images/211ling.png" class="iconSize" alt="" /> -->
+          <i class="el-icon-message-solid"></i>
+        </el-badge>
+        <!-- <i class="el-icon-bell iconSize"></i> -->
+      </div>
       <div v-if="!token" class="textuser" style="cursor: pointer" @click="$router.push('/escsso')">登录/注册</div>
       <div v-else>
         <a-avatar class="avatar" style="margin-right: -5px" :src="userImg" />
@@ -102,7 +112,8 @@ export default {
       userName: '',
       department: {},
       orgCode: '',
-      departName: ''
+      departName: '',
+      badgeVal: 3
     }
   },
   activated() {},
@@ -372,13 +383,34 @@ export default {
   // .user-conten {
   // cursor: pointer;
   .user-info {
+    // width: 20%;
     position: relative;
+    display: flex;
+    align-items: center;
     /deep/.pointer {
       background: red !important;
     }
     .textuser {
       padding: 3px 15px;
       border: 1px solid #fff;
+    }
+
+    .headericon {
+      .item {
+        cursor: pointer;
+        .el-icon-message-solid {
+          font-size: 38px;
+          cursor: pointer;
+          margin-right: 35px;
+        }
+      }
+      /deep/.el-badge__content.is-fixed {
+        top: 10px;
+        right: 50px;
+      }
+      /deep/.el-badge__content {
+        padding: 0 6px 19px 6px;
+      }
     }
   }
   .systembox {
