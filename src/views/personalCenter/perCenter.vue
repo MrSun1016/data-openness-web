@@ -7,6 +7,8 @@
       <basicMsg v-if="currentContent === 0" />
       <!-- 我的服务 -->
       <myserve v-else-if="currentContent === 1" />
+      <!-- 我的应用 -->
+      <myapplication v-else-if="currentContent === 2" />
       <!-- 我的收藏 -->
       <mycollect v-else-if="currentContent === 3" />
       <!-- 我的评价 -->
@@ -21,6 +23,7 @@ import basicMsg from '@/views/personalCenter/components/BasicMsg'
 import myserve from '@/views/personalCenter/components/Myserve'
 import mycollect from '@/views/personalCenter/components/MyCollect'
 import myassessment from '@/views/personalCenter/components/MyAssessment'
+import myapplication from '@/views/personalCenter/components/MyApplication'
 import OpenPlatformHeader from '@/components/page/OpenPlatformHeader'
 export default {
   name: 'perCenter',
@@ -31,6 +34,7 @@ export default {
     myserve,
     mycollect,
     myassessment,
+    myapplication,
   },
   data() {
     return {
