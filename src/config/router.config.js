@@ -156,7 +156,7 @@ export const constantRouterMap = [
   {
     path: '/system/helpdocument',
     name: 'helpdocument',
-    meta: { title: '前台帮助文档', keepAlive: false },
+    meta: { title: '资讯中心', keepAlive: false },
     component: () => import('@/views/system/HelpDocument'),
   },
   {
@@ -170,6 +170,12 @@ export const constantRouterMap = [
     name: 'embedPage',
     meta: { title: '嵌入页面', keepAlive: false },
     component: () => import('@/views/system/EmbedPage'),
+  },
+  {
+    path: '/personalCenter/perCenter',
+    name: 'perCenter',
+    meta: { title: '个人中心', keepAlive: false },
+    component: () => import('@/views/personalCenter/perCenter'),
   },
   {
     path: '/d',

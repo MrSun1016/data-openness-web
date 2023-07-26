@@ -114,7 +114,7 @@ export default {
 #helpdocument {
   background: #fff;
   .content-box {
-    width: 90%;
+    width: 1200px;
     justify-content: space-around;
     margin-top:38px;
     display: flex;
