@@ -29,6 +29,7 @@
       </div>
     </div>
     <ServiceDetails v-show="isDetails" @isServiceDetails="isServiceDetails"></ServiceDetails>
+    <FloatingIcon></FloatingIcon>
   </div>
 </template>
 
@@ -37,13 +38,16 @@ import { ServiceMatterspage } from '@/api/api'
 import ServiceInquire from '@views/service/components/ServiceInquire'
 import ServiceTable from '@views/service/components/ServiceTable'
 import ServiceDetails from '@views/service/components/ServiceDetails'
+import FloatingIcon from '@/components/page/FloatingIcon'
+
 import { Message } from 'element-ui'
 export default {
   name: 'ServiceItem',
   components: {
     ServiceInquire,
     ServiceTable,
-    ServiceDetails
+    ServiceDetails,
+    FloatingIcon
   },
   data() {
     return {

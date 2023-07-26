@@ -93,14 +93,14 @@ module.exports = {
             '/dtwave-om': {
                 //  target: "http://172.16.101.203:8088/", //罗江
                 // target: "http://192.168.90.43:8099/", //vpn
-                // target:"http://59.208.164.228:60033/dtwave-om/", //现场测试环境
+                target:"http://59.208.164.228:60033/dtwave-om/", //现场测试环境
                 // target:"http://59.208.164.242:60033/dtwave-om/",//正式环境
                 // target: "http://192.168.10.226:8088/",
                 // target: "http://172.16.101.207:8088/", //刘雄
                 // target: "http://172.16.101.145:8088/", //孙文龙1
                 // target: "http://172.16.84.227:9099/", //孙文龙
                 // target: "http://172.16.101.201:8088/", //玄鹤
-                target:"http://www.slam.ltd:1288",//内网穿透
+                // target:"http://www.slam.ltd:1288",//内网穿透
                 pathRewrite: {
                     '^/dtwave-om': '/'
                 },

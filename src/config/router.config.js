@@ -130,11 +130,17 @@ export const constantRouterMap = [
     component: () => import('@/views/openPlatform/HomeSearch'),
   },
   {
-    path: '/system/policyrule',
-    name: 'policyrule',
-    meta: { title: '政策法规', keepAlive: false },
-    component: () => import('@/views/system/PolicyRule'),
+    path: '/communication/interaction',
+    name: 'interaction',
+    meta: { title: '交流互动', keepAlive: false },
+    component: () => import('@/views/communication/Interaction'),
   },
+  // {
+  //   path: '/system/policyrule',
+  //   name: 'policyrule',
+  //   meta: { title: '政策法规', keepAlive: false },
+  //   component: () => import('@/views/system/PolicyRule'),
+  // },
   // {
   //   path: '/system/datastandard',
   //   name: 'datastandard',

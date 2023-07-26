@@ -2,7 +2,7 @@
   <div id="DataCatalogue">
     <div>
       <div class="dataSearch">
-        <el-input class="dataInput1" placeholder="请输入关键字" suffix-icon="el-icon-search" v-model="datainput">
+        <el-input class="dataInput" placeholder="请输入关键字" suffix-icon="el-icon-search" v-model="datatext">
         </el-input>
       </div>
       <div>
@@ -89,7 +89,7 @@ export default {
       },
       total: 0,
       catalogueTableData: [],
-      dataInput1: ''
+      datatext: ''
     }
   },
   //通过监视
@@ -245,7 +245,7 @@ export default {
   align-items: center;
   justify-content: space-around;
   background-color: #dde1e7;
-  padding: 0 25px;
+  // padding: 0 25px;
   .dataInput {
     width: 95%;
   }
@@ -255,4 +255,5 @@ export default {
   padding: 32px;
   // background-color: #fff;
 }
+
 </style>
