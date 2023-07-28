@@ -1,48 +1,10 @@
 <template>
   <div id="homeBanner">
     <div class="banner-content">
-      <!-- 轮播图 -->
-      <!-- <el-carousel indicator-position="outside" style="height: 458px">
-        <el-carousel-item v-for="imgs in slideshowList" :key="imgs.id" style="height: 458px">
-          <img :src="imgs.img" alt="" />
-        </el-carousel-item>
-      </el-carousel> -->
-      <el-carousel v-if="slideshowList.length !== 0" style="height: 458px">
-        <el-carousel-item v-for="imgs in slideshowList" :key="imgs.id" style="height: 458px">
-          <img :src="serverAddres + imgs.url" alt="" />
-        </el-carousel-item>
-      </el-carousel>
-      <el-carousel v-else style="height: 458px">
-        <el-carousel-item style="height: 458px">
-          <img :src="bannerImgs" alt="" />
-        </el-carousel-item>
-      </el-carousel>
-      <!-- <img src="@/assets/open_banner.jpg" alt="" /> -->
-      <!-- <div class="nav-content">
-        <div
-          style="padding: 12px"
-          @click="handlePath('1')"
-          :class="{ active:  isActive== '1' }"
-        >
-         资源市场
-        </div>
-        <div
-        v-login
-          style="padding: 12px"
-          @click="handlePath('2')"
-          :class="{ active:  isActive== '2' }"
-        >
-         后台管理
-        </div>
-        <div
-        v-login
-          style="padding: 12px"
-          @click="handlePath('3')"
-          :class="{ active:  isActive== '3' }"
-        >
-         可视化建模
-        </div>
-      </div> -->
+      <!-- banner -->
+      <img src="../../../assets/images/Banner.png" alt="" width="100%" />
+      <img class="title-img" src="../../../assets/images/bannerTitle.png" alt="" />
+      <!-- search -->
       <div class="search">
         <el-input
           v-model="search"
@@ -56,31 +18,31 @@
       </div>
       <div class="matter-details">
         <div class="matter-content">
-          <div style="padding-bottom: 4px">资源目录</div>
+          <div class="title">资源目录</div>
           <div>{{ recueillirData.bmCataLogNum || '0' }}个</div>
         </div>
         <div class="matter-content">
-          <div style="padding-bottom: 4px">事项主线目录</div>
+          <div class="title">事项主线目录</div>
           <div>{{ recueillirData.serviceNum || '0' }}个</div>
         </div>
         <div class="matter-content">
-          <div style="padding-bottom: 4px">接口服务</div>
+          <div class="title">接口服务</div>
           <div>{{ recueillirData.apiNum || '0' }}个</div>
         </div>
         <div class="matter-content">
-          <div style="padding-bottom: 4px">库表服务</div>
+          <div class="title">库表服务</div>
           <div>{{ recueillirData.tableNum || '0' }}个</div>
         </div>
         <div class="matter-content">
-          <div style="padding-bottom: 4px">数据总量</div>
+          <div class="title">数据总量</div>
           <div>{{ recueillirData.dataAllNum || '0' }}条</div>
         </div>
         <div class="matter-content">
-          <div style="padding-bottom: 4px">数据交换总量</div>
+          <div class="title">数据交换总量</div>
           <div>{{ recueillirData.dataExchangeAllNum || '0' }}条</div>
         </div>
         <div class="matter-content">
-          <div style="padding-bottom: 4px">服务调用</div>
+          <div class="title">服务调用</div>
           <div>{{ recueillirData.serviceCallNum || '0' }}次</div>
         </div>
       </div>
@@ -114,7 +76,7 @@ export default {
     this.isActive = 1
     this.fetchIndexNum()
     this.fetchPictures()
-     },
+  },
   methods: {
     tranNumber(num, point) {
       // 将数字转换为字符串,然后通过split方法用.分隔,取到第0个
@@ -166,20 +128,20 @@ export default {
       let resUserName = Base64.encode(userName)
       return resUserName
     },
-    handlePath(type){
+    handlePath(type) {
       this.isActive = type
-      switch(type){
+      switch (type) {
         case '1':
-        window.location.href = '/openPlatform/home'
-        break;
+          window.location.href = '/openPlatform/home'
+          break
         case '2':
-        window.location.href = '/Home'
-        break;
+          window.location.href = '/Home'
+          break
         case '3':
-        window.open(`http://59.208.164.227:60010/logging?userName=${this.onUserName()}&path=modelFactory`, '_blank')
-        break;
+          window.open(`http://59.208.164.227:60010/logging?userName=${this.onUserName()}&path=modelFactory`, '_blank')
+          break
       }
-    }
+    },
     // handlePath(data, index) {
     //   this.isActive = index
     //   if (index === 2) {
@@ -210,10 +172,18 @@ export default {
         padding: 0 24px;
       }
     }
+    .title-img {
+      width: 414px;
+      height: 90px;
+      position: absolute;
+      top: -2%;
+      right: 50%;
+      transform: translate(50%, 50%);
+    }
     .search {
       position: absolute;
       left: 50%;
-      top: 84%;
+      top: 160px;
       transform: translate(-50%, -50%);
       z-index: 999;
       .sear-width {
@@ -232,7 +202,7 @@ export default {
     .matter-details {
       z-index: 999;
       position: absolute;
-      bottom: -32px;
+      bottom: 15px;
       left: 50%;
       transform: translateX(-50%);
       // height: 77px;
@@ -241,12 +211,16 @@ export default {
       color: #ffff;
       display: flex;
       width: 1200px;
-      background: #1890ff;
+      // background: #1890ff;
       border-radius: 10px;
       justify-content: space-between;
       .matter-content {
         display: flex;
         flex-direction: column;
+        .title {
+          color: #cfd5dc;
+          padding-bottom: 4px;
+        }
       }
     }
   }
