@@ -13,6 +13,7 @@
             >
               {{ tabs.name }}
             </div>
+            <img class="triangle" ref="triangle" src="../../../assets/images/triangle.png" alt="" />
           </div>
         </div>
       </div>
@@ -109,7 +110,13 @@ export default {
   },
   methods: {
     handleSelectTab(i) {
-        console.log(i)
+      if (i === 0) {
+        this.$refs.triangle.style.left = '34%'
+      } else if (i === 1) {
+        this.$refs.triangle.style.left = '445px'
+      } else if (i === 2) {
+        this.$refs.triangle.style.left = '582px'
+      }
       this.selectIndex = i
     },
   },
@@ -132,11 +139,19 @@ export default {
         // padding: 5px;
         border-bottom: 2px solid #eef1f6;
         .bottom-lin {
+          position: relative;
           display: flex;
           justify-content: center;
           width: 900px;
           margin: 0px auto;
           border-bottom: 4px solid #1767ff;
+          .triangle {
+            height: 5px;
+            position: absolute;
+            bottom: 0;
+            transition: all .5s; 
+            // left: 0;
+          }
         }
       }
 
