@@ -135,6 +135,12 @@ export const constantRouterMap = [
     meta: { title: '交流互动', keepAlive: false },
     component: () => import('@/views/communication/Interaction'),
   },
+  {
+    path: '/helpCenter/problemManual',
+    name: 'problemManual',
+    meta: { title: '帮助中心', keepAlive: false },
+    component: () => import('@/views/helpCenter/ProblemManual'),
+  },
   // {
   //   path: '/system/policyrule',
   //   name: 'policyrule',

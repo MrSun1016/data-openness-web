@@ -62,7 +62,11 @@
       >
       </el-pagination>
     </div>
-    <ErrorCorrectionDetails class="feedback" v-show="isCorrection"></ErrorCorrectionDetails>
+    <ErrorCorrectionDetails
+      class="feedback"
+      v-show="isCorrection"
+      @errorCorrection="errorCorrection"
+    ></ErrorCorrectionDetails>
   </div>
 </template>
 <script>
@@ -113,7 +117,7 @@ export default {
       pageNum: 1,
       pageSize: 10,
       total: 100,
-      isCorrection: true
+      isCorrection: false
     }
   },
   methods: {
@@ -128,6 +132,9 @@ export default {
     },
     tableRowClassName({ row, rowIndex }) {
       row.index = rowIndex
+    },
+    errorCorrection(val) {
+      this.isCorrection = val
     }
   }
 }

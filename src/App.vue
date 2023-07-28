@@ -98,13 +98,13 @@ export default {
 </script>
 <style lang="less" scoped>
 .app-class {
-  // width: 100%;
+  width: 100%;
   height: 100%;
   // filter: grayscale(100%)
 }
 .app-class2 {
-  width: 1654px;
-  height: 100%;
+  width: 1600px;
+  height: 900px;
   // filter: grayscale(100%)
 }
 /deep/.ant-table-tbody > tr:nth-child(2n) {

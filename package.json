@@ -29,6 +29,7 @@
     "dayjs": "^1.8.0",
     "default-passive-events": "2.0.0",
     "echarts": "^5.4.0",
+    "echarts-wordcloud": "^2.1.0",
     "element-ui": "^2.15.8",
     "enquire.js": "^2.1.6",
     "js-base64": "^3.7.2",
@@ -91,7 +92,7 @@
     "px2rem-loader": "^0.1.9",
     "sass-loader": "^10.2.0",
     "uglifyjs-webpack-plugin": "^2.2.0",
-    "vue-template-compiler": "^2.6.11",
+    "vue-template-compiler": "^2.7.14",
     "webpack": "^4.46.0"
   },
   "eslintConfig": {

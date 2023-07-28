@@ -25,7 +25,7 @@ export default {
   height: 100%;
   .openEchearts {
     width: 100%;
-    height: calc(100vh - 82px);
+    height: calc(100% - 82px);
   }
 }
 </style>
