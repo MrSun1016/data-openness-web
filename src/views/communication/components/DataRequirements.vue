@@ -53,7 +53,7 @@ import RequirementResponse from '@/views/communication/components/RequirementRes
 export default {
   name: 'DataRequirements',
   components: {
-    RequirementResponse
+    RequirementResponse,
   },
   data() {
     return {
@@ -64,7 +64,7 @@ export default {
           datasource: '孝感不动产登记中心',
           modeDelivery: 'API',
           state: '已回复',
-          date: '2016-05-02'
+          date: '2016-05-02',
         },
         {
           name: '下架',
@@ -72,7 +72,7 @@ export default {
           datasource: '孝感不动产登记中心',
           modeDelivery: 'API',
           state: '已回复',
-          date: '2016-05-02'
+          date: '2016-05-02',
         },
         {
           name: '下架',
@@ -80,7 +80,7 @@ export default {
           datasource: '孝感不动产登记中心',
           modeDelivery: 'API',
           state: '已回复',
-          date: '2016-05-02'
+          date: '2016-05-02',
         },
         {
           name: '下架',
@@ -88,13 +88,13 @@ export default {
           datasource: '孝感不动产登记中心',
           modeDelivery: 'API',
           state: '已回复',
-          date: '2016-05-02'
-        }
+          date: '2016-05-02',
+        },
       ],
       pageNum: 1,
       pageSize: 10,
       total: 100,
-      isshowRequirement: false
+      isshowRequirement: false,
     }
   },
   methods: {
@@ -105,8 +105,8 @@ export default {
     },
     closeRequirement(val) {
       this.isshowRequirement = val
-    }
-  }
+    },
+  },
 }
 </script>
 

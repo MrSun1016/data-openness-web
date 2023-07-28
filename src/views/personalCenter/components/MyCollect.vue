@@ -7,11 +7,11 @@
       :header-cell-style="{ background: '#DDE1E7' }"
     >
       <el-table-column type="index" label="序号" width="50"> </el-table-column>
-      <el-table-column prop="name" label="分类" width="180"> </el-table-column>
-      <el-table-column prop="name" label="数据资源"> </el-table-column>
-      <el-table-column prop="name" label="数源部门"> </el-table-column>
-      <el-table-column prop="name" label="数据摘要"> </el-table-column>
-      <el-table-column prop="name" label="更新时间"> </el-table-column>
+      <el-table-column prop="name" label="分类" width="180" :show-overflow-tooltip="true"> </el-table-column>
+      <el-table-column prop="name" label="数据资源" :show-overflow-tooltip="true"> </el-table-column>
+      <el-table-column prop="name" label="数源部门" :show-overflow-tooltip="true"> </el-table-column>
+      <el-table-column prop="name" label="数据摘要" :show-overflow-tooltip="true"> </el-table-column>
+      <el-table-column prop="name" label="更新时间" :show-overflow-tooltip="true"> </el-table-column>
       <el-table-column prop="name" label="操作">
         <template slot-scope="scope">
           <el-button type="text" size="small">取消收藏</el-button>

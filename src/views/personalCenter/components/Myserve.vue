@@ -1,42 +1,48 @@
 <template>
   <div id="myserve">
-    <el-table
-      :data="tableData"
-      style="width: 100%"
-      :cell-style="handleCellStyle"
-      :header-cell-style="{ background: '#DDE1E7' }"
-    >
-      <el-table-column type="index" label="编号" width="50"> </el-table-column>
-      <el-table-column prop="name" label="数据资源" width="180"> </el-table-column>
-      <el-table-column prop="name" label="数源部门"> </el-table-column>
-      <el-table-column prop="name" label="key"> </el-table-column>
-      <el-table-column prop="name" label="申请/审核时间"> </el-table-column>
-      <el-table-column prop="name" label="状态"> </el-table-column>
-      <el-table-column prop="name" label="操作">
-        <template slot-scope="scope">
-          <el-button type="text" size="small">接口测试</el-button>
-          <el-button type="text" size="small">取消服务</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-    <div class="pagination-box">
-      <el-pagination
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page="learning.pageNum"
-        :page-sizes="[10, 20, 30, 50]"
-        :page-size="learning.pageSize"
-        layout="total, sizes, prev, pager, next, jumper"
-        background
-        :total="total"
+    <div>
+      <el-table
+        :data="tableData"
+        style="width: 100%"
+        :cell-style="handleCellStyle"
+        :header-cell-style="{ background: '#DDE1E7' }"
       >
-      </el-pagination>
+        <el-table-column type="index" label="编号" width="50"> </el-table-column>
+        <el-table-column prop="name" label="数据资源" width="180" :show-overflow-tooltip="true"> </el-table-column>
+        <el-table-column prop="name" label="数源部门" :show-overflow-tooltip="true"> </el-table-column>
+        <el-table-column prop="name" label="key" :show-overflow-tooltip="true"></el-table-column>
+        <el-table-column prop="name" label="申请/审核时间" :show-overflow-tooltip="true"> </el-table-column>
+        <el-table-column prop="name" label="状态"> </el-table-column>
+        <el-table-column prop="name" label="操作">
+          <template slot-scope="scope">
+            <el-button type="text" size="small">接口测试</el-button>
+            <el-button type="text" size="small">取消服务</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <div class="pagination-box">
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="learning.pageNum"
+          :page-sizes="[10, 20, 30, 50]"
+          :page-size="learning.pageSize"
+          layout="total, sizes, prev, pager, next, jumper"
+          background
+          :total="total"
+        >
+        </el-pagination>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import ServiceDetails from '@views/service/components/ServiceDetails'
 export default {
+  components: {
+    ServiceDetails,
+  },
   name: 'myserve',
   data() {
     return {
