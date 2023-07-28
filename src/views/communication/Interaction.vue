@@ -4,17 +4,19 @@
 
     <div class="center-max">
       <div class="left-box">
-        <CommunicationMenu :menus="menus" @selectLeft="selectLeft" />
+        <CommunicationMenu :menus="menus" @selectLeft="selectLeft" :selectId="selectId" />
       </div>
       <div class="right-box">
-        <RightsProtection v-show="selectId == 1" />
-        <Problemfeedback v-show="selectId == 2"></Problemfeedback>
-        <DataRequirements v-show="selectId == 3"></DataRequirements>
-        <DataErrorCorrection v-show="selectId == 4"></DataErrorCorrection>
+        <RightsProtection v-show="selectId == 0" />
+        <Problemfeedback v-show="selectId == 1"></Problemfeedback>
+        <DataRequirements v-show="selectId == 2"></DataRequirements>
+        <DataErrorCorrection v-show="selectId == 3"></DataErrorCorrection>
       </div>
     </div>
 
-    <!-- <Openfooter></Openfooter> -->
+    <Openfooter></Openfooter>
+    <FloatingIcon></FloatingIcon>
+    
   </div>
 </template>
 <script>
@@ -25,6 +27,8 @@ import RightsProtection from '@/views/communication/components/RightsProtection'
 import Problemfeedback from '@/views/communication/components/Problemfeedback'
 import DataRequirements from '@/views/communication/components/DataRequirements'
 import DataErrorCorrection from '@/views/communication/components/DataErrorCorrection'
+import FloatingIcon from '@/components/page/FloatingIcon'
+
 export default {
   name: 'interaction',
   components: {
@@ -34,7 +38,8 @@ export default {
     RightsProtection,
     Problemfeedback,
     DataRequirements,
-    DataErrorCorrection
+    DataErrorCorrection,
+    FloatingIcon
   },
   data() {
     return {
@@ -42,10 +47,10 @@ export default {
         { id: '1', name: '权益保护' },
         { id: '2', name: '问题反馈' },
         { id: '3', name: '数据需求' },
-        { id: '4', name: '数据纠错' },
+        { id: '4', name: '数据纠错' }
         // { id: '5', name: '我的评价' }
       ],
-      selectId: 1
+      selectId: 0
     }
   },
   methods: {
@@ -62,6 +67,7 @@ export default {
   background-color: #fff;
   .center-max {
     width: 90%;
+    min-height: calc(95vh - 232px);
     display: flex;
     justify-content: space-around;
     margin: 20px auto;

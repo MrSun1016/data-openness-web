@@ -1,5 +1,5 @@
 <template>
-  <div id="informationMenu">
+  <div id="helpMenu">
     <div class="menus">
       <div
         v-for="(item, index) in menus"
@@ -17,7 +17,7 @@
 
 <script>
 export default {
-  name: 'informationMenu',
+  name: 'helpMenu',
   props: {
     selectId: Number,
     menus: Array,
@@ -44,7 +44,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-#informationMenu {
+#helpMenu {
   width: 100%;
   .menus {
     // width: 280px;

@@ -17,6 +17,8 @@ import '@/permission' // permission control
 import '@/utils/filter' // base filter
 
 
+
+
 // import Print from 'vue-print-nb-jeecg' //打印
 /*import '@babel/polyfill'*/
 // import preview from 'vue-photo-preview' //图片裁剪工具
@@ -65,6 +67,7 @@ import 'element-ui/lib/theme-chalk/index.css'
 import locale from 'element-ui/lib/locale/lang/zh-CN.js' // lang i18n
 import { MessageBox } from 'element-ui'
 import * as echarts from 'echarts';
+import 'echarts-wordcloud';
 
 Vue.prototype.$echarts = echarts;
 Vue.use(ElementUI, { locale })

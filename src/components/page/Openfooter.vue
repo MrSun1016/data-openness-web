@@ -3,15 +3,17 @@
     <div class="conten">
       <div class="toplink">
         <img src="~@assets/images/red.png" alt="" />
-        <div>开放协议</div>
+        <div style="cursor: pointer;">开放协议</div>
         <div>|</div>
-        <div>使用手册</div>
+        <div style="cursor: pointer;">使用手册</div>
         <div>|</div>
-        <div>版权声明</div>
+        <div style="cursor: pointer;" @click="toHelp">帮助中心</div>
         <div>|</div>
-        <div>隐私声明</div>
+        <div style="cursor: pointer;">版权声明</div>
         <div>|</div>
-        <div>网站地图</div>
+        <div style="cursor: pointer;">隐私声明</div>
+        <div>|</div>
+        <div style="cursor: pointer;">网站地图</div>
       </div>
       <div class="contactInformation">
         <div>主办：孝感市政务服务和大数据管理局</div>
@@ -34,6 +36,13 @@ export default {
   name: 'Openfooter',
   data() {
     return {}
+  },
+  methods: {
+    toHelp() {
+      this.$router.push({
+        path: '/helpCenter/problemManual'
+      })
+    }
   }
 }
 </script>
@@ -41,7 +50,7 @@ export default {
 <style lang="less" scoped>
 #Openfooter {
   width: 100%;
-  height: 160px;
+  height: 150px;
   color: #fff;
   background-color: #4f5967;
   display: flex;
