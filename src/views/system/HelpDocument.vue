@@ -3,12 +3,12 @@
     <OpenPlatformHeader />
     <div class="content-box">
       <informationMenu :menus="menus" />
-      <informationContent />
     </div>
+    <Openfooter />
   </div>
 </template>
     <script>
-import informationContent from '@/views/system/components/informationContent'
+import Openfooter from '@/components/page/Openfooter'
 import informationMenu from '@/views/system/components/informationMenu'
 import OpenPlatformHeader from '@/components/page/OpenPlatformHeader'
 import { studyWorldPage } from '@/api/api'
@@ -20,7 +20,7 @@ export default {
   components: {
     OpenPlatformHeader,
     informationMenu,
-    informationContent,
+    Openfooter,
   },
   data() {
     return {
@@ -116,7 +116,7 @@ export default {
   .content-box {
     width: 1200px;
     justify-content: space-around;
-    margin-top:38px;
+    margin-top: 38px;
     display: flex;
     margin: 20px auto;
   }
