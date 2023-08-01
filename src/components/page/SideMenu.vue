@@ -77,10 +77,12 @@ export default {
       // 最上面tabs的数据
       getNodesShare(10).then(res => {
         if (res.success) {
-          this.tabsList = res.body
+          this.tabsList.push(res.body[2])
+          this.tabsList.push(res.body[3])
           this.tabsList.map((item, index) => {
             item.id = item.id + ''
           })
+          console.log('tabsList', this.tabsList)
           this.loading = false
         }
       })
@@ -197,7 +199,7 @@ export default {
 <style lang="less" scoped>
 #menus-left {
   width: 100%;
-  height: calc(100vh - 64px);
+  height: 100%;
   .menusSearch {
     width: 100%;
     height: 64px;

@@ -84,7 +84,7 @@ export default {
   display: flex;
 }
 #informationMenu {
-  width: 30%;
+  width: 100%;
   .menus {
     // width: 280px;
     // margin: 0 auto;
