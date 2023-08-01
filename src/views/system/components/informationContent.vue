@@ -1,9 +1,9 @@
 <template>
-  <div id="informationContent">
+  <div id="informationContent" v-loading="loading">
     <div class="dataSearch">
       <el-input
         class="dataInput"
-        v-model="learning.uploadFileName"
+        v-model="qureyParame.informationName"
         @keyup.enter.native="handleSearch"
         clearable
         placeholder="请输入关键字"
@@ -15,18 +15,18 @@
       <div class="items-content" v-for="items in listData" :key="items.id">
         <div style="display: flex; flex: 1; cursor: pointer">
           <img src="../../../assets/fileIcon.png" style="margin: 0 20px" />
-          <div style="color: #3685ea">{{ items.title }}</div>
+          <div style="color: #3685ea">{{ items.informationName }}</div>
         </div>
-        <div style="font-size: 14px; color: #919aa8; padding: 0 20px">{{ items.createTime }}</div>
+        <div style="font-size: 14px; color: #919aa8; padding: 0 20px">{{ items.releaseTime }}</div>
       </div>
     </div>
     <div class="pagination-box">
       <el-pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
-        :current-page="learning.pageNum"
-        :page-sizes="[10, 20, 30, 50]"
-        :page-size="learning.pageSize"
+        :current-page="qureyParame.pageNum"
+        :page-sizes="pageSizes"
+        :page-size="qureyParame.pageSize"
         layout="total, sizes, prev, pager, next, jumper"
         background
         :total="total"
@@ -39,24 +39,29 @@
 <script>
 export default {
   name: 'informationContent',
-  props:{
-    listData:Array,
-    require:true
+  props: {
+    listData: Array,
+    require: true,
+    qureyParame: Object,
+    require: true,
+    total: Number,
+    require: true,
   },
   data() {
     return {
-      learning: {
-        uploadFileName: '',
-        pageNum: 1,
-        pageSize: 10,
-      },
-      total: 0,
+      loading: false,
+      pageSizes: [10, 20, 30, 50],
     }
   },
   methods: {
-    handleSearch() {},
+    handleSearch() {
+      this.$emit('handleSearch', this.qureyParame)
+    },
     handleSizeChange() {},
-    handleCurrentChange() {},
+    handleCurrentChange(currentPage) {
+      this.qureyParame.pageNum = currentPage
+      this.$emit('handleSearch', this.qureyParame)
+    },
   },
 }
 </script>

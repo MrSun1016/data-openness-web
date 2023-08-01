@@ -14,12 +14,13 @@
         </div>
       </div>
     </div>
-    <informationContent  :listData="listData"/>
+    <informationContent :listData="listData" ref="infRef" :qureyParame="qureyParame" :total="total" @handleSearch="handleSonSearch"/>
   </div>
 </template>
 
 <script>
 import informationContent from '@/views/system/components/informationContent'
+import { getInformation } from '@/api/api'
 export default {
   name: 'informationMenu',
   components: {
@@ -32,64 +33,46 @@ export default {
   },
   data() {
     return {
+      total:0,
+      // 请求参数
+      qureyParame: {
+        informationName:"",
+        pageNum: 1,
+        pageSize: 10,
+        informationType: '1',
+      },
       selectIndex: 0,
-      listData: [
-        {
-          id: '1',
-          title: '关于印发《孝感市公告数据开放管理暂行办法》的通知',
-          createTime: '2023-07-25 11:01:20',
-        },
-        {
-          id: '2',
-          title: '关于印发《孝感市公告数据开放管理暂行办法》的通知',
-          createTime: '2023-07-25 11:01:20',
-        },
-        {
-          id: '3',
-          title: '关于印发《孝感市公告数据开放管理暂行办法》的通知',
-          createTime: '2023-07-25 11:01:20',
-        },
-        {
-          id: '4',
-          title: '关于印发《孝感市公告数据开放管理暂行办法》的通知',
-          createTime: '2023-07-25 11:01:20',
-        },
-        {
-          id: '5',
-          title: '关于印发《孝感市公告数据开放管理暂行办法》的通知',
-          createTime: '2023-07-25 11:01:20',
-        },
-        {
-          id: '6',
-          title: '关于印发《孝感市公告数据开放管理暂行办法》的通知',
-          createTime: '2023-07-25 11:01:20',
-        },
-        {
-          id: '7',
-          title: '关于印发《孝感市公告数据开放管理暂行办法》的通知',
-          createTime: '2023-07-25 11:01:20',
-        },
-        {
-          id: '8',
-          title: '关于印发《孝感市公告数据开放管理暂行办法》的通知',
-          createTime: '2023-07-25 11:01:20',
-        },
-        {
-          id: '9',
-          title: '关于印发《孝感市公告数据开放管理暂行办法》的通知',
-          createTime: '2023-07-25 11:01:20',
-        },
-        {
-          id: '10',
-          title: '关于印发《孝感市公告数据开放管理暂行办法》的通知',
-          createTime: '2023-07-25 11:01:20',
-        },
-      ],
+      listData: [],
     }
   },
+  mounted() {
+    this.fetchInformation()
+  },
   methods: {
+    handleSonSearch(data){
+      this.qureyParame.informationName = data.informationName
+      this.fetchInformation()
+      console.log(data,'父组件')
+    },
+    fetchInformation() {
+      this.$refs.infRef.loading = true
+      getInformation(this.qureyParame).then((res) => {
+        this.listData = res.body.content
+        this.listData.map((item) => {
+          item.releaseTime = this.formatTime(item.releaseTime, 'hms')
+        })
+        this.total = res.body.total
+        this.$refs.infRef.loading = false
+      })
+    },
     handleSelect(i) {
       this.selectIndex = i
+      this.selectIndex ===0? (this.qureyParame.informationType = 1) : (this.qureyParame.informationType = 2)
+      this.qureyParame.informationName = ""
+      this.qureyParame.pageNum = 1
+      this.qureyParame.pageSize = 10
+      // this.qureyParame.informationType = this.selectIndex = i +1
+      this.fetchInformation()
     },
   },
 }

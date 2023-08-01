@@ -606,6 +606,8 @@ const submitForReview = (params) => postAction('/api/achievement/submitForReview
 
 
 
+// 资讯中心
+const getInformation = (params) => postAction('/api/information/page', params)
 
 
 
@@ -618,6 +620,8 @@ export const transitRESTful = {
     http: (url, parameter) => httpAction(getTransitURL(url), parameter),
 }
 export {
+    // 资讯中心
+    getInformation,
     //常见问题管理
     questionList,
     getQuestionById,

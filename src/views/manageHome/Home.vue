@@ -2,7 +2,8 @@
   <div id="home">
     <div v-show="!flag">
       <homeHeader />
-      <homeHCard />
+      <homeStatistics />
+      <!-- <homeHCard /> -->
       <HomeAgency />
       <HomeCharts />
     </div>
@@ -12,6 +13,7 @@
 
 <script>
 import homeHeader from './components/HomeHeader.vue'
+import homeStatistics from './components/HomeStatistics'
 import homeHCard from './components/HomeCard.vue'
 import HomeAgency from './components/HomeAgency.vue'
 import HomeMine from './components/HomeMine.vue'
@@ -23,23 +25,24 @@ export default {
     homeHCard,
     HomeAgency,
     HomeMine,
-    HomeCharts
+    HomeCharts,
+    homeStatistics,
   },
-  data(){
-    return{
-      flag:false
+  data() {
+    return {
+      flag: false,
     }
   },
-  activated(){
+  activated() {
     this.flag = false
   },
-  mounted(){
-    this.$bus.$on('handleComponents',isshowHaredetails=>{
-     this.flag = isshowHaredetails
+  mounted() {
+    this.$bus.$on('handleComponents', (isshowHaredetails) => {
+      this.flag = isshowHaredetails
     })
   },
-   //解绑事件
-   beforeDestroy() {
+  //解绑事件
+  beforeDestroy() {
     this.$bus.$off('handleComponents')
   },
 }

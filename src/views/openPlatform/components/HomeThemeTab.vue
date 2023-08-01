@@ -149,7 +149,7 @@ export default {
             height: 5px;
             position: absolute;
             bottom: 0;
-            transition: all .5s; 
+            transition: all 0.5s;
             // left: 0;
           }
         }
