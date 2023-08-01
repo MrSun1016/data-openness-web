@@ -8,8 +8,8 @@
       <!-- 主题tab -->
       <HomeThemeTab/>
       <homeHotList />
-      <homeList />
-      <HomeFooter />
+      <informationCard />
+      <Openfooter />
     </div>
   </div>
 </template>
@@ -17,19 +17,19 @@
 <script>
 import OpenPlatformHeader from '@/components/page/OpenPlatformHeader'
 import homeBanner from '@/views/openPlatform/components/HomeBanner'
-import homeList from './components/HomeList'
+import informationCard from './components/InformationCard'
 import homeHotList from './components/HomeHotList'
 import HomeThemeTab from './components/HomeThemeTab'
-import HomeFooter from '@/components/HomeFooter'
+import Openfooter from '@/components/page/Openfooter'
 export default {
   name: 'openPlatformHome',
   components: {
     OpenPlatformHeader,
     homeBanner,
-    homeList,
+    informationCard,
     HomeThemeTab,
     homeHotList,
-    HomeFooter,
+    Openfooter,
   },
 }
 </script>

@@ -1,108 +1,138 @@
 <template>
   <div id="homehotlist">
-    <ul class="list-box">
-      <li class="list-title">
-        <div class="img-title-box"><img class="icon-img" src="../../../assets/Frame-4.png" alt="" />最新数据</div>
-        <div @click="gotocatalog('updateTime','1')">更多<i class="el-icon-d-arrow-right"></i></div>
-      </li>
-      <li
-        class="list-items"
-        :class="{ active: index == isActive }"
-        @mouseover="Mouseover(index, '1')"
-        @mouseleave="Mouseleave('1')"
-        v-for="(todos, index) in newData"
-        :key="todos.applyId"
-      >
-        <div style="display: flex; align-items: center" @click="handleCataDet(todos)">
-          <div class="dot"></div>
-          {{ todos.catalogName }}
+    <el-tabs class="tabs-content" type="card" :tab-position="tabPosition">
+      <el-tab-pane>
+        <span slot="label"><img class="img" src="@/assets/homeEye.png" alt="" />热门浏览</span>
+        <div class="tabs-ttiel-df">
+          <span class="br-bt">热门浏览</span>
+          <span class="cor" @click="moreCatalogData('viewNum')">查看更多</span>
         </div>
-        <div>{{ todos.createdTime }}</div>
-      </li>
-      <div class="no-data" v-show="newData.length <= 0">暂无数据</div>
-    </ul>
-    <ul class="list-box">
-      <li class="list-title">
-        <div class="img-title-box"><img class="icon-img" src="../../../assets/Frame-3.png" alt="" />热门申请</div>
-        <div @click="gotocatalog('notionalPoolingNum')">更多<i class="el-icon-d-arrow-right"></i></div>
-      </li>
-      <li
-        class="list-items"
-        :class="{ active: index == isActive2 }"
-        @mouseover="Mouseover(index, '2')"
-        @mouseleave="Mouseleave('2')"
-        v-for="(todos, index) in hotApplyData"
-        :key="todos.applyId"
-      >
-        <div style="display: flex; align-items: center" @click="handleCataDet(todos)">
-          <div class="dot"></div>
-          {{ todos.catalogName }}
+        <div style="margin-top: 14px">
+          <div class="tabs-info" v-for="items in HomeHotBrowseList" :key="items.catalogId">
+            <div class="info-title">
+              <img class="img" src="@/assets/homePic.png" />
+              <div class="title" @click="handleCataDet(items)">{{ items.catalogName || '-' }}</div>
+            </div>
+            <div class="info-items">
+              <el-tooltip :disabled="showTooltip" :content="items.sourceUnit" placement="top">
+                <div ref="tooltipBox" class="items-det">
+                  提供部门：
+                  <span ref="tooltipItem" class="hidden-box"> {{ items.sourceUnit || '-' }}</span>
+                </div>
+              </el-tooltip>
+              <div class="items-det">数据领域：{{ items.keyAreasType || '-' }}</div>
+              <div class="items-det">浏览量：{{ items.browseQuantity || '-' }}次</div>
+              <div class="items-det">数据量：{{ items.dataNum || '0' }}条</div>
+              <div class="items-det">更新日期：{{ items.updateTime || '-' }}</div>
+            </div>
+          </div>
         </div>
-        <div>{{ todos.applyQuantity }}/次</div>
-      </li>
-      <div class="no-data" v-show="hotApplyData.length <= 0">暂无数据</div>
-    </ul>
-    <ul class="list-box">
-      <li class="list-title">
-        <div class="img-title-box"><img class="icon-img" src="../../../assets/Frame-5.png" alt="" />更多浏览</div>
-        <div @click="gotocatalog('viewNum')">更多<i class="el-icon-d-arrow-right"></i></div>
-      </li>
-      <li
-        class="list-items"
-        :class="{ active: index == isActive3 }"
-        @mouseover="Mouseover(index, '3')"
-        @mouseleave="Mouseleave('3')"
-        v-for="(todos, index) in moreBrowseData"
-        :key="todos.applyId"
-      >
-        <div style="display: flex; align-items: center" @click="handleCataDet(todos)">
-          <div class="dot"></div>
-          {{ todos.catalogName }}
+        <div class="nodate1" v-show="HomeHotBrowseList.length <= 0">暂无数据</div>
+      </el-tab-pane>
+      <el-tab-pane>
+        <span slot="label"><img class="img" src="@/assets/newData.png" alt="" />最新数据</span>
+        <div class="tabs-ttiel-df">
+          <span class="br-bt">最新数据</span>
+          <span class="cor" @click="moreCatalogData('updateTime', '1')">查看更多</span>
         </div>
-        <div>{{ todos.browseQuantity }}/次</div>
-      </li>
+        <div style="margin-top: 14px">
+          <div class="tabs-info" v-for="items in HomeLatestData" :key="items.catalogId">
+            <div class="info-title">
+              <img class="img" src="@/assets/homePic.png" />
+              <div class="title" @click="handleCataDet(items)">{{ items.catalogName || '-' }}</div>
+            </div>
+            <div class="info-items">
+              <el-tooltip :disabled="showTooltip" :content="items.sourceUnit" placement="top">
+                <div ref="tooltipBox" class="items-det">
+                  提供部门：
+                  <span ref="tooltipItem" class="hidden-box"> {{ items.sourceUnit || '-' }}</span>
+                </div>
+              </el-tooltip>
+              <div class="items-det">数据领域：{{ items.keyAreasType || '-' }}</div>
+              <div class="items-det">访问量：{{ items.browseQuantity || '-' }}次</div>
+              <div class="items-det">数据量：{{ items.dataNum || '0' }}条</div>
+              <div class="items-det">更新日期：{{ items.updateTime || '-' }}</div>
+            </div>
+          </div>
+        </div>
+      </el-tab-pane>
 
-      <div class="no-data" v-show="moreBrowseData.length <= 0">暂无数据</div>
-    </ul>
+      <el-tab-pane>
+        <span slot="label"><img class="img" src="@/assets/hotapply.png" alt="" />热门申请</span>
+        <div class="tabs-ttiel-df">
+          <span class="br-bt">热门申请</span>
+          <span class="cor" @click="moreCatalogData('notionalPoolingNum')">查看更多</span>
+        </div>
+        <div style="margin-top: 14px">
+          <div class="tabs-info" v-for="items in HomeHotApplyData" :key="items.catalogId">
+            <div class="info-title">
+              <img class="img" src="@/assets/homePic.png" />
+              <div class="title" @click="handleCataDet(items)">{{ items.catalogName || '-' }}</div>
+            </div>
+            <div class="info-items">
+              <el-tooltip :disabled="showTooltip" :content="items.sourceUnit" placement="top">
+                <div ref="tooltipBox" class="items-det">
+                  提供部门：
+                  <span ref="tooltipItem" class="hidden-box"> {{ items.sourceUnit || '-' }}</span>
+                </div>
+              </el-tooltip>
+              <div class="items-det">数据领域：{{ items.keyAreasType || '-' }}</div>
+              <div class="items-det">申请量：{{ items.browseQuantity || '-' }}次</div>
+              <div class="items-det">数据量：{{ items.dataNum || '0' }}条</div>
+              <div class="items-det">更新日期：{{ items.updateTime || '-' }}</div>
+            </div>
+          </div>
+        </div>
+      </el-tab-pane>
+    </el-tabs>
   </div>
 </template>
 
 <script>
-import { getLatestData, getHotApply, getHotBrowse } from '@/api/api'
+import { getHomeHotBrowse, getHomeLatestData, getHomeHotApply,getDataUseInfo } from '@/api/api'
 export default {
   name: 'homehotlist',
   data() {
     return {
-      isActive: null,
-      isActive2: null,
-      isActive3: null,
-      todolistData: [
-        { id: '01', title: '税务变更登记信息', time: '2022/08/07' },
-        { id: '02', title: '税务变更登记信息', time: '2022/08/07' },
-        { id: '03', title: '税务变更登记信息', time: '2022/08/07' },
-        { id: '04', title: '税务变更登记信息', time: '2022/08/07' },
-        { id: '05', title: '税务变更登记信息', time: '2022/08/07' },
-      ],
-      // 最新数据
-      newData: [],
-      // 热门申请
-      hotApplyData: [],
-      moreBrowseData: [],
+      tabPosition: 'left',
+      showTooltip: false,
+      HomeHotBrowseList: [],
+      HomeLatestData: [],
+      HomeHotApplyData: [],
+      catalogId:'',
     }
   },
   created() {
-    this.fetchLatestData()
-    this.fetchHotApply()
-    this.fetchHotBrowse()
+    this.fetchHomeHotBrowse()
+    this.fetchHomeLatestData()
+    this.fetchHomeHotApply()
   },
-  mounted() {
-    this.isActive = null
-    this.isActive2 = null
-    this.isActive3 = null
+  watch: {
+    HomeHotBrowseList: {
+      handler() {
+        this.$nextTick(() => this.checkWidth())
+      },
+      immediate: true,
+    },
   },
   methods: {
+    checkWidth() {
+      let boxWidth = this.$refs.tooltipBox
+      if (!boxWidth) return
+      // } else {
+      //   // boxWidth.forEach((v) => (boxWidth = v.offsetWidth))
+      //   boxWidth.forEach((v) => console.log(v.offsetWidth, '----'))
+      // }
+      let itemWidth = this.$refs.tooltipItem
+      if (!itemWidth) return
+      // itemWidth.forEach((v) => ( v.offsetWidth))
+      this.showTooltip = boxWidth > itemWidth
+      console.log(this.showTooltip,'--------')
+    },
     handleCataDet(row) {
       localStorage.setItem('catalogName', row.catalogName)
+      this.catalogId = row.catalogId
+      this.fetchDataUseInfo()
       this.$router.push({
         path: '/catalogue/datacatalogue/details',
         query: {
@@ -114,57 +144,53 @@ export default {
         },
       })
     },
-    Mouseover(index, type) {
-      if (type === '1') this.isActive = index
-      else if (type === '2') this.isActive2 = index
-      else this.isActive3 = index
-    },
-    Mouseleave(type) {
-      if (type === '1') this.isActive = null
-      else if (type === '2') this.isActive2 = null
-      else this.isActive3 = null
-    },
-    fetchLatestData() {
-      getLatestData().then((res) => {
+    fetchDataUseInfo(){
+      getDataUseInfo(this.catalogId).then((res) => {
         if (res.success) {
-          this.newData = res.body
-          this.newData.forEach((v) => {
-            v.createdTime = this.formatTime(v.createdTime, 'hms')
-          })
+          this.$bus.$emit('onExatableData', res.body)
         }
       })
     },
-    fetchHotApply() {
-      getHotApply().then((res) => {
+    // 热门申请
+    fetchHomeHotApply() {
+      getHomeHotApply().then((res) => {
         if (res.success) {
-          this.hotApplyData = res.body
-          this.hotApplyData.forEach((v) => {
-            v.createdTime = this.formatTime(v.createdTime, 'hms')
-            v.applyQuantity = this.formatNumber(v.applyQuantity)
-          })
+          this.HomeHotApplyData = res.body
+          this.timeTransition(this.HomeHotApplyData)
         }
       })
     },
-    fetchHotBrowse() {
-      getHotBrowse().then((res) => {
+    // 最新数据
+    fetchHomeLatestData() {
+      getHomeLatestData().then((res) => {
         if (res.success) {
-          this.moreBrowseData = res.body
-          this.moreBrowseData.forEach((v) => {
-            v.createdTime = this.formatTime(v.createdTime, 'hms')
-            v.browseQuantity = this.formatNumber(v.browseQuantity)
-          })
+          this.HomeLatestData = res.body
+          this.timeTransition(this.HomeLatestData)
         }
       })
     },
-    gotocatalog(type,num) {
+    fetchHomeHotBrowse() {
+      getHomeHotBrowse().then((res) => {
+        if (res.success) {
+          this.HomeHotBrowseList = res.body
+          this.timeTransition(this.HomeHotBrowseList)
+        }
+      })
+    },
+    moreCatalogData(type, num) {
       this.$router.push({
         path: '/catalogue/datacatalogue',
         query: {
           type,
-          num
+          num,
         },
       })
       // window.location.href = '/catalogue/datacatalogue'
+    },
+    timeTransition(timeArr) {
+      timeArr.forEach((v) => {
+        v.updateTime = this.formatTime(v.updateTime, 'hms')
+      })
     },
   },
 }
@@ -172,64 +198,85 @@ export default {
 
 <style lang="less" scoped>
 #homehotlist {
-  background: #f0f2f5;
-  display: flex;
-  justify-content: space-between;
-  padding: 40px 40px 40px 40px;
-  .list-box {
-    position: relative;
-    width: 31%;
-    min-height: 280px;
-    padding-left: 0px !important;
+  width: 1200px;
+  margin: 54px auto 0 auto;
+  .tabs-content {
     background: #fff;
-    cursor: pointer;
-    .list-title {
+    .img {
+      // width: 20px;
+      height: 14px;
+      margin-right: 20px;
+      vertical-align: middle;
+    }
+    .tabs-ttiel-df {
       display: flex;
-      padding: 0 12px;
       justify-content: space-between;
-      align-items: center;
-      color: #1890ff;
-      height: 52px;
-      list-style: none;
-      background: #e6f7ff;
-      .img-title-box {
+      color: black;
+      border-bottom: 1px solid #d8d8d8;
+    }
+    .tabs-info {
+      border-bottom: 1px solid #d8d8d8;
+      margin-bottom: 14px;
+      .info-title {
         display: flex;
         align-items: center;
+        padding-left: 4px;
+        .title {
+          color: #1890ff;
+          cursor: pointer;
+        }
       }
-      .icon-img {
-        height: 15px;
-        margin-right: 5px;
+      .info-items {
+        display: flex;
+        // justify-content: space-between;
+        padding: 12px 34px 7px 34px;
+        .items-det {
+          display: flex;
+          width: 200px;
+          .hidden-box {
+            display: inline-block;
+            width: 100px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+          }
+        }
       }
     }
-    .list-items {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      list-style: none;
-      height: 57px;
-      padding: 0 12px;
-      border-bottom: 1px dashed #ccc;
+    .br-bt {
+      border-bottom: 2px solid #1890ff;
+      background: #f5f4f4;
+      padding-right: 30px;
     }
-    .dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      border: 1px solid #aaaaaa;
-      background: #aaaaaa;
-      margin-right: 8px;
-    }
-    .no-data {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
+    .cor {
+      color: #69abf8;
+      font-size: 12px;
+      cursor: pointer;
     }
   }
-  .margin-box {
-    margin: 0 40px;
-  }
-  .active {
-    color: #1890ff;
-  }
+}
+/**
+element ui 左侧tabs样式
+ */
+/deep/.el-tabs__item.is-active {
+  // color: orange;
+  background: #e0eaff;
+}
+/deep/.el-tabs__nav {
+  background: rgba(250, 248, 248, 0.5);
+  border: none !important;
+}
+/deep/.el-tabs--left.el-tabs--card .el-tabs__item.is-left {
+  border: none;
+  border-bottom: 1px solid rgb(237, 241, 252);
+}
+/deep/.el-tabs__nav-scroll {
+  border-radius: 10px;
+}
+/deep/.el-tabs--card > .el-tabs__header {
+  border-bottom: none;
+}
+/deep/.el-tab-pane {
+  margin-left: 12px;
 }
 </style>

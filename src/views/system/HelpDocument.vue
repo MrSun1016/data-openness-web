@@ -2,13 +2,23 @@
   <div id="helpdocument">
     <OpenPlatformHeader />
     <div class="content-box">
+<<<<<<< HEAD
       <informationMenu class="informationMenu" :menus="menus" />
       <informationContent class="informationContent" />
+=======
+      <informationMenu :menus="menus" />
+>>>>>>> da6a001f907c192aac3021cef9e100163c896829
     </div>
+    <Openfooter />
   </div>
 </template>
+<<<<<<< HEAD
 <script>
 import informationContent from '@/views/system/components/informationContent'
+=======
+    <script>
+import Openfooter from '@/components/page/Openfooter'
+>>>>>>> da6a001f907c192aac3021cef9e100163c896829
 import informationMenu from '@/views/system/components/informationMenu'
 import OpenPlatformHeader from '@/components/page/OpenPlatformHeader'
 import { studyWorldPage } from '@/api/api'
@@ -20,7 +30,11 @@ export default {
   components: {
     OpenPlatformHeader,
     informationMenu,
+<<<<<<< HEAD
     informationContent
+=======
+    Openfooter,
+>>>>>>> da6a001f907c192aac3021cef9e100163c896829
   },
   data() {
     return {
