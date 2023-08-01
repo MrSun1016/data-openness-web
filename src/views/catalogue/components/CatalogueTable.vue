@@ -263,7 +263,7 @@ export default {
       // align-items: center;
       padding: 18px 33px 0 32px;
       background-color: #fafafb;
-      border-bottom: 1px solid #f3f5f8;
+      border-bottom: 2px solid #f3f5f8;
       .info-items {
         margin-bottom: 15px;
         display: flex;

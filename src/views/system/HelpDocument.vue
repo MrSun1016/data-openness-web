@@ -2,12 +2,12 @@
   <div id="helpdocument">
     <OpenPlatformHeader />
     <div class="content-box">
-      <informationMenu :menus="menus" />
-      <informationContent />
+      <informationMenu class="informationMenu" :menus="menus" />
+      <informationContent class="informationContent" />
     </div>
   </div>
 </template>
-    <script>
+<script>
 import informationContent from '@/views/system/components/informationContent'
 import informationMenu from '@/views/system/components/informationMenu'
 import OpenPlatformHeader from '@/components/page/OpenPlatformHeader'
@@ -20,13 +20,13 @@ export default {
   components: {
     OpenPlatformHeader,
     informationMenu,
-    informationContent,
+    informationContent
   },
   data() {
     return {
       menus: [
         { id: '1', name: '新闻动态' },
-        { id: '2', name: '政策法规' },
+        { id: '2', name: '政策法规' }
       ],
       loading: false,
       total: 0,
@@ -43,10 +43,10 @@ export default {
         endDate: '',
         uploadFileName: '',
         queryType: 2,
-        dataManagementType: '1', //帮助文档
+        dataManagementType: '1' //帮助文档
       },
       input: '',
-      todoList: [],
+      todoList: []
     }
   },
   created() {
@@ -57,9 +57,9 @@ export default {
     downLoad(fileName) {
       // let fileName = this.datas.businessAeview.applyFlieName
       download({ fileName })
-        .then((res) => {
+        .then(res => {
           const blob = new Blob([res], {
-            type: 'application/json;charset=UTF-8',
+            type: 'application/json;charset=UTF-8'
           }) // res就是接口返回的文件流
           const link = document.createElement('a') // 创建a标签
           const objectUrl = window.URL.createObjectURL(blob)
@@ -68,7 +68,7 @@ export default {
           link.click()
           window.URL.revokeObjectURL(objectUrl) // 释放内存
         })
-        .catch((error) => {
+        .catch(error => {
           this.$message.warning('模板导出失败')
         })
     },
@@ -90,7 +90,7 @@ export default {
     fetchWorldPage() {
       this.loading = true
       studyWorldPage(this.learning)
-        .then((res) => {
+        .then(res => {
           if (res.success) {
             this.todoList = res.body.content
             this.total = res.body.total
@@ -102,23 +102,29 @@ export default {
             this.loading = false
           }
         })
-        .catch((_) => {
+        .catch(_ => {
           this.loading = false
         })
-    },
-  },
+    }
+  }
 }
 </script>
-    
-    <style lang="less" scoped>
+
+<style lang="less" scoped>
 #helpdocument {
   background: #fff;
   .content-box {
-    width: 1200px;
+    width: 90%;
     justify-content: space-around;
-    margin-top:38px;
+    margin-top: 38px;
     display: flex;
     margin: 20px auto;
+    .informationMenu {
+      width: 22%;
+    }
+    .informationContent {
+      width: 78%;
+    }
   }
   /deep/.el-input-group__append {
     background: #1890ff;
