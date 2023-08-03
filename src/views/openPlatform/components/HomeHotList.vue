@@ -16,13 +16,13 @@
       </div>
     </div>
     <!-- 右侧内容 -->
-    <DataList :listData="listData" />
+    <DataList :listData="listData" :currtSelect="currentSelect"/>
   </div>
 </template>
 
 <script>
 import DataList from '@/views/openPlatform/components/DataList'
-import { getHomeHotBrowse, getHomeLatestData, getHomeHotApply, getDataUseInfo } from '@/api/api'
+import { getHomeHotBrowse, getHomeLatestData, getHomeHotApply, getDataUseInfo, getRecentOpenDataPage } from '@/api/api'
 export default {
   name: 'homehotlist',
   components: {
@@ -30,53 +30,11 @@ export default {
   },
   data() {
     return {
-      listData: [
-        {
-          id: '1',
-          title: '孝感市好差评数据',
-          dep: '部门',
-          ly: '领域',
-          sql: '12313',
-          fw: '123123',
-          time: '2023-07-28',
-        },
-        {
-          id: '2',
-          title: '孝感市好差评数据',
-          dep: '部门',
-          ly: '领域',
-          sql: '12313',
-          fw: '123123',
-          time: '2023-07-28',
-        },
-        {
-          id: '3',
-          title: '孝感市好差评数据',
-          dep: '部门',
-          ly: '领域',
-          sql: '12313',
-          fw: '123123',
-          time: '2023-07-28',
-        },
-        {
-          id: '4',
-          title: '孝感市好差评数据',
-          dep: '部门',
-          ly: '领域',
-          sql: '12313',
-          fw: '123123',
-          time: '2023-07-28',
-        },
-        {
-          id: '5',
-          title: '孝感市好差评数据',
-          dep: '部门',
-          ly: '领域',
-          sql: '12313',
-          fw: '123123',
-          time: '2023-07-28',
-        },
-      ],
+      qureyParams: {
+        pageNum: 1,
+        pageSize: 5,
+      },
+      listData: [],
       currentSelect: 0,
       showTooltip: false,
       navList: [
@@ -89,20 +47,23 @@ export default {
         },
         {
           id: '2',
-          navTitle: '接口调用',
+          navTitle: '接口排名',
           engTitle: 'INTERFACE CALL',
           imgUrl: require('../../../assets/images/exp.png'),
           actImgUrl: require('../../../assets/images/actExp.png'),
         },
         {
           id: '3',
-          navTitle: '数据下载',
+          navTitle: '数据排名',
           engTitle: 'DATA DOWNLOAD',
           imgUrl: require('../../../assets/images/dow.png'),
           actImgUrl: require('../../../assets/images/actDow.png'),
         },
       ],
     }
+  },
+  mounted() {
+    this.fetchRecentOpenDataPage()
   },
   created() {},
   watch: {
@@ -114,6 +75,15 @@ export default {
     // },
   },
   methods: {
+    fetchRecentOpenDataPage() {
+      getRecentOpenDataPage(this.qureyParams).then((res) => {
+        this.listData = res.body.content
+        this.listData.forEach(v=>{
+          v.openTime = this.formatTime(v.openTime,'hms')
+        })
+        console.log(res, '----------------')
+      })
+    },
     handleSelect(i) {
       this.currentSelect = i
     },

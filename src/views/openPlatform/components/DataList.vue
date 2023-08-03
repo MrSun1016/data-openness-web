@@ -9,8 +9,15 @@
           v-for="(navs, index) in navList"
           :key="navs.id"
           @click="handleSelect(index)"
+          v-show="currtSelect === 0"
         >
           {{ navs.title }}
+        </div>
+        <div style="background: #f5f5f9; line-height: 35px; padding: 0 8px" v-show="currtSelect === 1">
+          最新一个月接口调用TOP
+        </div>
+        <div style="background: #f5f5f9; line-height: 35px; padding: 0 8px" v-show="currtSelect === 2">
+          最新一个月数据下载TOP
         </div>
       </div>
       <div class="move">更多<i class="el-icon-d-arrow-right"></i></div>
@@ -20,14 +27,12 @@
       <div class="info" v-for="item in listData" :key="item.id">
         <div class="info-title">
           <img style="margin: 0 8px" src="../../../assets/images/newDataImg.png" alt="" />
-          <div style="color: #006fff">{{ item.title }}</div>
+          <div style="color: #006fff">{{ item.catalogName || '-' }}}</div>
         </div>
         <div class="info-content">
-          <div>数源部门：{{ item.dep }}</div>
-          <div>数源领域：{{ item.ly }}</div>
-          <div>申请量：{{ item.sql }}次</div>
-          <div>访问量：{{ item.fw }}</div>
-          <div>更新时间：{{ item.time }}</div>
+          <div style="flex: 1">数源部门：{{ item.applicationDepartment || '-' }}</div>
+          <div style="flex: 1">数源领域：{{ item.ly || '-' }}</div>
+          <div style="flex: 1">开放时间：{{ item.openTime || '-' }}</div>
         </div>
       </div>
     </div>
@@ -38,15 +43,21 @@
 export default {
   name: 'DataList',
   props: {
-    listData: Array,
-    require: true,
+    listData: {
+      Array,
+      require: true,
+    },
+    currtSelect: {
+      Number,
+      require: true,
+    },
   },
   data() {
     return {
       currentSelect: 0,
       navList: [
         { id: '1', title: '最新开放' },
-        { id: '2', title: '数据更新' },
+        { id: '2', title: '最近更新' },
       ],
       newDataList: [
         {
@@ -129,7 +140,7 @@ export default {
     .move {
       cursor: pointer;
       font-size: 12px;
-      color:#006FFF;
+      color: #006fff;
     }
   }
   .content {
@@ -144,6 +155,7 @@ export default {
       }
       .info-content {
         display: flex;
+        padding: 0 8px;
         justify-content: space-around;
       }
     }

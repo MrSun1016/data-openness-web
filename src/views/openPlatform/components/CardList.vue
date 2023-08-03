@@ -1,9 +1,9 @@
 <template>
-  <div id="cardList" class="right-content">
+  <div id="cardList" class="right-content" v-loading="loading">
     <!-- 右侧内容 -->
     <div class="content-info" v-for="item in cardList" :key="item.id">
-      <div>{{ item.titl }}</div>
-      <div>{{ item.time }}</div>
+      <div>{{ item.informationName }}</div>
+      <div>{{ item.releaseTime }}</div>
     </div>
   </div>
 </template>
@@ -14,6 +14,11 @@ export default {
   props: {
     cardList: Array,
     require: true,
+  },
+  data(){
+    return {
+      loading:false
+    }
   },
 }
 </script>

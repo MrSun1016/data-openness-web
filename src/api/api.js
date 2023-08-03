@@ -598,7 +598,9 @@ const getAssociatedData = (params) => getAction('/api/achievement/getAssociatedD
 // 提交审核
 const submitForReview = (params) => postAction('/api/achievement/submitForReview', params)
 
+//最近开放数据
 
+const getRecentOpenDataPage = (params) => postAction('/api/IndexPage/recentOpenDataPage', params)
 
 // 开放平台
 // 开放数据
@@ -620,6 +622,8 @@ export const transitRESTful = {
     http: (url, parameter) => httpAction(getTransitURL(url), parameter),
 }
 export {
+    // 最近开放数据
+    getRecentOpenDataPage,
     // 资讯中心
     getInformation,
     //常见问题管理

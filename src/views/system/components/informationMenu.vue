@@ -14,7 +14,13 @@
         </div>
       </div>
     </div>
-    <informationContent :listData="listData" ref="infRef" :qureyParame="qureyParame" :total="total" @handleSearch="handleSonSearch"/>
+    <informationContent
+      :listData="listData"
+      ref="infRef"
+      :qureyParame="qureyParame"
+      :total="total"
+      @handleSearch="handleSonSearch"
+    />
   </div>
 </template>
 
@@ -33,44 +39,55 @@ export default {
   },
   data() {
     return {
-      total:0,
+      total: 0,
       // 请求参数
       qureyParame: {
-        informationName:"",
+        informationName: '',
         pageNum: 1,
         pageSize: 10,
         informationType: '1',
       },
       selectIndex: 0,
-      listData: [],
+      listData: [
+        {
+          informationName: '',
+          releaseTime: '',
+        },
+      ],
     }
   },
   mounted() {
+    this.$route.query.currentSelect ? (this.selectIndex = this.$route.query.currentSelect) : this.selectIndex
     this.fetchInformation()
   },
   methods: {
-    handleSonSearch(data){
+    handleSonSearch(data) {
       this.qureyParame.informationName = data.informationName
       this.fetchInformation()
-      console.log(data,'父组件')
     },
     fetchInformation() {
       this.$refs.infRef.loading = true
-      getInformation(this.qureyParame).then((res) => {
-        this.listData = res.body.content
-        this.listData.map((item) => {
-          item.releaseTime = this.formatTime(item.releaseTime, 'hms')
+      getInformation(this.qureyParame)
+        .then((res) => {
+          this.listData = res.body.content
+          this.listData.map((item) => {
+            item.releaseTime = this.formatTime(item.releaseTime, 'hms')
+          })
+          this.total = res.body.total
+          this.$refs.infRef.loading = false
         })
-        this.total = res.body.total
-        this.$refs.infRef.loading = false
-      })
+        .catch(() => {
+          this.$refs.infRef.loading = false
+        })
     },
     handleSelect(i) {
       this.selectIndex = i
-      this.selectIndex ===0? (this.qureyParame.informationType = 1) : (this.qureyParame.informationType = 2)
-      this.qureyParame.informationName = ""
+      // this.this.$refs.infRef.fileViewer = false
+      this.selectIndex === 0 ? (this.qureyParame.informationType = 1) : (this.qureyParame.informationType = 2)
+      this.qureyParame.informationName = ''
       this.qureyParame.pageNum = 1
       this.qureyParame.pageSize = 10
+      this.$bus.$emit('handleCloseViewer', false)
       // this.qureyParame.informationType = this.selectIndex = i +1
       this.fetchInformation()
     },
@@ -82,9 +99,10 @@ export default {
 .information-menu {
   width: 100%;
   display: flex;
+  flex: 1;
 }
 #informationMenu {
-  width: 100%;
+  width: 30%;
   .menus {
     // width: 280px;
     // margin: 0 auto;

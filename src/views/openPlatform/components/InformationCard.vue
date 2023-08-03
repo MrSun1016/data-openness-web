@@ -3,7 +3,7 @@
     <!-- title -->
     <div class="title">
       <div class="info">资讯</div>
-      <div class="more">
+      <div class="more" @click="handleLookMore">
         <i class="el-icon-view"></i>
         <div>查看更多</div>
       </div>
@@ -23,12 +23,13 @@
       </div>
 
       <!-- 右侧List -->
-      <cardList :cardList="cardList" />
+      <cardList :cardList="cardList" ref="cardRef" />
     </div>
   </div>
 </template>
 
 <script>
+import { getInformation } from '@/api/api'
 import cardList from '@/views/openPlatform/components/CardList'
 export default {
   name: 'informationCard',
@@ -37,17 +38,15 @@ export default {
   },
   data() {
     return {
-      cardList: [
-        { id: '1', titl: '我市首个24小时自助政务服务地方标准发布', time: '2023-07-28' },
-        { id: '2', titl: '我市首个24小时自助政务服务地方标准发布', time: '2023-07-28' },
-        { id: '3', titl: '我市首个24小时自助政务服务地方标准发布', time: '2023-07-28' },
-        { id: '4', titl: '我市首个24小时自助政务服务地方标准发布', time: '2023-07-28' },
-        { id: '5', titl: '我市首个24小时自助政务服务地方标准发布', time: '2023-07-28' },
-        { id: '6', titl: '我市首个24小时自助政务服务地方标准发布', time: '2023-07-28' },
-        { id: '7', titl: '我市首个24小时自助政务服务地方标准发布', time: '2023-07-28' },
-        { id: '8', titl: '我市首个24小时自助政务服务地方标准发布', time: '2023-07-28' },
-        { id: '9', titl: '我市首个24小时自助政务服务地方标准发布', time: '2023-07-28' },
-      ],
+      total: 0,
+      // 请求参数
+      qureyParame: {
+        informationName: '',
+        pageNum: 1,
+        pageSize: 5,
+        informationType: '1',
+      },
+      cardList: [],
       currentSelect: 0,
       navsList: [
         { id: '1', title: '新闻动态' },
@@ -56,9 +55,38 @@ export default {
       ],
     }
   },
+  mounted() {
+    this.fetchInformation()
+  },
   methods: {
+    handleLookMore() {
+      console.log(this.currentSelect)
+      this.$router.push({
+        path: '/system/helpdocument',
+        query: {
+          currentSelect: this.currentSelect,
+        },
+      })
+    },
     handleSelect(i) {
       this.currentSelect = i
+      this.qureyParame.informationType = this.currentSelect + 1
+      this.fetchInformation()
+    },
+    fetchInformation() {
+      this.$refs.cardRef.loading = true
+      getInformation(this.qureyParame)
+        .then((res) => {
+          this.cardList = res.body.content
+          this.cardList.map((item) => {
+            item.releaseTime = this.formatTime(item.releaseTime, 'hms')
+          })
+          this.total = res.body.total
+          this.$refs.cardRef.loading = false
+        })
+        .catch(() => {
+          this.$refs.cardRef.loading = false
+        })
     },
   },
 }
