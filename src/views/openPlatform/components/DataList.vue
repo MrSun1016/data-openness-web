@@ -23,15 +23,15 @@
       <div class="move">更多<i class="el-icon-d-arrow-right"></i></div>
     </div>
     <!-- 内容 -->
-    <div class="content">
+    <div class="content" v-loading="loading">
       <div class="info" v-for="item in listData" :key="item.id">
         <div class="info-title">
           <img style="margin: 0 8px" src="../../../assets/images/newDataImg.png" alt="" />
           <div style="color: #006fff">{{ item.catalogName || '-' }}}</div>
         </div>
         <div class="info-content">
-          <div style="flex: 1">数源部门：{{ item.applicationDepartment || '-' }}</div>
-          <div style="flex: 1">数源领域：{{ item.ly || '-' }}</div>
+          <div style="flex: 1">数源部门：{{ item.sourceUnit || '-' }}</div>
+          <div style="flex: 1">数源领域：{{ item.keyAreasType || '-' }}</div>
           <div style="flex: 1">开放时间：{{ item.openTime || '-' }}</div>
         </div>
       </div>
@@ -54,63 +54,18 @@ export default {
   },
   data() {
     return {
+      loading:false,
       currentSelect: 0,
       navList: [
         { id: '1', title: '最新开放' },
         { id: '2', title: '最近更新' },
-      ],
-      newDataList: [
-        {
-          id: '1',
-          title: '孝感市好差评数据',
-          dep: '部门',
-          ly: '领域',
-          sql: '12313',
-          fw: '123123',
-          time: '2023-07-28',
-        },
-        {
-          id: '2',
-          title: '孝感市好差评数据',
-          dep: '部门',
-          ly: '领域',
-          sql: '12313',
-          fw: '123123',
-          time: '2023-07-28',
-        },
-        {
-          id: '3',
-          title: '孝感市好差评数据',
-          dep: '部门',
-          ly: '领域',
-          sql: '12313',
-          fw: '123123',
-          time: '2023-07-28',
-        },
-        {
-          id: '4',
-          title: '孝感市好差评数据',
-          dep: '部门',
-          ly: '领域',
-          sql: '12313',
-          fw: '123123',
-          time: '2023-07-28',
-        },
-        {
-          id: '5',
-          title: '孝感市好差评数据',
-          dep: '部门',
-          ly: '领域',
-          sql: '12313',
-          fw: '123123',
-          time: '2023-07-28',
-        },
       ],
     }
   },
   methods: {
     handleSelect(i) {
       this.currentSelect = i
+      this.$emit('handleNewData',this.currentSelect)
     },
   },
 }

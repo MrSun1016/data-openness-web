@@ -16,13 +16,13 @@
       </div>
     </div>
     <!-- 右侧内容 -->
-    <DataList :listData="listData" :currtSelect="currentSelect"/>
+    <DataList :listData="listData" :currtSelect="currentSelect" @handleNewData="handleNewData" ref="listRef" />
   </div>
 </template>
 
 <script>
 import DataList from '@/views/openPlatform/components/DataList'
-import { getHomeHotBrowse, getHomeLatestData, getHomeHotApply, getDataUseInfo, getRecentOpenDataPage } from '@/api/api'
+import { getApiCallPage, getRecentOpenDataPage, getDataDownloadPage } from '@/api/api'
 export default {
   name: 'homehotlist',
   components: {
@@ -30,7 +30,14 @@ export default {
   },
   data() {
     return {
+      // 最新数据接口参数
       qureyParams: {
+        dataType: '1',
+        pageNum: 1,
+        pageSize: 5,
+      },
+      // 最新一个月接口调用TOP/最近一个月数据下载Top10
+      qureyPortParams: {
         pageNum: 1,
         pageSize: 5,
       },
@@ -75,17 +82,59 @@ export default {
     // },
   },
   methods: {
-    fetchRecentOpenDataPage() {
-      getRecentOpenDataPage(this.qureyParams).then((res) => {
-        this.listData = res.body.content
-        this.listData.forEach(v=>{
-          v.openTime = this.formatTime(v.openTime,'hms')
+    fetchDataDownloadPage() {
+      this.$refs.listRef.loading = true
+      getDataDownloadPage()
+        .then((res) => {
+          this.listData = res.body.content
+          this.listData.forEach((v) => {
+            v.openTime = this.formatTime(v.openTime, 'hms')
+          })
+          this.$refs.listRef.loading = false
         })
-        console.log(res, '----------------')
-      })
+        .catch(() => {
+          this.$refs.listRef.loading = false
+        })
+    },
+    fetchApiCallPage() {
+      this.$refs.listRef.loading = true
+      getApiCallPage(this.qureyPortParams)
+        .then((res) => {
+          this.listData = res.body.content
+          this.listData.forEach((v) => {
+            v.openTime = this.formatTime(v.openTime, 'hms')
+          })
+          this.$refs.listRef.loading = false
+        })
+        .catch(() => {
+          this.$refs.listRef.loading = false
+        })
+    },
+    handleNewData(selected) {
+      this.qureyParams.dataType = selected + 1
+      this.fetchRecentOpenDataPage()
+    },
+    fetchRecentOpenDataPage() {
+      this.$refs.listRef.loading = true
+      getRecentOpenDataPage(this.qureyParams)
+        .then((res) => {
+          this.listData = res.body.content
+          this.listData.forEach((v) => {
+            v.openTime = this.formatTime(v.openTime, 'hms')
+          })
+          this.$refs.listRef.loading = false
+        })
+        .catch(() => {
+          this.$refs.listRef.loading = false
+        })
     },
     handleSelect(i) {
       this.currentSelect = i
+      this.currentSelect === 0
+        ? this.fetchRecentOpenDataPage()
+        : this.currentSelect === 1
+        ? this.fetchApiCallPage()
+        : this.fetchDataDownloadPage()
     },
   },
 }

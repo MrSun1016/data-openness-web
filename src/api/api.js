@@ -599,8 +599,14 @@ const getAssociatedData = (params) => getAction('/api/achievement/getAssociatedD
 const submitForReview = (params) => postAction('/api/achievement/submitForReview', params)
 
 //最近开放数据
-
 const getRecentOpenDataPage = (params) => postAction('/api/IndexPage/recentOpenDataPage', params)
+
+// 最近一个月接口调用Top10
+const getApiCallPage = (params) => postAction('/api/IndexPage/apiCallPage', params)
+
+// 最近一个月接口调用Top10
+const getDataDownloadPage = (params) => postAction('/api/IndexPage/dataDownloadPage', params)
+
 
 // 开放平台
 // 开放数据
@@ -622,6 +628,10 @@ export const transitRESTful = {
     http: (url, parameter) => httpAction(getTransitURL(url), parameter),
 }
 export {
+    // 最近一个月接口调用Top10
+    getDataDownloadPage,
+    // 最近一个月接口调用Top10
+    getApiCallPage,
     // 最近开放数据
     getRecentOpenDataPage,
     // 资讯中心

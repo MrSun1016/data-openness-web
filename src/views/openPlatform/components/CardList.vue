@@ -2,7 +2,7 @@
   <div id="cardList" class="right-content" v-loading="loading">
     <!-- 右侧内容 -->
     <div class="content-info" v-for="item in cardList" :key="item.id">
-      <div>{{ item.informationName }}</div>
+      <div @click="handleLookDet">{{ item.informationName }}</div>
       <div>{{ item.releaseTime }}</div>
     </div>
   </div>
@@ -19,6 +19,11 @@ export default {
     return {
       loading:false
     }
+  },
+  methods:{
+    handleLookDet(){
+      
+    },
   },
 }
 </script>
